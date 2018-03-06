@@ -4,7 +4,7 @@ runNo = sys.argv[1]
 evenNo = sys.argv[2]
 
 #Create reduced report output file
-out_filename = './UTIL_ED/REPORT_FILES/heep_report_%s.report'% (runNo)
+out_filename = './UTIL_ED/CHARGE_REPORTS/heep_report_%s.report'% (runNo)
 
 #Read REPORT File Name
 report_filename = './REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_%s_%s.report'% (runNo, evenNo)

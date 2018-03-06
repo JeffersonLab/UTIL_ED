@@ -6,7 +6,7 @@ evenNo = sys.argv[2]
 
 
 #Create reduced report output file
-out_filename = './UTIL_ED/REPORT_FILES/deep_report_%s.report'% (runNo)
+out_filename = './UTIL_ED/CHARGE_REPORTS/deep_report_%s.report'% (runNo)
 
 #Read REPORT File Name
 report_filename = './REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_%s_%s.report'% (runNo, evenNo)
