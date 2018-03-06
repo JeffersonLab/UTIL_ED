@@ -27,37 +27,47 @@ numEvents=50000
 script="SCRIPTS/${SPEC}/PRODUCTION/replay_production_${spec}_coin.C"
 config="CONFIG/${SPEC}/PRODUCTION/${spec}_coin_production.cfg"
 
+#Define some useful directories
+rootFileDir="./ROOTfiles"
+monRootDir="./HISTOGRAMS/${SPEC}/ROOT"
+monPdfDir="./HISTOGRAMS/${SPEC}/PDF"
+reportFileDir="./REPORT_OUTPUT/${SPEC}/PRODUCTION"
+reportMonDir="./UTIL_OL/REP_MON" 
+reportMonOutDir="./MON_OUTPUT/REPORT" 
+pedMonDir="./UTIL_OL/PED_MON"
+pedMonOutDir="./MON_OUTPUT/PED" 
+
+# Name of the pedestal monitoring file  
+reportMonFile="reportMonitor_${spec}_${runNum}_${numEvents}.txt" 
+pedMonFile="pedReport_${spec}_${runNum}_${numEvents}.txt" 
+
 # Which commands to run.
 runHcana="./hcana -q \"${script}(${runNum}, ${numEvents})\""
 runOnlineGUI="./online -f ${config} -r ${runNum}"
 saveOnlineGUI="./online -f ${config} -r ${runNum} -P"
-#runPedMon="root -l -q \"UTIL/PEDESTAL_MON/COIN/PRODUCTION/${spec}_ped.C(${runNum}, ${numEvents})\""
-
-#Define where to put the PEDESTAL_MON
-reportFile="REPORT_OUTPUT/${SPEC}/PRODUCTION/replay_${spec}_production_${runNum}_${numEvents}.txt"
-#pedMonFile="PEDESTAL_MONITOR/COIN/reportPedestal_${spec}_coin_production_${runNum}_${numEvents}.txt"
+runReportMon="./${reportMonDir}/readout_${spec}.py ${runNum} ${numEvents}" 
+runPedMon="root -l -q \"${pedMonDir}/${spec}_ped.C(${runNum}, ${numEvents})\""
+openReportMon="emacs ${reportMonOutDir}/${reportMonFile}"  
 
 # Name of the replay ROOT file
-rootFileDir="./ROOTfiles"
 replayFile="${spec}_coin_replay_production_${runNum}"
 rootFile="${replayFile}_${numEvents}.root"
 latestRootFile="${rootFileDir}/${replayFile}_latest.root"
 
 # Names of the monitoring file
-monRootDir="./HISTOGRAMS/${SPEC}/ROOT"
-monPdfDir="./HISTOGRAMS/${SPEC}/PDF"
 monRootFile="${spec}_coin_production_${runNum}.root"
 monPdfFile="${spec}_coin_production_${runNum}.pdf"
 latestMonRootFile="${monRootDir}/${spec}_coin_production_latest.root"
 latestMonPdfFile="${monPdfDir}/${spec}_coin_production_latest.pdf"
 
 # Where to put log.
-reportFile="REPORT_OUTPUT/${SPEC}/PRODUCTION/replay_${spec}_coin_production_${runNum}_${numEvents}.txt"
-summaryFile="REPORT_OUTPUT/${SPEC}/PRODUCTION/summary_production_${runNum}_${numEvents}.txt"
+reportFile="${reportFileDir}/replay_${spec}_coin_production_${runNum}_${numEvents}.txt"
+summaryFile="${reportFileDir}/summary_production_${runNum}_${numEvents}.txt"
 
 # What is base name of onlineGUI output.
 outFile="${spec}_coin_production_${runNum}"
-outFilePed="out${SPEC}"
+outFileMonitor="output.txt"
+outFilePed="out${SPEC}.txt"
 
 # Start analysis and monitoring plots.
 {
@@ -112,12 +122,44 @@ outFilePed="out${SPEC}"
   echo ""
   echo ":=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:="
 
- # sleep 2
-  #eval ${runPedMon}
-  #mv "${outFilePed}.txt" ${pedMonFile}
+  sleep 2
+  eval ${runPedMon}
+  mv "${outFilePed}" "${pedMonOutDir}/${pedMonFile}"
 
-  #echo ":=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:="
+  echo ""
+  echo ""
+  echo ""
+  echo ":=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:="
+  echo ""
+  echo "Generating report file monitoring data file ${SPEC} run ${runNum}."   
+  echo "" 
+  echo ":=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=" 
 
 
-} 2>&1 | tee "${reportFile}"
-2>&1 | tee "${summaryFile}"
+  eval ${runReportMon}  
+  mv "${outFileMonitor}" "${reportMonOutDir}/${reportMonFile}" 
+  eval ${openReportMon}   
+  sleep 2
+
+  echo ""                                                                                                                                                                                                                                                     
+  echo ""                                                                                                                                                                                                                                                         
+  echo ""                                                                                                                                                                                                                                                           
+  echo ":=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:="                                                                                                                                                                           
+  echo ""                                                                                                                                                                                                                                                           
+  echo "Done producing report file monitoring data file ${SPEC} run ${runNum}."                                                                                                                                                                                     
+  echo ""                                                                                                                                                                                                                                                           
+  echo ":=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:="                                                                                                                                                                           
+  echo ""                                                                                                                                                                                                                                                           
+  echo ""                                                                                                                                                                                                                                                           
+  echo ""                                                                                                                                                                                                                                                           
+  echo "-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|"                                                                                                                                                                           
+  echo ""                                                                                                                                                                                                                                                           
+  echo "So long and thanks for all the fish!"                                                                                                                                                                                                                      
+  echo ""                                                                                                                                                                                                                                                           
+  echo "-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|"                                                                                                                                                                           
+  echo ""                                                                                                                                                                                                                                                          
+  echo ""                                                                                                                                                                                                                                                          
+  echo ""                         
+
+} 2>&1 | tee "${replayReport}"
+
