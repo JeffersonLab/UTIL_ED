@@ -1,0 +1,41 @@
+Variable Name              SIMC            hallc_replay     Found In: 
+Missing Energy             Em              emiss            SecondaryKine
+Missing Momentum           Pm		   pmiss	    SecondaryKine
+Invariant Mass             W		   W		    PrimaryKine
+
+Neutron Angle              theta_nq        th_bq            SecondaryKine
+Proton-qvec Angle          theta_pq	   th_xq	    SecondaryKine
+3-vector                   q		   q3m              PrimaryKine
+
+4-Momentum transfer        Q2		   Q2               PrimaryKine
+x-Bjorken                  x_bj		   x_bj		    PrimaryKine
+Energy Transfer            nu		   omega	    PrimaryKine
+
+Proton Angle               theta_p	   xangle	    SecondaryKine
+Proton Momentum            Pf		   H.gtr.p
+
+electron Angle             theta_e         scat_angle_      PrimaryKine
+electron Momentum          Pe              P.gtr.p
+
+//Focal Plane Quantities
+HMS X focal plane          h_xfp            H.dc.x_fp
+HMS Y focal plane          h_yfp            H.dc.y_fp
+SHMS X focal plane         e_xfp            P.dc.x_fp
+SHMS Y focal plane         e_yfp            P.dc.y_fp
+
+HMS X' focal plane (theta)      h_xpfp	    H.dc.xp_fp
+HMS Y' focal plane (phi)        h_ypfp	    H.dc.yp_fp
+SHMS X' focal plane (theta)     e_xpfp	    P.dc.xp_fp
+SHMS Y' focal plane (phi)       e_ypfp	    P.dc.yp_fp
+
+//Reconstructed Variables
+HMS X' target (theta)     	h_xptar     H.gtr.th
+HMS Y' target (phi)		h_yptar	    H.gtr.ph
+SHMS X' target (theta)		e_xptar	    P.gtr.th
+SHMS Y' target (phi)		e_yptar	    P.gtr.ph
+
+HMS delta                  h_delta          H.gtr.dp
+SHMS delta                 e_delta          P.gtr.dp
+
+
+#Add something for cojincidence time
