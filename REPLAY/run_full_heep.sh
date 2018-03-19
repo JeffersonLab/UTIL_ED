@@ -1,7 +1,12 @@
 #! /bin/bash
 
+# Which spectrometer are we analyzing.
+exp=${0##*_}
+exp=${exp%%.sh}
+#exp=$(echo "$exp" | tr '[:lower:]' '[:upper:]')
+echo "doing $exp"
+
 SPEC="COIN"
-exp="heep"
 
 # What is the last run number for the spectrometer.
 # The pre-fix zero must be stripped because ROOT is ... well ROOT
@@ -27,10 +32,10 @@ script="./UTIL_ED/REPLAY/replay_production_coin_pElec_hProt.C"
 
 # Which commands to run.
 runHcana="./hcana -q \"${script}(${runNum}, ${numEvents})\""
-runReportMon="./get_${exp}_report.py ${runNum} ${numEvents}"
+runReportMon="./UTIL_ED/Macros/get_${exp}_report.py ${runNum} ${numEvents}"
 
 #Define smalle e12-10-003 report file directory
-reportDir="UTIL_ED/REPORT_FILES/heep_report_${runNum}.report"
+reportDir="UTIL_ED/CHARGE_REPORTS/${exp}_report_${runNum}.report"
 #Define command to open report file
 openReport="emacs ${reportDir} &"
 
