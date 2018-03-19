@@ -38,7 +38,7 @@ void analyze_heep(int run_num, int evtNUM)
    TH1F *data_pm = new TH1F("data_pm","missing momentum", bins, -0.05, 1.7);
    TH1F *data_Q2 = new TH1F("data_Q2","Q2", 100, 4., 6.);
    TH1F *data_omega = new TH1F("data_omega","Energy Transfer, #omega", bins, 1.8, 3.4);
-   TH1F *data_W_inv = new TH1F("data_W_inv", "Invariant Mass, W", bins, 0.2, 1.7);
+   TH1F *data_W_inv = new TH1F("data_W_inv", "Invariant Mass, W", bins, 0.4, 2.0);
    TH1F *data_theta_elec = new TH1F("data_theta_elec", "Electron Scatt. Angle", bins, 20, 40);
    TH1F *data_theta_prot = new TH1F("data_theta_prot", "Proton Scatt. Angle", bins, 20, 40);
 
@@ -99,14 +99,19 @@ void analyze_heep(int run_num, int evtNUM)
    /*********************************************/
    
    //DEFINE PID CUTS
-   TCut pcal = "P.cal.etracknorm>0.7";
+   TCut pcal = "P.cal.etot>0.1";
    TCut pelec = "P.ngcer.npeSum>1.0";
+   
    TCut hprot = "H.cer.npeSum<1.0";
-
+   TCut hcal = "H.cal.etot>0.1";
 
    //DEFINE KINEMATIC CUTS
    TCut W_cut = "P.kin.primary.W<1.05";   //select events below pion thresshold
-   TCut em_cut = "H.kin.secondary.emiss>0.060";
+   TCut em_cut = "H.kin.secondary.emiss>-0.060&&H.kin.secondary.emiss<0.08";
+   TCut Q2_cut = "P.kin.primary.Q2>3&&P.kin.primary.Q2<5.0";
+   TCut xbj_cut = "P.kin.primary.x_bj>0.7&&P.kin.primary.x_bj<1.3"; 
+
+
    //Draw the Histograms from the TTree
 
    //Kinematics Quantities, P.* ->SHMS,  H.* -->HMS
@@ -116,7 +121,7 @@ void analyze_heep(int run_num, int evtNUM)
    T->Draw("P.kin.primary.nu>>data_omega");
    T->Draw("P.kin.primary.W>>data_W_inv");
    T->Draw("(P.kin.primary.scat_ang_rad*180./3.14)>>data_theta_elec");
-   T->Draw("(H.kin.secondary.scat_ang_rad*180./3.14)>>data_theta_prot"); 
+   T->Draw("(H.kin.secondary.xangle*180./3.14)>>data_theta_prot"); 
 
    //Additional Kinematic Variables
    T->Draw("P.kin.primary.W2>>data_W2");
@@ -170,6 +175,11 @@ void analyze_heep(int run_num, int evtNUM)
    T->Draw("H.gtr.dp:P.gtr.dp>>data_hdelta_vs_edelta");
 
    outfile->Write();
+   outfile->Close();
+
+   ofstream data;
+   data.open(simc_file); 
+
 
    //Yield Estimates, Counts/charge, 
    
