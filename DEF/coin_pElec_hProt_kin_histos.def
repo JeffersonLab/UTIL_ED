@@ -30,9 +30,6 @@ TH1F hkin_Emiss_pid          'HMS E_{miss} (coincut_ep); E_{miss} (GeV); Count /
 TH1F hkin_ang_hms              'HMS Proton Angle theta_{p}; theta_{p} (deg); Counts;' H.kin.secondary.xangle*180./3.14  500 20 40 ccleantrack
 
 
-
-
-
 ############################
 #   KINEMATICS
 ############################
