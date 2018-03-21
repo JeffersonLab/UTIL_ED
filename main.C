@@ -78,6 +78,13 @@ int main()
 
   cout << get_runtime("HMS", file_path) << endl;
   cout << get_runtime("SHMS", file_path) << endl;
-  
+
+  //append to file
+  ofstream outfile;
+  outfile.open("test.txt", std::ios_base::app);
+  outfile << "Data";
+  outfile.close();
+
+
   return 0;
 }
