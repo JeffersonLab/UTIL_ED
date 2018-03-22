@@ -154,17 +154,16 @@ void charge_counter(int run_num, int evtNUM)
    cut_Ration = cut_Yield / charge;
 
    //Append the counts / charge to the report
-
-   TString report_path = Form("./UTIL_ED/CHARGE_REPORTS/heep_report_%s.report", run_num)
+   string report_path = Form("./UTIL_ED/CHARGE_REPORTS/heep_report_%d.report", run_num);
+        
+   ofstream outreport;
+   outreport.open(report_path, std::ios_base::app);
+   outreport << "****************" << endl;
+   outreport << "Yield / Charge :  " << Yield <<" / " << charge << " = " << Ratio << " Counts/uC" << endl;
+   outreport << "Yield / Charge (w/ Em cut) :  " << cut_Yield << " / "<< charge << " = "<< cut_Ratio << " Counts/uC" << endl;;
+   outreport << "****************" << endl;
    
-   ofstream outfile;
-   outfile.open("", std::ios_base::app);
-   outfile << "********************************" << endl;
-   outfile << "Yield / Charge :  " << Ratio << " Counts/uC";
-   outfile << "Yield / Charge (w/ Em cut) :  " << Ratio << " Counts/uC";
-   outfile << "********************************" << endl;
-   
-   outfile.close();
+   outreport.close();
 
    
      
