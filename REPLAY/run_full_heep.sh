@@ -29,10 +29,13 @@ numEvents=-1
 # Which scripts to run.
 script="./UTIL_ED/REPLAY/replay_production_coin_pElec_hProt.C"
 #config="CONFIG/${SPEC}/PRODUCTION/${spec}_coin_production.cfg"
+charge_script="./UTIL_ED/Macros/charge_counter.C"
 
 # Which commands to run.
 runHcana="./hcana -q \"${script}(${runNum}, ${numEvents})\""
 runReportMon="./UTIL_ED/Macros/get_${exp}_report.py ${runNum} ${numEvents}"
+runCharge="root -l \"${charge_script}(${runNum}, ${numEvents})\""
+
 
 #Define smalle e12-10-003 report file directory
 reportDir="UTIL_ED/CHARGE_REPORTS/${exp}_report_${runNum}.report"
@@ -93,6 +96,7 @@ summaryFile="REPORT_OUTPUT/${SPEC}/PRODUCTION/summary_production_${runNum}_${num
 
   sleep 2
   eval ${runReportMon}   #execute ./get_heep_report.py
+  eval ${runCharge}      #execute charge_counter.C script
   eval ${openReport}     #open report file
 
 
