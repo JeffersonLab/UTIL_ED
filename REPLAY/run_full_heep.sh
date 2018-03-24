@@ -4,7 +4,7 @@
 exp=${0##*_}
 exp=${exp%%.sh}
 #exp=$(echo "$exp" | tr '[:lower:]' '[:upper:]')
-echo "doing $exp"
+echo "doing \"$exp\" "
 
 SPEC="COIN"
 
@@ -34,7 +34,7 @@ charge_script="./UTIL_ED/Macros/charge_counter.C"
 # Which commands to run.
 runHcana="./hcana -q \"${script}(${runNum}, ${numEvents})\""
 runReportMon="./UTIL_ED/Macros/get_${exp}_report.py ${runNum} ${numEvents}"
-runCharge="root -l \"${charge_script}(\"${exp}\", ${runNum}, ${numEvents})\""
+runCharge="root -l \"${charge_script}(\\\"${exp}\\\", ${runNum}, ${numEvents})\""
 
 
 #Define smalle e12-10-003 report file directory
