@@ -299,9 +299,9 @@ void heep::Loop(TString simc_file, Double_t Ib=1, Double_t time=1, Double_t char
    Double_t beam_time;
 
  
-   e_trk_eff = 1.0;
-   h_trk_eff = 1.0;     
-   cpu_dt = 1.0;   
+   e_trk_eff = 0.9669;
+   h_trk_eff = 0.9983;     
+   cpu_dt = 0.9626;   
 
    
    Double_t FullWeight;

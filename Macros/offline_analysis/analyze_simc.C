@@ -48,10 +48,11 @@ void analyze_simc()
   chain.Reset();
   */
   
+  /*
   //E12-10-003 H(e,e'p) Check!
 
   //------Get TRUE accumulated charge from actual data to use in SIMC--------
-  runNUM = 2283;
+  runNUM = 1854;
   evtNUM = -1;
   data_file = Form("../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
   Q1 = getCharge("SHMS", "BCM4A", data_file);
@@ -62,6 +63,23 @@ void analyze_simc()
   simc_file = Form("heep_simc_rad_%d_%d.root", runNUM, evtNUM);
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("../worksim/"+simc_file);
+  simc->Init(&chain);
+  simc->Loop(simc_file, 1, 1, charge);
+  chain.Reset();
+  */ 
+
+  //----Practice HEEP check using coin run 1854---
+  runNUM = 1854;
+  evtNUM = -1;
+  data_file = Form("../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
+  Q1 = getCharge("SHMS", "BCM4A", data_file);
+  Q2 = getCharge("SHMS", "BCM4B", data_file);
+  charge = (Q1 + Q2)/2.;
+  //-------------------------------------------------------------------------
+    
+  simc_file = Form("ep_coin_simc_%d.root", runNUM);
+  cout << "Analyzing: " << simc_file << endl;
+  chain.Add("~/cyero/sims_heep/worksim/"+simc_file);
   simc->Init(&chain);
   simc->Loop(simc_file, 1, 1, charge);
   chain.Reset();
