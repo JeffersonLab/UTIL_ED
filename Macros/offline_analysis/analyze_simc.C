@@ -59,7 +59,7 @@ void analyze_simc()
   charge = (Q1 + Q2)/2.;
   //-------------------------------------------------------------------------
     
-  simc_file = "heep_simc_rad.root";
+  simc_file = Form("heep_simc_rad_%d_%d.root", runNUM, evtNUM);
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("../worksim/"+simc_file);
   simc->Init(&chain);

@@ -3,7 +3,7 @@
 
 #define heep_cxx
 #include "heep.h"
-#include "set_histos.h"
+#include "set_heep_histos.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
