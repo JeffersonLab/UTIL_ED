@@ -173,10 +173,11 @@ void charge_counter(string exp, int run_num, int evtNUM)
    Double_t charge;
 
    Q1 = getCharge("SHMS", "BCM4A", file_path);
-   Q2 = getCharge("SHMS", "BCM4b", file_path);
-   
+   Q2 = getCharge("SHMS", "BCM4B", file_path);
+   cout << "Q1 = " << Q1 << endl;
+   cout << "Q2 = " << Q2 << endl;
    charge = (Q1 + Q2)/2.;
-
+   cout << "charge = " << charge << endl;
    //Get the total counts/charge
    Double_t Ratio;
    Double_t cut_Ratio;
