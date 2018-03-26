@@ -45,8 +45,8 @@ pedMonFile="pedReport_${spec}_${runNum}_${numEvents}.txt"
 runHcana="./hcana -q \"${script}(${runNum}, ${numEvents})\""
 runOnlineGUI="./online -f ${config} -r ${runNum}"
 saveOnlineGUI="./online -f ${config} -r ${runNum} -P"
-runReportMon="./${reportMonDir}/readout_${spec}.py ${runNum} ${numEvents}" 
-runPedMon="root -l -q \"${pedMonDir}/${spec}_ped.C(${runNum}, ${numEvents})\""
+runReportMon="./${reportMonDir}/readout_coin_${spec}.py ${runNum} ${numEvents}" 
+runPedMon="root -l -q \"${pedMonDir}/${spec}_coin_ped.C(${runNum}, ${numEvents})\""
 openReportMon="emacs ${reportMonOutDir}/${reportMonFile}"  
 
 # Name of the replay ROOT file
