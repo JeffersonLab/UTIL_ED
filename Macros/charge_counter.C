@@ -1,3 +1,4 @@
+#include "../offline_analysis/set_heep_histos.h"
 Double_t getCharge(string spec, string bcm, TString filename)
 {
    /*Brief: Get the accumulated charge if beam current was above threhsold (typically > 5 uA)
@@ -102,14 +103,19 @@ void charge_counter(string exp, int run_num, int evtNUM)
    Int_t bins = 100;
 
    //Kinematics Quantities
-   TH1F *data_Emiss = new TH1F("data_Emiss","missing energy", 50, -0.5, 0.8);  //binwidth = 0.0025
-   TH1F *data_pm = new TH1F("data_pm","missing momentum", bins, -0.05, 1.7);
-   TH1F *data_W = new TH1F("data_W", "Invariant Mass, W", bins, 0.4, 2.0);
+   TH1F *data_Emiss = new TH1F("data_Emiss","missing energy", Em_nbins, Em_xmin, Em_xmax);  //binwidth = 0.0025
+   TH1F *data_pm = new TH1F("data_pm","missing momentum", Pm_nbins, Pm_xmin, Pm_xmax);
+   TH1F *data_W = new TH1F("data_W", "Invariant Mass, W", W_nbins, W_xmin, W_xmax);
 
    //Kinematics Quantities with cuts
-   TH1F *cut_data_Emiss = new TH1F("cut_data_Emiss","missing energy Cut", 50, -0.5, 0.8);  //binwidth = 0.0025
-   TH1F *cut_data_pm = new TH1F("cut_data_pm","missing momentum w/ Emiss Cut", bins, -0.05, 1.7);
-   TH1F *cut_data_W = new TH1F("cut_data_W", "Invariant Mass w/ Emiss Cut, W", bins, 0.4, 2.0);
+   TH1F *cut_data_Emiss = new TH1F("cut_data_Emiss","missing energy Cut", Em_nbins, Em_xmin, Em_xmax);  //binwidth = 0.0025
+   TH1F *cut_data_pm = new TH1F("cut_data_pm","missing momentum w/ Emiss Cut", Pm_nbins, Pm_xmin, Pm_xmax);
+   TH1F *cut_data_W = new TH1F("cut_data_W", "Invariant Mass w/ Emiss Cut, W", W_nbins, W_xmin, W_xmax);
+
+   //Cross-Check correlations
+   TH2F *data_emiss_vs_pmiss = new TH2F("data_emiss_vs_pmiss", " E_{miss} vs. P_{miss}", Pm_nbins, Pm_xmin, Pm_xmax, Em_nbins, Em_xmin, Em_xmax);
+   TH2F *data_edelta_vs_eyptar = new TH2F("data_edelta_vs_eyptar", electron_arm + " #delta vs. Y'_{tar}", eyptar_nbins, eyptar_xmin, eyptar_xmax, edelta_nbins, edelta_xmin, edelta_xmax);
+
 
     //DEFINE PID CUTS
    TCut pcal = "P.cal.etot>0.1";
@@ -124,7 +130,7 @@ void charge_counter(string exp, int run_num, int evtNUM)
    TCut xbj_cut = "P.kin.primary.x_bj>0.7&&P.kin.primary.x_bj<1.3"; 
 
    TCanvas *c1 =  new TCanvas("c1", "", 800,1000);
-   c1->Divide(1,3);
+   c1->Divide(2,3);
 
    gStyle->SetOptStat("rmnie");
      
@@ -154,10 +160,17 @@ void charge_counter(string exp, int run_num, int evtNUM)
    data_W->SetLineWidth(3);
    cut_data_W->SetLineColor(kBlue);
    cut_data_W->SetLineWidth(3);
-
+ 
    T->Draw("P.kin.primary.W>>data_W");
    T->Draw("P.kin.primary.W>>cut_data_W", em_cut, "sames");
-
+  TLine *l = new TLine(c1->GetUxmin(), 0.938, c1->GetUxmax(), 0.938);
+   l->SetLineColor(kBlack);
+   l->Draw();
+   // Cross-Check correlations
+   c1->cd(4);
+   T->Draw("H.kin.secondary.emiss:H.kin.secondary.pmiss>>data_emiss_vs_pmiss", em_cut, "colz");
+   c1->cd(5);
+   T->Draw("P.gtr.dp:P.gtr.ph>>data_edelta_vs_eyptar", em_cut, "colz");
 
    c1->Update();
    c1->SaveAs("./UTIL_ED/temp.pdf");
