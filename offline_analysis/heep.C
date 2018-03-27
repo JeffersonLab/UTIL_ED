@@ -1,9 +1,8 @@
 //Analysis for HMS/SHMS coincidence H(e,e'p)
-
-
 #define heep_cxx
 #include "heep.h"
 #include "set_heep_histos.h"
+#include "useful_functions.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>

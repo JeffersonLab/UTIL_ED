@@ -1,7 +1,7 @@
 //Macro to analyze H(e,e'p) E12-10-003 data from Hall C: HMS (Hadron arm), SHMS (electron arm)
 
 #include "set_heep_histos.h"
-
+#include "useful_functions.h"
 
 //HMS Momentum correction: P0 = P0*0.9968
 //SHMS Momentum correction: P0 = P0*0.985
