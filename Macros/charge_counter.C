@@ -1,76 +1,5 @@
 #include "../offline_analysis/set_heep_histos.h"
-Double_t getCharge(string spec, string bcm, TString filename)
-{
-   /*Brief: Get the accumulated charge if beam current was above threhsold (typically > 5 uA)
-   */
-
-  /*PARAMETERS: 
-    spec --> "HMS" or "SHMS"
-    bcm --> "BCM1", "BCM2", "BCM4A", "BCM4B", "BCM17"
-    filename --> "/path/to/ROOTfile/file.root"
-  */
-  
-  TFile *data_file = new TFile(filename, "READ");
-  Double_t charge;    //in uC
-
-  if (spec=="HMS")
-    {
-
-      TTree *TSH = (TTree*)data_file->Get("TSH");		
-      
-      if (bcm=="BCM1") { charge = TSH->GetMaximum("H.BCM1.scalerChargeCut"); }
-      else if (bcm=="BCM2") { charge = TSH->GetMaximum("H.BCM2.scalerChargeCut"); }                                     
-      else if (bcm=="BCM4A") { charge = TSH->GetMaximum("H.BCM4A.scalerChargeCut"); }                                       
-      else if (bcm=="BCM4B") { charge = TSH->GetMaximum("H.BCM4B.scalerChargeCut"); }    
-      else if (bcm=="BCM17") { charge = TSH->GetMaximum("H.BCM17.scalerChargeCut"); }                        
-      return charge;
-      
-    }
-	  
-  else if (spec=="SHMS")
-    {
-      
-      TTree *TSP = (TTree*)data_file->Get("TSP");		
-      
-      if (bcm=="BCM1") { charge = TSP->GetMaximum("P.BCM1.scalerChargeCut"); }
-      else if (bcm=="BCM2") { charge = TSP->GetMaximum("P.BCM2.scalerChargeCut"); }                                     
-      else if (bcm=="BCM4A") { charge = TSP->GetMaximum("P.BCM4A.scalerChargeCut"); }                                       
-      else if (bcm=="BCM4B") { charge = TSP->GetMaximum("P.BCM4B.scalerChargeCut"); }    
-      else if (bcm=="BCM17") { charge = TSP->GetMaximum("P.BCM17.scalerChargeCut"); }                        
-      return charge;
-      
-    }
-}
-
-Double_t get_runtime(string spec, TString filename)
-{
-
-  /*Brief: Get the run time (in sec.) if beam current was above threhsold (typically > 5 uA)
-   */
-
-  /*PARAMETERS: 
-    spec --> "HMS" or "SHMS"
-    filename --> "/path/to/ROOTfile/file.root"
-  */
-  
-  TFile *data_file = new TFile(filename, "READ");
-  Double_t time;    //in uC
-
-  if (spec=="HMS")
-    {
-      TTree *TSH = (TTree*)data_file->Get("TSH");		
-      time = TSH->GetMaximum("H.1Mhz.scalerTimeCut");                         
-      return time;
-    }
-	  
-  else if (spec=="SHMS")
-    {
-      TTree *TSP = (TTree*)data_file->Get("TSP");		
-      time = TSP->GetMaximum("P.1Mhz.scalerTimeCut");
-      return time;
-    }
-}
-
+#include "../offline_analysis/useful_functions.h"
 
 //------------------------------MAIN CODE--------------------------------------
 
@@ -113,7 +42,7 @@ void charge_counter(string exp, int run_num, int evtNUM)
    TH1F *cut_data_W = new TH1F("cut_data_W", "Invariant Mass w/ Emiss Cut, W", W_nbins, W_xmin, W_xmax);
 
    //Cross-Check correlations
-   TH2F *data_emiss_vs_pmiss = new TH2F("data_emiss_vs_pmiss", " E_{miss} vs. P_{miss}", Pm_nbins, Pm_xmin, Pm_xmax, Em_nbins, Em_xmin, Em_xmax);
+   TH2F *data_emiss_vs_pmiss = new TH2F("data_emiss_vs_pmiss", " E_{miss} vs. P_{miss}", 100, -0.1, 1.5, 100, -0.1, 0.5);
    TH2F *data_edelta_vs_eyptar = new TH2F("data_edelta_vs_eyptar", electron_arm + " #delta vs. Y'_{tar}", eyptar_nbins, eyptar_xmin, eyptar_xmax, edelta_nbins, edelta_xmin, edelta_xmax);
 
 
@@ -163,9 +92,7 @@ void charge_counter(string exp, int run_num, int evtNUM)
  
    T->Draw("P.kin.primary.W>>data_W");
    T->Draw("P.kin.primary.W>>cut_data_W", em_cut, "sames");
-  TLine *l = new TLine(c1->GetUxmin(), 0.938, c1->GetUxmax(), 0.938);
-   l->SetLineColor(kBlack);
-   l->Draw();
+
    // Cross-Check correlations
    c1->cd(4);
    T->Draw("H.kin.secondary.emiss:H.kin.secondary.pmiss>>data_emiss_vs_pmiss", em_cut, "colz");
@@ -177,10 +104,18 @@ void charge_counter(string exp, int run_num, int evtNUM)
    //Determine the W integral
    Double_t Yield;
    Double_t cut_Yield;
-
-   Yield = data_W->Integral();
-   cut_Yield = cut_data_W->Integral();
-
+   
+   if (exp=="heep")
+     {
+       Yield = data_W->Integral();
+       cut_Yield = cut_data_W->Integral();
+     }
+   else if (exp=="deep")
+     {
+       Yield = data_pm->Integral();
+       cut_Yield = cut_data_pm->Integral();
+     }
+   
    //Get the total charge(if beam > 5uA) from the run
    Double_t Q1,Q2;
    Double_t charge;
@@ -203,11 +138,12 @@ void charge_counter(string exp, int run_num, int evtNUM)
         
    ofstream outreport;
    outreport.open(report_path.c_str(), std::ios_base::app);
-   outreport << "    " << endl;                                                
-   outreport << "****************" << endl;
-   outreport << "Yield / Charge :  " << Yield <<" / " << charge << " = " << Ratio << " Counts/uC" << endl;
+   // outreport << "    " << endl;                                                
+   //outreport << "****************" << endl;
+   //outreport << "Yield / Charge :  " << Yield <<" / " << charge << " = " << Ratio << " Counts/uC" << endl;
    outreport << "Yield / Charge (w/ Em cut) :  " << cut_Yield << " / "<< charge << " = "<< cut_Ratio << " Counts/uC" << endl;;
-   outreport << "****************" << endl;
+   outreport << " " << endl;
+   outreport << Form("***********************Doing %s***************************", exp.c_str()) << endl;
    
    
    outreport.close();

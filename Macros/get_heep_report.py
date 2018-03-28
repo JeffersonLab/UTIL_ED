@@ -14,6 +14,11 @@ line_no=0
 f = open(report_filename)
 fout = open(out_filename,'w')
 
+fout.write('************************************************************\n')
+fout.write('******************WRITE TO RUN SHEET************************\n')
+fout.write('************************************************************\n')
+
+fout.write('\n')
 
 for line in f:
     data = line.split(':')

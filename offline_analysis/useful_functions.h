@@ -143,6 +143,34 @@ Double_t getCharge(string spec, string bcm, TString filename)
     }
 }
 
+Double_t get_runtime(string spec, TString filename)
+{
+
+  /*Brief: Get the run time (in sec.) if beam current was above threhsold (typically > 5 uA)
+   */
+
+  /*PARAMETERS: 
+    spec --> "HMS" or "SHMS"
+    filename --> "/path/to/ROOTfile/file.root"
+  */
+  
+  TFile *data_file = new TFile(filename, "READ");
+  Double_t time;    //in uC
+
+  if (spec=="HMS")
+    {
+      TTree *TSH = (TTree*)data_file->Get("TSH");		
+      time = TSH->GetMaximum("H.1Mhz.scalerTimeCut");                         
+      return time;
+    }
+	  
+  else if (spec=="SHMS")
+    {
+      TTree *TSP = (TTree*)data_file->Get("TSP");		
+      time = TSP->GetMaximum("P.1Mhz.scalerTimeCut");
+      return time;
+    }
+}
 
 
 #endif
