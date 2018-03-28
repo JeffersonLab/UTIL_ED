@@ -80,8 +80,8 @@ Double_t ytar_xmin = -0.25;
 Double_t ytar_xmax = 0.25;
 
 Double_t ztar_nbins = nbins;
-Double_t ztar_xmin = -5.5;
-Double_t ztar_xmax = 5.5;
+Double_t ztar_xmin = -10.0;
+Double_t ztar_xmax = 10.0;
 
 //Hadron arm Reconstructed Quantities ( xtar, ytar, xptar, yptar, delta)
 Double_t hytar_nbins = nbins;
@@ -120,25 +120,25 @@ Double_t hypfp_xmax = 0.03;
 
 //Electron Arm Reconstructed Quantities ( xtar, ytar, xptar, yptar, delta)
 Double_t eytar_nbins = nbins;
-Double_t eytar_xmin = -2.;
-Double_t eytar_xmax = 2.;
+Double_t eytar_xmin = -5.;
+Double_t eytar_xmax = 5.;
 
 Double_t exptar_nbins = nbins;
-Double_t exptar_xmin = -0.03;
-Double_t exptar_xmax = 0.03;
+Double_t exptar_xmin = -0.07;
+Double_t exptar_xmax = 0.07;
 
 Double_t eyptar_nbins = nbins;
-Double_t eyptar_xmin = -0.02;
+Double_t eyptar_xmin = -0.03;
 Double_t eyptar_xmax = 0.025;
 
 Double_t edelta_nbins = nbins;
-Double_t edelta_xmin = -16.;
+Double_t edelta_xmin = -20.;
 Double_t edelta_xmax = 10.;
 
 //Electron Arm Focal Plane Quantities
 Double_t exfp_nbins = nbins;
 Double_t exfp_xmin = -35.;
-Double_t exfp_xmax = 5.;
+Double_t exfp_xmax = 35.;
 
 Double_t eyfp_nbins = nbins;
 Double_t eyfp_xmin = -25.;
@@ -146,11 +146,11 @@ Double_t eyfp_xmax = 15.;
 
 Double_t expfp_nbins = nbins;
 Double_t expfp_xmin = -0.08;
-Double_t expfp_xmax = 0.02;
+Double_t expfp_xmax = 0.08;
 
 Double_t eypfp_nbins = nbins;
 Double_t eypfp_xmin = -0.04;
-Double_t eypfp_xmax = 0.02;
+Double_t eypfp_xmax = 0.04;
 
 
 
