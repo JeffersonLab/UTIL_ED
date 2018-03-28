@@ -97,6 +97,7 @@ summaryFile="REPORT_OUTPUT/${SPEC}/PRODUCTION/summary_production_${runNum}_${num
   sleep 2
   eval ${runReportMon}   #execute ./get_heep_report.py
   eval ${runCharge}      #execute charge_counter.C script
+  eval "evince ./UTIL_ED/temp.pdf &"     #open pdf containing monitoring histograms 
   eval ${openReport}     #open report file
 
 

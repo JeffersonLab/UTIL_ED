@@ -13,7 +13,8 @@ void charge_counter(string exp, int run_num, int evtNUM)
 
   hadron_arm = "HMS";
   electron_arm = "SHMS";
-    
+
+  gROOT->SetBatch(kTRUE);  //prevent root from showing graphicaloutput
   
   //Open data ROOTfile and call TTree
   TString file_path;
@@ -122,10 +123,8 @@ void charge_counter(string exp, int run_num, int evtNUM)
 
    Q1 = getCharge("SHMS", "BCM4A", file_path);
    Q2 = getCharge("SHMS", "BCM4B", file_path);
-   cout << "Q1 = " << Q1 << endl;
-   cout << "Q2 = " << Q2 << endl;
+
    charge = (Q1 + Q2)/2.;
-   cout << "charge = " << charge << endl;
    //Get the total counts/charge
    Double_t Ratio;
    Double_t cut_Ratio;
@@ -148,7 +147,7 @@ void charge_counter(string exp, int run_num, int evtNUM)
    
    outreport.close();
 
-   
+   gSystem->Exit(1); //exit root session
      
    // outfile->Write();
    //outfile->Close();
