@@ -2,12 +2,7 @@
 #include <TChain.h>
 #include "heep.C"
 #include <fstream>
-
-
-//Define prototype function to get integrated bcm charge
-Double_t getCharge(string spec, string bcm, TString filename);
-
-
+#include "useful_functions.h"
 
 // run an analysis based on SNT.C the analyysis script for the simc n-tuple
 // this script is setup for the proposed commissioning runs. the steps in pm are 0.15 GeV/c
@@ -26,16 +21,30 @@ void analyze_simc()
 
   
   TString electron_arm;
+
   Double_t Ib;       //beam current in uA
   Double_t time;     //TIME in hrs
+
   Double_t charge;
   Double_t Q1, Q2;
-  Int_t runNUM, evtNUM;
+
+  Double_t h_trkEff;   //hadron tracking eff
+  Double_t e_trkEff;   //electron tracking eff
+
+  Double_t cpu_LT;    //computer Live Time
+  Double_t elec_LT;   //electronic Live Time
+  
+  Int_t runNUM;
+  Int_t evtNUM;
+
+  
+  
   //Chain each file
 
   TString simc_file;
   TString data_file;
-
+  TString rep_file;
+  
   /*
   //--Estimate Spectrometer Resolution
   Ib = 40.;
@@ -75,6 +84,10 @@ void analyze_simc()
   Q1 = getCharge("SHMS", "BCM4A", data_file);
   Q2 = getCharge("SHMS", "BCM4B", data_file);
   charge = (Q1 + Q2)/2.;
+
+  rep_file = "../CHARGE_REPORTS/";
+  
+
   //-------------------------------------------------------------------------
     
   simc_file = Form("ep_coin_simc_%d.root", runNUM);
@@ -112,45 +125,3 @@ void analyze_simc()
 }
 
 
-Double_t getCharge(string spec, string bcm, TString filename)
-{
-   /*Brief: Get the accumulated charge if beam current was above threhsold (typically > 5 uA)
-   */
-
-  /*PARAMETERS: 
-    spec --> "HMS" or "SHMS"
-    bcm --> "BCM1", "BCM2", "BCM4A", "BCM4B", "BCM17"
-    filename --> "/path/to/ROOTfile/file.root"
-  */
-  
-  TFile *data_file = new TFile(filename, "READ");
-  Double_t charge;    //in uC
-
-  if (spec=="HMS")
-    {
-
-      TTree *TSH = (TTree*)data_file->Get("TSH");		
-      
-      if (bcm=="BCM1") { charge = TSH->GetMaximum("H.BCM1.scalerChargeCut"); }
-      else if (bcm=="BCM2") { charge = TSH->GetMaximum("H.BCM2.scalerChargeCut"); }                                     
-      else if (bcm=="BCM4A") { charge = TSH->GetMaximum("H.BCM4A.scalerChargeCut"); }                                       
-      else if (bcm=="BCM4B") { charge = TSH->GetMaximum("H.BCM4B.scalerChargeCut"); }    
-      else if (bcm=="BCM17") { charge = TSH->GetMaximum("H.BCM17.scalerChargeCut"); }                        
-      return charge;
-      
-    }
-	  
-  else if (spec=="SHMS")
-    {
-      
-      TTree *TSP = (TTree*)data_file->Get("TSP");		
-      
-      if (bcm=="BCM1") { charge = TSP->GetMaximum("P.BCM1.scalerChargeCut"); }
-      else if (bcm=="BCM2") { charge = TSP->GetMaximum("P.BCM2.scalerChargeCut"); }                                     
-      else if (bcm=="BCM4A") { charge = TSP->GetMaximum("P.BCM4A.scalerChargeCut"); }                                       
-      else if (bcm=="BCM4B") { charge = TSP->GetMaximum("P.BCM4B.scalerChargeCut"); }    
-      else if (bcm=="BCM17") { charge = TSP->GetMaximum("P.BCM17.scalerChargeCut"); }                        
-      return charge;
-      
-    }
-}
