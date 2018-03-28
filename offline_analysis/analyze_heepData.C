@@ -6,7 +6,7 @@
 //HMS Momentum correction: P0 = P0*0.9968
 //SHMS Momentum correction: P0 = P0*0.985
 
-void analyze_heep(int runNUM, int evtNUM)
+void analyze_heepData(int runNUM, int evtNUM)
 {
 
   
@@ -16,13 +16,16 @@ void analyze_heep(int runNUM, int evtNUM)
   TString hadron_arm;
   TString electron_arm;
 
+  string primary = "P";   //electrons
+  string secondary = "H";   //hadrons
+
   hadron_arm = "HMS";
   electron_arm = "SHMS";
-    
   
   //Open data ROOTfile and call TTree
   TString file_path;
-  file_path = Form("../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
+  file_path = Form("../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
+  
   TFile *data_file = new TFile(file_path, "READ");
 
   TTree *T = (TTree*)data_file->Get("T");
@@ -34,11 +37,11 @@ void analyze_heep(int runNUM, int evtNUM)
   //These histograms binning MUST be exactly the same as those used in SIMC heep.C analysis
 
   //Kinematics Quantities
-   TH1F *data_Emiss = new TH1F("data_Emiss","missing energy", Em_nbins, Em_xmin, Em_xmax);       //min width = 21.6 (0.0216)MeV,  DATA_OUNTS/25 MeV
-   TH1F *data_pm = new TH1F("data_pm","missing momentum", Pm_nbins, Pm_xmin, Pm_xmax);  //min width = 32 MeV (0.032)
+   TH1F *data_Emiss = new TH1F("data_Emiss","missing energy", Em_nbins, Em_xmin, Em_xmax);      
+   TH1F *data_pm = new TH1F("data_pm","missing momentum", Pm_nbins, Pm_xmin, Pm_xmax); 
    TH1F *data_Q2 = new TH1F("data_Q2","Q2", Q2_nbins, Q2_xmin, Q2_xmax);
    TH1F *data_omega = new TH1F("data_omega","Energy Transfer, #omega", om_nbins, om_xmin, om_xmax);
-   TH1F *data_W_inv = new TH1F("data_W_inv", "Invariant Mass, W", W_nbins, W_xmin, W_xmax);     //min width = 19.9 MeV (0.0199) (bin width = 25 MeV)
+   TH1F *data_W_inv = new TH1F("data_W_inv", "Invariant Mass, W", W_nbins, W_xmin, W_xmax);     
    TH1F *data_theta_elec = new TH1F("data_theta_elec", "Electron Scatt. Angle", the_nbins, the_xmin, the_xmax);
    TH1F *data_theta_prot = new TH1F("data_theta_prot", "Proton Scatt. Angle", thp_nbins, thp_xmin, thp_xmax);
 
@@ -48,12 +51,14 @@ void analyze_heep(int runNUM, int evtNUM)
    TH1F *data_Pf = new TH1F("data_Pf", "Final Proton Momentum", Pf_nbins, Pf_xmin, Pf_xmax);
    TH1F *data_kf = new TH1F("data_kf", "Final e^{-} Momentum", kf_nbins, kf_xmin, kf_xmax);
 
-   /*
+   
    //Target Reconstruction Variables
    TH1F *data_x_tar = new TH1F("data_x_tar", "x_Target", xtar_nbins, xtar_xmin, xtar_xmax);
    TH1F *data_y_tar = new TH1F("data_y_tar", "y_Target", ytar_nbins, ytar_xmin, ytar_xmax);
    TH1F *data_z_tar = new TH1F("data_z_tar", "z_Target", ztar_nbins, ztar_xmin, ztar_xmax);
-   */
+   
+   //Target_Recon, 2D
+   TH2F *data_reactz_vs_yptar = new TH2F("data_reactz_vs_yptar", electron_arm + "React Z vs. Y'_{tar}", eyptar_nbins, eyptar_xmin, eyptar_xmax, ztar_nbins, ztar_xmin, ztar_xmax);
    
    //Hadron arm Reconstructed Quantities ( xtar, ytar, xptar, yptar, delta)
    TH1F *data_hytar = new TH1F("data_hytar", hadron_arm + " Y_{tar}", hytar_nbins, hytar_xmin, hytar_xmax);
@@ -83,6 +88,9 @@ void analyze_heep(int runNUM, int evtNUM)
    //Cross-Check correlations
    TH2F *data_emiss_vs_pmiss = new TH2F("data_emiss_vs_pmiss", " E_{miss} vs. P_{miss}", Pm_nbins, Pm_xmin, Pm_xmax, Em_nbins, Em_xmin, Em_xmax);
    TH2F *data_edelta_vs_eyptar = new TH2F("data_edelta_vs_eyptar", electron_arm + " #delta vs. Y'_{tar}", eyptar_nbins, eyptar_xmin, eyptar_xmax, edelta_nbins, edelta_xmin, edelta_xmax);
+   
+   TH2F *data_emiss_vs_exptar = new TH2F("data_emiss_vs_exptar", " E_{miss} vs. X'_{tar}", exptar_nbins, exptar_xmin, exptar_xmax, Em_nbins, Em_xmin, Em_xmax);
+   TH2F *data_emiss_vs_eyptar = new TH2F("data_emiss_vs_eyptar", " E_{miss} vs. Y'_{tar}", eyptar_nbins, eyptar_xmin, eyptar_xmax, Em_nbins, Em_xmin, Em_xmax);
 
 
    //Create 2D Histograms at the Focal Plane Quantities
@@ -105,77 +113,82 @@ void analyze_heep(int runNUM, int evtNUM)
    TCut hcal = "H.cal.etot>0.1";
 
    //DEFINE KINEMATIC CUTS
-   TCut W_cut = "P.kin.primary.W<1.05";   //select events below pion thresshold
-   TCut em_cut = "H.kin.secondary.emiss>-0.060&&H.kin.secondary.emiss<0.08";
-   TCut Q2_cut = "P.kin.primary.Q2>3&&P.kin.primary.Q2<5.0";
-   TCut xbj_cut = "P.kin.primary.x_bj>0.7&&P.kin.primary.x_bj<1.3"; 
+   TCut W_cut = Form("%s.kin.primary.W<1.05", primary.c_str());   //select events below pion thresshold
+   TCut em_cut = Form("%s.kin.secondary.emiss>-0.060&&%s.kin.secondary.emiss<0.08", secondary.c_str(), secondary.c_str());  
+   TCut Q2_cut = Form("%s.kin.primary.Q2>3&&%s.kin.primary.Q2<5.0", primary.c_str(), primary.c_str());
+   TCut xbj_cut = Form("%s.kin.primary.x_bj>0.7&&%s.kin.primary.x_bj<1.3", primary.c_str(), primary.c_str()); 
 
 
    //Draw the Histograms from the TTree
 
    //Kinematics Quantities, P.* ->SHMS,  H.* -->HMS
-   T->Draw("H.kin.secondary.emiss>>data_Emiss", em_cut);
-   T->Draw("H.kin.secondary.pmiss>>data_pm", em_cut);
-   T->Draw("P.kin.primary.Q2>>data_Q2", em_cut);
-   T->Draw("P.kin.primary.nu>>data_omega", em_cut);
-   T->Draw("P.kin.primary.W>>data_W_inv", em_cut);
-   T->Draw("(P.kin.primary.scat_ang_rad*180./3.14)>>data_theta_elec", em_cut);
-   T->Draw("(H.kin.secondary.xangle*180./3.14)>>data_theta_prot", em_cut); 
+   T->Draw(Form("%s.kin.secondary.emiss>>data_Emiss", secondary.c_str()), em_cut);
+   T->Draw(Form("%s.kin.secondary.pmiss>>data_pm", secondary.c_str()), em_cut);
+   T->Draw(Form("%s.kin.primary.Q2>>data_Q2", primary.c_str()), em_cut);
+   T->Draw(Form("%s.kin.primary.nu>>data_omega", primary.c_str()), em_cut);
+   T->Draw(Form("%s.kin.primary.W>>data_W_inv", primary.c_str()), em_cut);
+   T->Draw(Form("(%s.kin.primary.scat_ang_rad*180./3.14)>>data_theta_elec", primary.c_str()), em_cut);
+   T->Draw(Form("(%s.kin.secondary.xangle*180./3.14)>>data_theta_prot", secondary.c_str()), em_cut); 
 
    //Additional Kinematic Variables
-   T->Draw("P.kin.primary.W2>>data_W2", em_cut);
-   T->Draw("P.kin.primary.x_bj>>data_xbj", em_cut);
-   T->Draw("H.gtr.p>>data_Pf", em_cut);
-   T->Draw("P.gtr.p>>(data_kf)", em_cut);
+   T->Draw(Form("%s.kin.primary.W2>>data_W2", primary.c_str()), em_cut);
+   T->Draw(Form("%s.kin.primary.x_bj>>data_xbj", primary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.p>>data_Pf", primary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.p>>(data_kf)", secondary.c_str()), em_cut);
 
    //Target Reconstruction Variables ????? What are these in data????
-   //T->Draw("");
-   //T->Draw("");
-   //T->Draw("");
+   //T->Draw(Form("");
+   //T->Draw(Form("");
+   T->Draw(Form("%s.react.z>>data_z_tar", primary.c_str()), em_cut);
 
-   //Hadron arm Reconstructed Quantities ( xtar, ytar, xptar, yptar, delta), theta: xptar, phi:yptar
-   T->Draw("H.gtr.y>>data_hytar", em_cut);
-   T->Draw("H.gtr.th>>data_hxptar", em_cut);
-   T->Draw("H.gtr.ph>>data_hyptar", em_cut);
-   T->Draw("H.gtr.dp>>data_hdelta", em_cut);
-
-   //Hadron arm Focal Plane Quantities
-   T->Draw("H.dc.x_fp>>data_hxfp", em_cut);
-   T->Draw("H.dc.y_fp>>data_hyfp", em_cut);
-   T->Draw("H.dc.xp_fp>>data_hxpfp", em_cut);
-   T->Draw("H.dc.yp_fp>>data_hypfp", em_cut);
+   //Target Recon, 2d
+   T->Draw(Form("%s.react.z:%s.gtr.ph>>data_reactz_vs_yptar", primary.c_str(), primary.c_str()), em_cut);
    
-   //Electron arm Reconstructed Quantities ( xtar, ytar, xptar, yptar, delta), theta: xptar, phi:yptar
-   T->Draw("P.gtr.y>>data_eytar", em_cut);
-   T->Draw("P.gtr.th>>data_exptar", em_cut);
-   T->Draw("P.gtr.ph>>data_eyptar", em_cut); 
-   T->Draw("P.gtr.dp>>data_edelta", em_cut);
+   //Secondary arm Reconstructed Quantities ( xtar, ytar, xptar, yptar, delta), theta: xptar, phi:yptar
+   T->Draw(Form("%s.gtr.y>>data_hytar", secondary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.th>>data_hxptar", secondary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.ph>>data_hyptar", secondary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.dp>>data_hdelta", secondary.c_str()), em_cut);
 
-   //Electron arm Focal Plane Quantities
-   T->Draw("P.dc.x_fp>>data_exfp", em_cut);
-   T->Draw("P.dc.y_fp>>data_eyfp", em_cut);
-   T->Draw("P.dc.xp_fp>>data_expfp", em_cut);
-   T->Draw("P.dc.yp_fp>>data_eypfp", em_cut);
+   //Secondary arm Focal Plane Quantities
+   T->Draw(Form("%s.dc.x_fp>>data_hxfp", secondary.c_str()), em_cut);
+   T->Draw(Form("%s.dc.y_fp>>data_hyfp", secondary.c_str()), em_cut);
+   T->Draw(Form("%s.dc.xp_fp>>data_hxpfp", secondary.c_str()), em_cut);
+   T->Draw(Form("%s.dc.yp_fp>>data_hypfp", secondary.c_str()), em_cut);
+   
+   //Primary arm Reconstructed Quantities ( xtar, ytar, xptar, yptar, delta), theta: xptar, phi:yptar
+   T->Draw(Form("%s.gtr.y>>data_eytar", primary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.th>>data_exptar", primary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.ph>>data_eyptar", primary.c_str()), em_cut); 
+   T->Draw(Form("%s.gtr.dp>>data_edelta", primary.c_str()), em_cut);
 
+   //Primary arm Focal Plane Quantities
+   T->Draw(Form("%s.dc.x_fp>>data_exfp", primary.c_str()), em_cut);
+   T->Draw(Form("%s.dc.y_fp>>data_eyfp", primary.c_str()), em_cut);
+   T->Draw(Form("%s.dc.xp_fp>>data_expfp", primary.c_str()), em_cut);
+   T->Draw(Form("%s.dc.yp_fp>>data_eypfp", primary.c_str()), em_cut);
 
-   // TH2F General TTree::Draw Format:  T->Draw("y:x>>(xbins, xmin, xmax, ybins, ymin, ymax)")   
-
+   
+   // TH2F General TTree::Draw Format:  T->Draw(Form("y:x>>(xbins, xmin, xmax, ybins, ymin, ymax)")   
+   
    // Cross-Check correlations
-   T->Draw("H.kin.secondary.emiss:H.kin.secondary.pmiss>>data_emiss_vs_pmiss", em_cut);
-   T->Draw("P.gtr.dp:P.gtr.ph>>data_edelta_vs_eyptar", em_cut);
-
+   T->Draw(Form("%s.kin.secondary.emiss:%s.kin.secondary.pmiss>>data_emiss_vs_pmiss", secondary.c_str(), secondary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.dp:%s.gtr.ph>>data_edelta_vs_eyptar", primary.c_str(), primary.c_str()), em_cut);
+   T->Draw(Form("%s.kin.secondary.emiss:%s.gtr.th>>data_emiss_vs_exptar", secondary.c_str(), primary.c_str()), em_cut);
+   T->Draw(Form("%s.kin.secondary.emiss:%s.gtr.ph>>data_emiss_vs_eyptar", secondary.c_str(), primary.c_str()), em_cut);
+   
    //2D Focal Plane Correlations
-   T->Draw("H.dc.x_fp:H.dc.y_fp>>data_hxfp_vs_hyfp", em_cut);
-   T->Draw("P.dc.x_fp:P.dc.y_fp>>data_exfp_vs_eyfp", em_cut);
+   T->Draw(Form("%s.dc.x_fp:%s.dc.y_fp>>data_hxfp_vs_hyfp", secondary.c_str(), secondary.c_str()), em_cut);
+   T->Draw(Form("%s.dc.x_fp:%s.dc.y_fp>>data_exfp_vs_eyfp", primary.c_str(), primary.c_str()), em_cut);
    
    //2D HMS v. SHMS Acceptance Correlations
-   T->Draw("H.gtr.th:P.gtr.th>>data_hxptar_vs_exptar", em_cut);
-   T->Draw("H.gtr.ph:P.gtr.ph>>data_hyptar_vs_eyptar", em_cut);
-   T->Draw("H.gtr.dp:P.gtr.dp>>data_hdelta_vs_edelta", em_cut);
-
+   T->Draw(Form("%s.gtr.th:%s.gtr.th>>data_hxptar_vs_exptar", secondary.c_str(), primary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.ph:%s.gtr.ph>>data_hyptar_vs_eyptar", secondary.c_str(), primary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.dp:%s.gtr.dp>>data_hdelta_vs_edelta", secondary.c_str(), primary.c_str()), em_cut);
+   
    outfile->Write();
    outfile->Close();
-
+   
 
    
 
