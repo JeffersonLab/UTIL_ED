@@ -1,5 +1,5 @@
-#include "../../offline/set_heep_histos.h"
-#include "../../offline/useful_functions.h"
+#include "../../offline/header_files/set_heep_histos.h"
+#include "../../offline/header_files/useful_functions.h"
 
 //------------------------------MAIN CODE--------------------------------------
 
