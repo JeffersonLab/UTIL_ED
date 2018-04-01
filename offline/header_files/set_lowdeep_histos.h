@@ -30,7 +30,7 @@ Double_t Q2_xmax = 5.5;
 
 //omega (E-E')
 Double_t om_nbins = nbins;
-Double_t om_xmin = 1.5.;
+Double_t om_xmin = 1.5;
 Double_t om_xmax = 3.3;
 
 //W_inv
@@ -77,13 +77,13 @@ Double_t En_xmax = 1.8;
 
 //th_nq
 Double_t thnq_nbins = nbins;
-Double_t thnq_xmix = 0;
+Double_t thnq_xmin = 0;
 Double_t thnq_xmax = 180;
 
 
 //th_q
 Double_t thq_nbins = nbins;
-Double_t thq_xmix = 0;
+Double_t thq_xmin = 0;
 Double_t thq_xmax = 70;
 
 
