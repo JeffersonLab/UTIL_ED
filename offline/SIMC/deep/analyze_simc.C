@@ -1,7 +1,8 @@
 #include "TROOT.h"
 #include <TChain.h>
-#include "heep/heep.C"
+#include "deep.C"
 #include <fstream>
+
 
 // run an analysis based on SNT.C the analyysis script for the simc n-tuple
 // this script is setup for the proposed commissioning runs. the steps in pm are 0.15 GeV/c
@@ -15,7 +16,7 @@ void analyze_simc()
   TChain chain("SNT");
 
   //Create an instance of the heep class
-  heep* simc = new heep(&chain);
+  deep* simc = new deep(&chain);
 
   
   TString electron_arm;
@@ -75,24 +76,24 @@ void analyze_simc()
   chain.Reset();
   */ 
 
-  //----Practice HEEP check using coin run 1854---
+  //----Practice Deuteron check using coin run 1854---
   runNUM = 1854;
   evtNUM = -1;
-  data_file = Form("../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
+  data_file = Form("../../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
   Q1 = getCharge("SHMS", "BCM4A", data_file);
   Q2 = getCharge("SHMS", "BCM4B", data_file);
   charge = (Q1 + Q2)/2.;
 
-  rep_file = "../../online/CHARGE_REPORTS/";
+  rep_file = "../../../online/CHARGE_REPORTS/";
   
 
   //-------------------------------------------------------------------------
     
-  simc_file = Form("ep_coin_simc_%d.root", runNUM);
+  simc_file = "d2_pm80_lagetfsi_rad.root";
   cout << "Analyzing: " << simc_file << endl;
-  chain.Add("./heep/worksim_voli/"+simc_file);
+  chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, 1, 1, charge);
+  simc->Loop(simc_file, 40., 1., 1.);
   chain.Reset();
   
   /*

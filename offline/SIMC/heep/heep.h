@@ -189,9 +189,9 @@ heep::heep(TTree *tree)
     //  ifstream  infile(f0);
     //  infile >> simc_file;
     //  string simc_file_path = "../worksim/"+simc_file;
-    TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../worksim/dummy.root");
+    TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("./worksim_voli/dummy_heep.root");
       if (!f) {
-         f = new TFile("../worksim/dummy.root");
+         f = new TFile("./worksim_voli/dummy_heep.root");
       }
 
       tree = (TTree*)gDirectory->Get("SNT");

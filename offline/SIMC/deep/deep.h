@@ -169,7 +169,7 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop(TString simc_file, Double_t Ib, Double_t time);
+   virtual void     Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 };
@@ -183,9 +183,9 @@ deep::deep(TTree *tree)
 // used to generate this class and read the Tree.
    if (tree == 0) {
      
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../worksim/dummy.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("./worksim_voli/dummy_deep.root");
       if (!f) {
-         f = new TFile("../worksim/dummy.root");
+         f = new TFile("./worksim_voli/dummy_deep.root");
       }
 
       tree = (TTree*)gDirectory->Get("SNT");

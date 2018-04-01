@@ -1,10 +1,13 @@
 //Analysis for HMS/SHMS coincidence D(e,e'p)n, High Missing Momentum Setting (580, 750) MeV
 #define deep_cxx
 #include "deep.h"
+#include "../../header_files/set_lowdeep_histos.h"
+//#include "../../header_files/set_highdeep_histos.h"
+#include "../../header_files/useful_functions.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
-void deep::Loop(TString simc_file, Double_t Ib, Double_t time)
+void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
 {
 //   In a ROOT session, you can do:
 //      root> .L deep.C
@@ -42,7 +45,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time)
    Double_t MN = 0.939566; //GeV
    Double_t me = 0.000510998; //GeV
    
-   TString ofile_name("weighted_XBjwithQ2Cut");
+   TString ofile_name("./SIMC_ROOTfiles/weighted_");
    ofile_name.Append(simc_file);
    
    //create output root file
@@ -296,16 +299,25 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time)
    //Charge factor is the total integrated charge assuming a beam current and run time
    // Double_t Ib = 40;       //beam current in microamps (micro-Coulombs / sec),   1 mC = 1000 uC
    //Double_t time = 1.0;     //estimated time (in hours) a run takes (start - end) of run
-   Double_t charge_factor = Ib * time * 3600. / 1000.;
+   Double_t charge_factor;
 
+   if(charge==1)
+     {
+       cout << "Using Ib and time as inputs . . " << endl;
+       charge_factor = Ib * time * 3600. / 1000.;   //in units of mC
+    
+     }
 
-   //----------Use Total Charge (ONLY from data)---------
-   //Double_t Q_bcm1;
-   //Double_t Q_bcm2;
+   //run 1929
+   //Double_t Q_bcm1 = 161907.065;   //in uC
+   //Double_t Q_bcm2 = 164453.167;   //in uC
 
-   //Double_t Q_avg = (Q_bcm1 + Q_bcm2) / 2.;
-   //Double_t charge_factor = Q_avg / 1000.;   //in mC
-   //-----------------------------------------------------
+   //check if set to default values, take average charge as input
+   if(time==1&&Ib==1)
+     {
+       cout << "Using total charge from data ... " << endl;
+       charge_factor = charge / 1000.;   //in mC
+     }
    
    //Tracking efficiencies and beamON time
    Double_t e_trk_eff;
@@ -329,7 +341,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time)
 
    //Begin Looping over EVENTS
    Long64_t nbytes = 0, nb = 0;
-   for (Long64_t jentry=0; jentry<nentries;jentry++) {
+   for (Long64_t jentry=0; jentry<100000;jentry++) {
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
@@ -347,7 +359,12 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time)
       Ee = sqrt(me*me + kf*kf);
       Kp = Ep - MP;
       Kn = En - MN;
-      th_nq = acos((q - Pf*cos(theta_pq))/Pm);
+       
+      if ( TMath::Abs((q - Pf*cos(theta_pq))/Pm ) < 1.0 )
+	{
+	   th_nq = acos( (q - Pf*cos(theta_pq))/Pm );
+	}
+ 
       th_q = theta_pq + theta_p;
 
       Em_v2 = Kp + Kn - nu;

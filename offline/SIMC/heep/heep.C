@@ -8,7 +8,7 @@
 #include <TCanvas.h>
 //#include <fstream>
 //#include <iostream>
-void heep::Loop(TString simc_file, Double_t Ib=1, Double_t time=1, Double_t charge=1) //Default parameter is 1
+void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) //Default parameter is 1
 {
 //   In a ROOT session, you can do:
 //      root> .L heep.C
@@ -46,12 +46,13 @@ void heep::Loop(TString simc_file, Double_t Ib=1, Double_t time=1, Double_t char
    Double_t MN = 0.939566; //GeV
    Double_t me = 0.000510998;
    
-   TString ofile_name("weighted_");
+   TString ofile_name("./SIMC_ROOTfiles/weighted_");
    ofile_name.Append(simc_file);
    
    //create output root file
    TFile *outfile = new TFile(ofile_name.Data(), "recreate");
 
+   /*
     //-------spectrometer resolution calculation----------
 
    Double_t Eb = 10.6;            //beam energy
@@ -103,7 +104,7 @@ void heep::Loop(TString simc_file, Double_t Ib=1, Double_t time=1, Double_t char
    TH1F * res_etheta = new TH1F("res_etheta", electron_arm + " Angle Resolution", 200, -0.01, 0.01);        //electron arm angle resolution
    TH1F * res_htheta = new TH1F("res_htheta", hadron_arm + " Angle Resolution", 200, -0.01, 0.01); 
    //----------------------------------------------------
-   
+   */
    
    //********* Create 1D Histograms **************
    Int_t bins =100;
@@ -328,7 +329,7 @@ void heep::Loop(TString simc_file, Double_t Ib=1, Double_t time=1, Double_t char
       kf = Q2 / (4.*ki*pow(sin(theta_e/2.), 2));
       Ee = sqrt(me*me + kf*kf);
 
-
+      /*
       //-------Spectrometer resolution variables-----------
       h_d_delta = h_deltai - h_delta;      //hadron delta resolutionn
       e_d_delta = e_deltai - e_delta;      //electron delta resolution
@@ -353,7 +354,7 @@ void heep::Loop(TString simc_file, Double_t Ib=1, Double_t time=1, Double_t char
       e_dtheta = e_yptari - e_yptar;   //e-arm angle resolution
       h_dtheta = h_yptari - h_yptar;   //hadron-arm angle resolution
       
-      
+        
       //Fill variables
       res_hdelta->Fill(h_d_delta);
       res_hP->Fill(h_dP);
@@ -367,7 +368,7 @@ void heep::Loop(TString simc_file, Double_t Ib=1, Double_t time=1, Double_t char
       res_htheta->Fill(h_dtheta);
       
       //---------------------------------------------------
-
+      */
 
       //Define Kinematic Cuts
       Bool_t c_Em = Em>Em_min&&Em<Em_max;
@@ -547,7 +548,7 @@ void heep::Loop(TString simc_file, Double_t Ib=1, Double_t time=1, Double_t char
 
    }
 
-
+   /*
 //----Spectrometer resolution calculation-----
 
    //hDdelta->Fit(hfit, "R");
@@ -570,7 +571,8 @@ void heep::Loop(TString simc_file, Double_t Ib=1, Double_t time=1, Double_t char
    //Estimate invariant mass W, resolution (dW = 19.9 Mev)
    //dW = sqrt ( pow(Eb*e_Psigma/eP0,2) + pow(2.*Eb*e_Psigma*sin(theta_e/2.)*cos(theta_e/2.)*e_dtheta/MP,2) );
    
-   
+   */
+ 
    //Open a data file to store spec. resolution, estimated yields, rates, and statistical uncertainties
    simc_file.ReplaceAll(".root", ".report");   // 5 = length( $name )
  
@@ -578,7 +580,7 @@ void heep::Loop(TString simc_file, Double_t Ib=1, Double_t time=1, Double_t char
    data.open(simc_file); 
 
    
-   
+   /*
    data << "HMS Delta Resolution: " << h_sigma << " %" << endl;
    data << "HMS Momentum Resolution: " << h_Psigma*1000. << " MeV" << endl;
    data << "HHMS Angle Resolution: " << h_dtheta/dtr << " deg" << endl;
@@ -592,7 +594,7 @@ void heep::Loop(TString simc_file, Double_t Ib=1, Double_t time=1, Double_t char
    data << "Invariant Mass Resolution: " << dW << " GeV" << endl;
    data << "  " << endl;
    //data << "HMS Momentum Resolution " << h_dP << " MeV" << endl;
-   
+   */ 
    //Estimate the Yield and rates for missing momentum
    Double_t Yield;
    Double_t Yield_cut;

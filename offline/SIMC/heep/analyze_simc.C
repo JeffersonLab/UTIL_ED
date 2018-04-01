@@ -1,6 +1,6 @@
 #include "TROOT.h"
 #include <TChain.h>
-#include "heep/heep.C"
+#include "heep.C"
 #include <fstream>
 
 // run an analysis based on SNT.C the analyysis script for the simc n-tuple
@@ -78,7 +78,7 @@ void analyze_simc()
   //----Practice HEEP check using coin run 1854---
   runNUM = 1854;
   evtNUM = -1;
-  data_file = Form("../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
+  data_file = Form("../../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
   Q1 = getCharge("SHMS", "BCM4A", data_file);
   Q2 = getCharge("SHMS", "BCM4B", data_file);
   charge = (Q1 + Q2)/2.;
@@ -90,7 +90,7 @@ void analyze_simc()
     
   simc_file = Form("ep_coin_simc_%d.root", runNUM);
   cout << "Analyzing: " << simc_file << endl;
-  chain.Add("./heep/worksim_voli/"+simc_file);
+  chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
   simc->Loop(simc_file, 1, 1, charge);
   chain.Reset();

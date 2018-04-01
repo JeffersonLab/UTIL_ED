@@ -24,7 +24,7 @@ void analyze_heepData(int runNUM, int evtNUM)
   
   //Open data ROOTfile and call TTree
   TString file_path;
-  file_path = Form("../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
+  file_path = Form("../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
   
   TFile *data_file = new TFile(file_path, "READ");
 
@@ -58,7 +58,7 @@ void analyze_heepData(int runNUM, int evtNUM)
    TH1F *data_z_tar = new TH1F("data_z_tar", "z_Target", ztar_nbins, ztar_xmin, ztar_xmax);
    
    //Target_Recon, 2D
-   TH2F *data_reactz_vs_yptar = new TH2F("data_reactz_vs_yptar", electron_arm + "React Z vs. Y'_{tar}", eyptar_nbins, eyptar_xmin, eyptar_xmax, ztar_nbins, ztar_xmin, ztar_xmax);
+   //TH2F *data_reactz_vs_yptar = new TH2F("data_reactz_vs_yptar", electron_arm + "React Z vs. Y'_{tar}", eyptar_nbins, eyptar_xmin, eyptar_xmax, ztar_nbins, ztar_xmin, ztar_xmax);
    
    //Hadron arm Reconstructed Quantities ( xtar, ytar, xptar, yptar, delta)
    TH1F *data_hytar = new TH1F("data_hytar", hadron_arm + " Y_{tar}", hytar_nbins, hytar_xmin, hytar_xmax);
@@ -139,10 +139,10 @@ void analyze_heepData(int runNUM, int evtNUM)
    //Target Reconstruction Variables ????? What are these in data????
    //T->Draw(Form("");
    //T->Draw(Form("");
-   T->Draw(Form("%s.react.z>>data_z_tar", primary.c_str()), em_cut);
+   //T->Draw(Form("%s.react.z>>data_z_tar", primary.c_str()), em_cut);
 
    //Target Recon, 2d
-   T->Draw(Form("%s.react.z:%s.gtr.ph>>data_reactz_vs_yptar", primary.c_str(), primary.c_str()), em_cut);
+   //T->Draw(Form("%s.react.z:%s.gtr.ph>>data_reactz_vs_yptar", primary.c_str(), primary.c_str()), em_cut);
    
    //Secondary arm Reconstructed Quantities ( xtar, ytar, xptar, yptar, delta), theta: xptar, phi:yptar
    T->Draw(Form("%s.gtr.y>>data_hytar", secondary.c_str()), em_cut);
