@@ -9,17 +9,17 @@
 //Units in GeV, degrees
 
 //Default binning
-Int_t nbins = 65;
+Int_t nbins = 100;
 
 
 //----------Kinematic Quantities---------
 //Emiss
-Double_t Em_nbins = 32;
-Double_t Em_xmin = -0.1;
-Double_t Em_xmax = 0.7;
+Double_t Em_nbins = 40;
+Double_t Em_xmin = -0.2;
+Double_t Em_xmax = 0.8;
 
 //Pmiss
-Double_t Pm_nbins = 24;
+Double_t Pm_nbins = 60;
 Double_t Pm_xmin = -0.1;
 Double_t Pm_xmax = 0.5;
 
@@ -70,6 +70,24 @@ Double_t kf_nbins = nbins;
 Double_t kf_xmin = 7.0;
 Double_t kf_xmax = 9.5;
 
+//En
+Double_t En_nbins = nbins;
+Double_t En_xmin = 0.8;
+Double_t En_xmax = 1.8;
+
+//th_nq
+Double_t thnq_nbins = nbins;
+Double_t thnq_xmix = 0;
+Double_t thnq_xmax = 180;
+
+
+//th_q
+Double_t thq_nbins = nbins;
+Double_t thq_xmix = 0;
+Double_t thq_xmax = 70;
+
+
+
 //------Target Reconstruction Variables----------
 Double_t xtar_nbins = nbins;
 Double_t xtar_xmin = -0.25;
@@ -107,8 +125,8 @@ Double_t hxfp_xmin = -60.;
 Double_t hxfp_xmax = 60.;
 //Y-focal plane
 Double_t hyfp_nbins = nbins;
-Double_t hyfp_xmin = -25.;
-Double_t hyfp_xmax = 25.;
+Double_t hyfp_xmin = -40.;
+Double_t hyfp_xmax = 40.;
 //X'-focal plane
 Double_t hxpfp_nbins = nbins;
 Double_t hxpfp_xmin = -0.08;
@@ -145,8 +163,8 @@ Double_t eyfp_xmin = -20.;
 Double_t eyfp_xmax = 20.;
 
 Double_t expfp_nbins = nbins;
-Double_t expfp_xmin = -0.08;
-Double_t expfp_xmax = 0.04;
+Double_t expfp_xmin = -0.1;
+Double_t expfp_xmax = 0.06;
 
 Double_t eypfp_nbins = nbins;
 Double_t eypfp_xmin = -0.04;
