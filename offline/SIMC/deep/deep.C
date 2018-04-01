@@ -343,10 +343,11 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
       
    Long64_t nentries  = fChain->GetEntries();
 
-
+   Double_t progress;  //monitor the execution time of this code
+   
    //Begin Looping over EVENTS
    Long64_t nbytes = 0, nb = 0;
-   for (Long64_t jentry=0; jentry<100000;jentry++) {
+   for (Long64_t jentry=0; jentry<nentries;jentry++) {
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
@@ -642,7 +643,29 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
       xbj->Sumw2(kFALSE);
       theta_nq->Sumw2(kFALSE);
       
+
       // if (Cut(ientry) < 0) continue;
+
+      progress = (double)jentry / (double)nentries;
+      cout << "progress: " << progress << " %" << endl;
+
+      while (progress < 1.0) {
+	int barWidth = 70;
+	
+	std::cout << "[";
+	int pos = barWidth * progress;
+	for (int i = 0; i < barWidth; ++i) {
+	  if (i < pos) std::cout << "=";
+	  else if (i == pos) std::cout << ">";
+	  else std::cout << " ";
+	}
+	std::cout << "] " << int(progress * 100.0) << " %\r";
+	std::cout.flush();
+	
+	progress += 0.16; // for demonstration only
+      }
+      std::cout << std::endl;
+      
    }
 
    /*
@@ -663,10 +686,13 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
    Em_sigma = res_emiss->GetStdDev();
    */
    //Open a data file to store spec. resolution, estimated yields, rates, and statistical uncertainties
+
    simc_file.ReplaceAll(".root", ".report");   // 5 = length( $name )
  
    ofstream data;
-   data.open(simc_file); 
+   TString orepo_name("./SIMC_ROOTfiles/");
+   orepo_name.Append(simc_file)
+     data.open(orepo_name.Data()); 
 
    
    /*
