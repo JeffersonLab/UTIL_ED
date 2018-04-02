@@ -14,29 +14,29 @@ Int_t nbins = 100;
 
 //----------Kinematic Quantities---------
 //Emiss
-Double_t Em_nbins = 40;
-Double_t Em_xmin = -0.2;
-Double_t Em_xmax = 0.8;
+Double_t Em_nbins = 30;
+Double_t Em_xmin = -0.1;
+Double_t Em_xmax = 0.5;
 
 //Pmiss
 Double_t Pm_nbins = 60;
 Double_t Pm_xmin = -0.1;
-Double_t Pm_xmax = 0.5;
+Double_t Pm_xmax = 1.0;
 
 //Q2
 Double_t Q2_nbins = nbins;
-Double_t Q2_xmin = 1.5;
+Double_t Q2_xmin = 2.0;
 Double_t Q2_xmax = 5.5;
 
 //omega (E-E')
 Double_t om_nbins = nbins;
-Double_t om_xmin = 1.5;
-Double_t om_xmax = 3.3;
+Double_t om_xmin = 0.5;
+Double_t om_xmax = 4.0;
 
 //W_inv
 Double_t W_nbins = nbins;
 Double_t W_xmin = 0.0;
-Double_t W_xmax = 2.3;
+Double_t W_xmax = 2.5;
 
 //theta_elec
 Double_t the_nbins = nbins;
@@ -45,7 +45,7 @@ Double_t the_xmax = 15.;
 
 //theta_prot
 Double_t thp_nbins = nbins;
-Double_t thp_xmin = 35.;
+Double_t thp_xmin = 30.;
 Double_t thp_xmax = 45.;
 
 //-------Additional Kinematic Variables----------
@@ -53,17 +53,17 @@ Double_t thp_xmax = 45.;
 //W2
 Double_t W2_nbins = nbins;
 Double_t W2_xmin = 0.0;
-Double_t W2_xmax = 2.3;
+Double_t W2_xmax = 2.5;
 
 //xBj
 Double_t xbj_nbins = nbins;
-Double_t xbj_xmin = 0.5;
-Double_t xbj_xmax = 1.5;
+Double_t xbj_xmin = 0.0;
+Double_t xbj_xmax = 1.3;
 
 //Pf
 Double_t Pf_nbins = nbins;
 Double_t Pf_xmin = 2.0;
-Double_t Pf_xmax = 3.5;
+Double_t Pf_xmax = 4.5;
 
 //kf
 Double_t kf_nbins = nbins;

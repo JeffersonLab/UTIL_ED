@@ -44,21 +44,9 @@ void analyze_simc()
   TString data_file;
   TString rep_file;
   
-  /*
-  //--Estimate Spectrometer Resolution
-  Ib = 40.;
-  time = 1.;
-  simc_file = "heep_simc_rad.root";
-  cout << "Analyzing: " << simc_file << endl;
-  chain.Add("../worksim/"+simc_file);
-  simc->Init(&chain);
-  simc->Loop(simc_file, Ib, time);
-  chain.Reset();
-  */
-  
-  /*
-  //E12-10-003 H(e,e'p) Check!
 
+  //----------------PRACTICE------------------
+  /*
   //------Get TRUE accumulated charge from actual data to use in SIMC--------
   runNUM = 1854;
   evtNUM = -1;
@@ -76,50 +64,83 @@ void analyze_simc()
   chain.Reset();
   */ 
 
-  //----Practice Deuteron check using coin run 1854---
-  runNUM = 1854;
-  evtNUM = -1;
-  data_file = Form("../../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
-  Q1 = getCharge("SHMS", "BCM4A", data_file);
-  Q2 = getCharge("SHMS", "BCM4B", data_file);
-  charge = (Q1 + Q2)/2.;
+  /*
+  //--------D(e,e'p)n---PWIA---Pmiss = 80 MeV-----------------
+  Ib = 40;     //beam current [uA]
+  time = 1.;   //beam time [hrs]
+  simc_file = "d2_pm80_lagetpwia_rad.root";
+  cout << "Analyzing: " << simc_file << endl;
+  chain.Add("./worksim_voli/"+simc_file);
+  simc->Init(&chain);
+  simc->Loop(simc_file, Ib, time, 1.);
+  chain.Reset();
 
-  rep_file = "../../../online/CHARGE_REPORTS/";
+  //----------------------------------------------------
   
-
-  //-------------------------------------------------------------------------
-    
+  
+  //--------D(e,e'p)n---FSI---Pmiss = 80 MeV-----------------
+  Ib = 40;     //beam current [uA]
+  time = 1.;   //beam time [hrs]
   simc_file = "d2_pm80_lagetfsi_rad.root";
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, 40., 1., 1.);
-  chain.Reset();
-  
-  /*
-  
-  //Coin Run 1929
-  //electron_arm = "HMS";
-  Ib = 40.;
-  time = 1.;
-  simc_file = "ep_coin_simc_1929.root";
-  cout << "Analyzing: " << simc_file << endl;
-  chain.Add("../worksim/"+simc_file);
-  simc->Init(&chain);
-  simc->Loop(simc_file, Ib, time);
+  simc->Loop(simc_file, Ib, time, 1.);
   chain.Reset();
 
+  //----------------------------------------------------
   
-  
-  //Coin Run 2279
-  electron_arm = "SHMS";
-  simc_file = "ep_coin_simc_1929.root";
+
+ //--------D(e,e'p)n---PWIA---Pmiss = 580 MeV-----------------
+  Ib = 40;     //beam current [uA]
+  time = 20.;   //beam time [hrs]
+  simc_file = "d2_pm580_lagetpwia_rad.root";
   cout << "Analyzing: " << simc_file << endl;
-  chain.Add("../worksim/"+simc_file);
+  chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, electron_arm);
+  simc->Loop(simc_file, Ib, time, 1.);
   chain.Reset();
+
+  //----------------------------------------------------
+  
+  
+  //--------D(e,e'p)n---FSI---Pmiss = 580 MeV-----------------
+  Ib = 40;     //beam current [uA]
+  time = 20.;   //beam time [hrs]
+  simc_file = "d2_pm580_lagetfsi_rad.root";
+  cout << "Analyzing: " << simc_file << endl;
+  chain.Add("./worksim_voli/"+simc_file);
+  simc->Init(&chain);
+  simc->Loop(simc_file, Ib, time, 1.);
+  chain.Reset();
+
+  //----------------------------------------------------
   */
+
+ //--------D(e,e'p)n---PWIA---Pmiss = 750 MeV-----------------
+  Ib = 40;     //beam current [uA]
+  time = 42.;   //beam time [hrs]
+  simc_file = "d2_pm750_lagetpwia_rad.root";
+  cout << "Analyzing: " << simc_file << endl;
+  chain.Add("./worksim_voli/"+simc_file);
+  simc->Init(&chain);
+  simc->Loop(simc_file, Ib, time, 1.);
+  chain.Reset();
+
+  //----------------------------------------------------
+  
+  
+  //--------D(e,e'p)n---FSI---Pmiss = 750 MeV-----------------
+  Ib = 40;     //beam current [uA]
+  time = 42.;   //beam time [hrs]
+  simc_file = "d2_pm750_lagetfsi_rad.root";
+  cout << "Analyzing: " << simc_file << endl;
+  chain.Add("./worksim_voli/"+simc_file);
+  simc->Init(&chain);
+  simc->Loop(simc_file, Ib, time, 1.);
+  chain.Reset();
+
+  //----------------------------------------------------
 
 }
 

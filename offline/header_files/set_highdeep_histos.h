@@ -9,7 +9,7 @@
 //Units in GeV, degrees
 
 //Default binning
-Int_t nbins = 65;
+Int_t nbins = 100;
 
 
 //----------Kinematic Quantities---------
@@ -70,6 +70,22 @@ Double_t kf_nbins = nbins;
 Double_t kf_xmin = 7.;
 Double_t kf_xmax = 9.5;
 
+//En
+Double_t En_nbins = nbins;
+Double_t En_xmin = 0.8;
+Double_t En_xmax = 1.8;
+
+//th_nq
+Double_t thnq_nbins = nbins;
+Double_t thnq_xmin = 0;
+Double_t thnq_xmax = 80;
+
+
+//th_q
+Double_t thq_nbins = nbins;
+Double_t thq_xmin = 40;
+Double_t thq_xmax = 100;
+
 //------Target Reconstruction Variables----------
 Double_t xtar_nbins = nbins;
 Double_t xtar_xmin = -0.25;
@@ -85,8 +101,8 @@ Double_t ztar_xmax = 5.5;
 
 //Hadron arm Reconstructed Quantities ( xtar, ytar, xptar, yptar, delta)
 Double_t hytar_nbins = nbins;
-Double_t hytar_xmin = -5.;
-Double_t hytar_xmax = 5.;
+Double_t hytar_xmin = -8.;
+Double_t hytar_xmax = 8.;
 
 Double_t hxptar_nbins = nbins;
 Double_t hxptar_xmin = -0.1;
@@ -133,7 +149,7 @@ Double_t eyptar_xmax = 0.04;
 
 Double_t edelta_nbins = nbins;
 Double_t edelta_xmin = -15.;
-Double_t edelta_xmax = 8.;
+Double_t edelta_xmax = 15.;
 
 //Electron Arm Focal Plane Quantities
 Double_t exfp_nbins = nbins;
