@@ -47,7 +47,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
    
    TString ofile_name("./SIMC_ROOTfiles/weighted_");
    ofile_name.Append(simc_file);
-   
+  
    //create output root file
    TFile *outfile = new TFile(ofile_name.Data(), "recreate");
 
@@ -118,7 +118,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
    TH1F *P_f = new TH1F("P_f", "Final Proton Momentum", Pf_nbins, Pf_xmin, Pf_xmax);
    TH1F *k_f = new TH1F("kf", "Final e^{-} Momentum", kf_nbins, kf_xmin, kf_xmax);
 
-   TH1F *E_n = new TH1F("En", "Neutron Final Energy", En_bins, En_xmin., En_xmax);
+   TH1F *E_n = new TH1F("En", "Neutron Final Energy", En_nbins, En_xmin, En_xmax);
    TH1F *theta_nq = new TH1F("theta_nq", "Neutron Angle, #theta_{nq}", thnq_nbins, thnq_xmin, thnq_xmax);
    TH1F *theta_q = new TH1F("theta_q", "q-vector Angle, #theta_{q}", thq_nbins, thq_xmin, thq_xmax);
 
@@ -171,15 +171,9 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
    TH2F *edelta_vs_thnq = new TH2F("edelta_vs_thnq", "",  thnq_nbins, thnq_xmin, thnq_xmax, edelta_nbins, edelta_xmin, edelta_xmax);
    
    //2D HMS v. SHMS Acceptance Correlations
-   TH2F *hxptar_vs_exptar = new TH2F("hxptar_vs_exptar", "HMS vs. SHMS, X'_{tar}", bins, -0.06, 0.06, bins, -0.1, 0.1);
-   TH2F *hyptar_vs_eyptar = new TH2F("hyptar_vs_eyptar", "HMS vs. SHMS, Y'_{tar}", bins, -0.04, 0.04, bins, -0.05, 0.05);
-   TH2F *hdelta_vs_edelta = new TH2F("hdelta_vs_edelta", "HMS vs. SHMS, #delta", bins, -15., 12, bins, -15., 15.);
-
-   //2D HMS v. SHMS Acceptance Correlations
    TH2F *hxptar_vs_exptar = new TH2F("hxptar_vs_exptar", "HMS vs. SHMS, X'_{tar}", exptar_nbins, exptar_xmin, exptar_xmax, hxptar_nbins, hxptar_xmin, hxptar_xmax);
    TH2F *hyptar_vs_eyptar = new TH2F("hyptar_vs_eyptar", "HMS vs. SHMS, Y'_{tar}", eyptar_nbins, eyptar_xmin, eyptar_xmax, hyptar_nbins, hyptar_xmin, hyptar_xmax);
    TH2F *hdelta_vs_edelta = new TH2F("hdelta_vs_edelta", "HMS vs. SHMS, #delta", edelta_nbins, edelta_xmin, edelta_xmax, hdelta_nbins, hdelta_xmin, hdelta_xmax);
-
    
    /************Define Histos to APPLY CUTS*********************************/
  
@@ -461,9 +455,9 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
       //cout << "nentries: " << nentries << endl;
       //cout << "FullWeght: " << FullWeight << endl;
       //--------------------------------------
-
+   
       //ANALYSIS OF EVENT-BY-EVENT GOES HERE!!!!!!
-      
+   
       //APPLY CUTS: BEGIN CUTS LOOP
       if (c_Em)
 	{
@@ -478,7 +472,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
 	  cut_W_inv->Fill(W, FullWeight);
 	  cut_theta_elec->Fill(theta_e/dtr, FullWeight);
 	  cut_theta_prot->Fill(theta_p/dtr, FullWeight);
-
+	
 
 	  
 
@@ -556,7 +550,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
 	  
 	}//End CUTS LOOP
          
-
+   
 
       //Kinematics
       Emiss->Fill(Em, FullWeight);
@@ -574,20 +568,21 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
       W_2->Fill(W2, FullWeight);
       xbj->Fill(X, FullWeight);
       P_f->Fill(Pf, FullWeight);
-      k_i->Fill(ki, FullWeight);
       k_f->Fill(kf, FullWeight);
       E_n->Fill(En, FullWeight);
       theta_nq->Fill(th_nq/dtr, FullWeight);
       theta_q->Fill(th_q/dtr, FullWeight);
+   
+   
 
- 
-
-      
       //Reconstructed Target Quantities (Lab Frame)
-      x_tar->Fill(tar_x, FullWeight);
-      y_tar->Fill(tar_y, FullWeight);
-      z_tar->Fill(tar_z, FullWeight);
+      
+   x_tar->Fill(tar_x, FullWeight);
+      
+   y_tar->Fill(tar_y, FullWeight);
+   
 
+   z_tar->Fill(tar_z, FullWeight);   
       
       //Hadron-Arm Target Reconstruction 
       hytar->Fill(h_ytar, FullWeight);
@@ -643,12 +638,13 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
       xbj->Sumw2(kFALSE);
       theta_nq->Sumw2(kFALSE);
       
-
+   
+   
       // if (Cut(ientry) < 0) continue;
 
       progress = (double)jentry / (double)nentries;
       cout << "progress: " << progress << " %" << endl;
-
+      /*
       while (progress < 1.0) {
 	int barWidth = 70;
 	
@@ -665,8 +661,8 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
 	progress += 0.16; // for demonstration only
       }
       std::cout << std::endl;
-      
-   }
+      */  
+   
 
    /*
  //----Spectrometer resolution calculation-----
@@ -691,9 +687,10 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
  
    ofstream data;
    TString orepo_name("./SIMC_ROOTfiles/");
-   orepo_name.Append(simc_file)
-     data.open(orepo_name.Data()); 
+   orepo_name.Append(simc_file);
+   data.open(orepo_name.Data()); 
 
+   }
    
    /*
    data << "HMS Delta Resolution: " << h_sigma << " %" << endl;
