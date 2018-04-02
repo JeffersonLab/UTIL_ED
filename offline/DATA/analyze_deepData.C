@@ -1,12 +1,13 @@
-//Macro to analyze H(e,e'p) E12-10-003 data from Hall C: HMS (Hadron arm), SHMS (electron arm)
+//Macro to analyze D(e,e'p)n E12-10-003 data from Hall C: HMS (Hadron arm), SHMS (electron arm)
 
-#include "../header_files/set_heep_histos.h"
+#include "../header_files/set_lowdeep_histos.h"
+//#include "../header_files/set_highdeep_histos.h"
 #include "../header_files/useful_functions.h"
 
 //HMS Momentum correction: P0 = P0*0.9968
 //SHMS Momentum correction: P0 = P0*0.985
 
-void analyze_heepData(int runNUM, int evtNUM)
+void analyze_deepData(int runNUM, int evtNUM)
 {
 
   
@@ -31,7 +32,7 @@ void analyze_heepData(int runNUM, int evtNUM)
   TTree *T = (TTree*)data_file->Get("T");
 
   //Open root file where new histograms will be stored
-  TFile *outfile = new TFile(Form("./DATA_ROOTfiles/heep_data_%d_%d.root", runNUM, evtNUM), "recreate");
+  TFile *outfile = new TFile(Form("./DATA_ROOTfiles/deep_data_%d_%d.root", runNUM, evtNUM), "recreate");
 
 
   //These histograms binning MUST be exactly the same as those used in SIMC heep.C analysis
@@ -50,6 +51,8 @@ void analyze_heepData(int runNUM, int evtNUM)
    TH1F *data_xbj = new TH1F("data_xbj", "x-Bjorken", xbj_nbins, xbj_xmin, xbj_xmax);
    TH1F *data_Pf = new TH1F("data_Pf", "Final Proton Momentum", Pf_nbins, Pf_xmin, Pf_xmax);
    TH1F *data_kf = new TH1F("data_kf", "Final e^{-} Momentum", kf_nbins, kf_xmin, kf_xmax);
+   TH1F *data_theta_nq = new TH1F("data_theta_nq", "Neutron Angle, #theta_{nq}", thnq_nbins, thnq_xmin, thnq_xmax);
+   TH1F *data_theta_q = new TH1F("data_theta_q", "q-vector Angle, #theta_{q}", thq_nbins, thq_xmin, thq_xmax);
 
    
    //Target Reconstruction Variables
@@ -127,8 +130,8 @@ void analyze_heepData(int runNUM, int evtNUM)
    T->Draw(Form("%s.kin.primary.Q2>>data_Q2", primary.c_str()), em_cut);
    T->Draw(Form("%s.kin.primary.nu>>data_omega", primary.c_str()), em_cut);
    T->Draw(Form("%s.kin.primary.W>>data_W_inv", primary.c_str()), em_cut);
-   T->Draw(Form("(%s.kin.primary.scat_ang_rad*180./3.14)>>data_theta_elec", primary.c_str()), em_cut);
-   T->Draw(Form("(%s.kin.secondary.xangle*180./3.14)>>data_theta_prot", secondary.c_str()), em_cut); 
+   T->Draw(Form("(%s.kin.primary.scat_ang_deg)>>data_theta_elec", primary.c_str()), em_cut);
+   T->Draw(Form("(%s.kin.secondary.xangle-%s.kin.primary.scat_ang_rad)*(180./3.14)>>data_theta_prot", secondary.c_str()), primary.c_str(), em_cut); 
    
    //Additional Kinematic Variables
    T->Draw(Form("%s.kin.primary.W2>>data_W2", primary.c_str()), em_cut);
