@@ -1,5 +1,6 @@
 #include "../../offline/header_files/set_heep_histos.h"
 #include "../../offline/header_files/useful_functions.h"
+#include "calc_cointime.C"
 
 //------------------------------MAIN CODE--------------------------------------
 
@@ -99,6 +100,10 @@ void charge_counter(string exp, int run_num, int evtNUM)
    T->Draw("H.kin.secondary.emiss:H.kin.secondary.pmiss>>data_emiss_vs_pmiss", em_cut, "colz");
    c1->cd(5);
    T->Draw("P.gtr.dp:P.gtr.ph>>data_edelta_vs_eyptar", em_cut, "colz");
+   
+   c1->cd(6);
+   calc_cointime(1854, "e", -1);
+ 
 
    c1->Update();
    c1->SaveAs("./UTIL_ED/temp.pdf");

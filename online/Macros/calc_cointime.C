@@ -20,7 +20,7 @@ using namespace std;
 void calc_cointime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
 {
   TString fileName; // = ROOT_FILE_PATH;
-    fileName += "../ROOTfiles/coin_replay_production_";
+    fileName += "./ROOTfiles/coin_replay_production_";
     fileName += runNumber;
     fileName += "_";
     fileName += analyzedEvents;
@@ -216,10 +216,10 @@ void calc_cointime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents
 	 hodoTimeCut ="P.hod.goodstarttime == 1 && H.hod.goodstarttime == 1";	 
      }
     
-    TCanvas *canvas1 = new TCanvas("canvas1","canvas1");
-    tree->Draw("P.hod.starttime >> SHMShodoStartTime",  eBetaCut && pBetaCut && cerCut && calCut && hodoTimeCut);
-    TCanvas *canvas2 = new TCanvas("canvas2","canvas2");
-    tree->Draw("H.hod.starttime >> HMShodoStartTime",  eBetaCut && pBetaCut && cerCut && calCut && hodoTimeCut);
+     // TCanvas *canvas1 = new TCanvas("canvas1","canvas1");
+     tree->Draw("P.hod.starttime >> SHMShodoStartTime",  eBetaCut && pBetaCut && cerCut && calCut && hodoTimeCut);
+     //TCanvas *canvas2 = new TCanvas("canvas2","canvas2");
+     tree->Draw("H.hod.starttime >> HMShodoStartTime",  eBetaCut && pBetaCut && cerCut && calCut && hodoTimeCut);
 
     TH1D *h1PhodoStartTime = (TH1D*)gDirectory->Get("SHMShodoStartTime");
     TH1D *h1HhodoStartTime = (TH1D*)gDirectory->Get("HMShodoStartTime");
@@ -252,14 +252,14 @@ void calc_cointime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents
     Double_t HMScorrCoinTimeROC1;
     Double_t HMScorrCoinTimeROC2;
         
-    cout << "Mean of SHMS Hodoscope start time: "<< PhodoStartTimeMean <<endl;
-    cout << "Mean of HMS Hodoscope start time: "<< HhodoStartTimeMean <<endl;
-    cout << "Number of events passing PID cut (without looping over events approach): "<<h1PhodoStartTime->GetEntries()<<endl;
+    //  cout << "Mean of SHMS Hodoscope start time: "<< PhodoStartTimeMean <<endl;
+    // cout << "Mean of HMS Hodoscope start time: "<< HhodoStartTimeMean <<endl;
+    // cout << "Number of events passing PID cut (without looping over events approach): "<<h1PhodoStartTime->GetEntries()<<endl;
 
     for (Int_t event = 0; event < nEvents; ++event)
     {
-	if(event%10000 == 0)
-	    cout << (Int_t)(100*event/nEvents) <<" % Done"<< endl;
+      //if(event%10000 == 0)
+	  //  cout << (Int_t)(100*event/nEvents) <<" % Done"<< endl;
 
 	tree->GetEntry(event);
 	
@@ -323,12 +323,13 @@ void calc_cointime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents
 
 	if(totEvents<10)
 	{
-	    cout << "HMS 1st Corr: "<< HMScentralPathLen / (speedOfLight*HgtrBetaCalc)<<" 2nd Corr: "<<DeltaHMSpathLength / speedOfLight*HgtrBetaCalc <<" 3rd Corr: "<< (HhodoStartTimeMean - HhodfpHitsTime)<<endl;
-	    cout << "SHMS 1st Corr: "<<SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) <<" 2nd Corr: "<<DeltaSHMSpathLength / speedOfLight*PgtrBetaCalc<< " 3rd Corr: "<<(PhodoStartTimeMean - PhodfpHitsTime) <<endl;
+	  //	    cout << "HMS 1st Corr: "<< HMScentralPathLen / (speedOfLight*HgtrBetaCalc)<<" 2nd Corr: "<<DeltaHMSpathLength / speedOfLight*HgtrBetaCalc <<" 3rd Corr: "<< (HhodoStartTimeMean - HhodfpHitsTime)<<endl;
+	  //cout << "SHMS 1st Corr: "<<SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) <<" 2nd Corr: "<<DeltaSHMSpathLength / speedOfLight*PgtrBetaCalc<< " 3rd Corr: "<<(PhodoStartTimeMean - PhodfpHitsTime) <<endl;
 	}
     }
-    cout << "Total number of events passing the PID cuts (looping over events): "<< totEvents <<endl;
+    //cout << "Total number of events passing the PID cuts (looping over events): "<< totEvents <<endl;
 
+    /*
     TCanvas *c1 = new TCanvas("c1","Beta Distribution");
     c1->Divide(2,2);
     c1->cd(1);
@@ -339,22 +340,25 @@ void calc_cointime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents
     h1PgtrBetaMes->Draw();
     c1->cd(4);
     h1HgtrBetaMes->Draw();
-    
-    TCanvas *c2 = new TCanvas("c2", "Coincidence Time");
-    c2->Divide(2,1);
-    c2->cd(1);
+    */
+
+    //  TCanvas *c2 = new TCanvas("c2", "Coincidence Time");
+    //  c2->Divide(2,1);
+    //  c2->cd(1);
     h1PcointimeROC1->Draw();
-    c2->cd(2);
+    //  c2->cd(2);
     h1PcointimeROC2->Draw();
     // c2->cd(3);
     // h1HcointimeROC1->Draw();
     // c2->cd(4);
     // h1HcointimeROC2->Draw();
 
+    /*
     TCanvas *c3 = new TCanvas("c3", "Focal Plane Hit Time");
     c3->Divide(2,1);
     c3->cd(1);
     h1PhodfpHitsTime->Draw();
     c3->cd(2);
     h1HhodfpHitsTime->Draw();
+    */
 }
