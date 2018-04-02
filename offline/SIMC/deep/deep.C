@@ -338,7 +338,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
    Long64_t nentries  = fChain->GetEntries();
 
    Double_t progress;  //monitor the execution time of this code
-   
+   Double_t counter = 0.0;
    //Begin Looping over EVENTS
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -518,7 +518,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
 
 	  //Cross-Check correlations
 	  cut_emiss_vs_pmiss->Fill(Pm, Em, FullWeight);
-	  cut_edelta_vs_eyptar->Fill(eyptar, edelta, FullWeight);
+	  cut_edelta_vs_eyptar->Fill(e_yptar, e_delta, FullWeight);
 	  
 	  //Focal Plane Quantities
 	  cut_h_xfp_vs_yfp->Fill(h_yfp, h_xfp, FullWeight);
@@ -536,8 +536,8 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
 	  cut_xbj_vs_thnq->Fill(th_nq/dtr, X, FullWeight);  
 	  cut_pm_vs_thnq->Fill(th_nq/dtr, Pm, FullWeight);  
 	  cut_Em_vs_thnq->Fill(th_nq/dtr, Em, FullWeight);
-	  cut_hdelta_vs_thnq->Fill(th_nq/dtr, hdelta, FullWeight);
-	  cut_edelta_vs_thnq->Fill(th_nq/dtr, edelta, FullWeight);
+	  cut_hdelta_vs_thnq->Fill(th_nq/dtr, h_delta, FullWeight);
+	  cut_edelta_vs_thnq->Fill(th_nq/dtr, e_delta, FullWeight);
 
 
 	  //Set Sumw2() to kFLASE
@@ -610,7 +610,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
 
       //Cross-Check correlations
       emiss_vs_pmiss->Fill(Pm, Em, FullWeight);
-      edelta_vs_eyptar->Fill(eyptar, edelta, FullWeight);
+      edelta_vs_eyptar->Fill(e_yptar, e_delta, FullWeight);
 	  
       //Fill 2D HMS Focal Plane Quantities
       h_xfp_vs_yfp->Fill(h_yfp, h_xfp, FullWeight);
@@ -627,8 +627,8 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
       xbj_vs_thnq->Fill(th_nq/dtr, X, FullWeight);
       pm_vs_thnq->Fill(th_nq/dtr, Pm, FullWeight);
       Em_vs_thnq->Fill(th_nq/dtr, Em, FullWeight);
-      hdelta_vs_thnq->Fill(th_nq/dtr, hdelta, FullWeight);
-      edelta_vs_thnq->Fill(th_nq/dtr, edelta, FullWeight);
+      hdelta_vs_thnq->Fill(th_nq/dtr, h_delta, FullWeight);
+      edelta_vs_thnq->Fill(th_nq/dtr, e_delta, FullWeight);
 
       //Set Sumw2() to kFALSE, to get true number of counts per bin
       Emiss->Sumw2(kFALSE);         //Set error calculated by weight false (use sqrt(bin_content) by default.)
@@ -638,32 +638,13 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
       xbj->Sumw2(kFALSE);
       theta_nq->Sumw2(kFALSE);
       
-   
-   
-      // if (Cut(ientry) < 0) continue;
-
-      progress = (double)jentry / (double)nentries;
-      cout << "progress: " << progress << " %" << endl;
-      /*
-      while (progress < 1.0) {
-	int barWidth = 70;
-	
-	std::cout << "[";
-	int pos = barWidth * progress;
-	for (int i = 0; i < barWidth; ++i) {
-	  if (i < pos) std::cout << "=";
-	  else if (i == pos) std::cout << ">";
-	  else std::cout << " ";
-	}
-	std::cout << "] " << int(progress * 100.0) << " %\r";
-	std::cout.flush();
-	
-	progress += 0.16; // for demonstration only
-      }
-      std::cout << std::endl;
-      */  
-   
+  
+       
+      
    } // end loop over entries
+
+      
+
    /*
  //----Spectrometer resolution calculation-----
 

@@ -92,7 +92,7 @@ void analyze_simc()
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, 1, 1, charge);
+  simc->Loop(simc_file, 40, 1, 1);
   chain.Reset();
   
   /*

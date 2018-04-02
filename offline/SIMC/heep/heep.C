@@ -299,9 +299,9 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
    Double_t beam_time;
 
  
-   e_trk_eff = 0.9669;
-   h_trk_eff = 0.9983;     
-   cpu_dt = 0.9626;   
+   e_trk_eff = 1.0;
+   h_trk_eff = 1.0;     
+   cpu_dt = 1.0;   
 
    
    Double_t FullWeight;
@@ -398,7 +398,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
       
       //The events must be weighted properly, so that they represent true Yield, and
       //can be compare to actual data
-      FullWeight = (Normfac*Weight*charge_factor*e_trk_eff*h_trk_eff*cpu_dt)/nentries;
+      FullWeight = (Normfac*Weight*charge_factor*e_trk_eff*h_trk_eff)/nentries;
 
       //cout << "Normfac: " << Normfac << endl;
       //cout << "Weight: " << Weight << endl;
@@ -577,7 +577,9 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
    simc_file.ReplaceAll(".root", ".report");   // 5 = length( $name )
  
    ofstream data;
-   data.open(simc_file); 
+   TString orepo_name("./SIMC_ROOTfiles/");
+   orepo_name.Append(simc_file);
+   data.open(orepo_name.Data()); 
 
    
    /*
