@@ -101,7 +101,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
 
    //----------------------------------------------------
    
-   
+
    //********* Create 1D Histograms **************
    //Kinematics Quantities
    TH1F *Emiss = new TH1F("Emiss","missing energy", Em_nbins, Em_xmin, Em_xmax);       //min width = 21.6 (0.0216)MeV,  COUNTS/25 MeV
@@ -581,9 +581,9 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
       
    y_tar->Fill(tar_y, FullWeight);
    
-
+   
    z_tar->Fill(tar_z, FullWeight);   
-      
+   
       //Hadron-Arm Target Reconstruction 
       hytar->Fill(h_ytar, FullWeight);
       hxptar->Fill(h_xptar, FullWeight);
@@ -663,7 +663,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
       std::cout << std::endl;
       */  
    
-
+   } // end loop over entries
    /*
  //----Spectrometer resolution calculation-----
 
@@ -690,7 +690,8 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
    orepo_name.Append(simc_file);
    data.open(orepo_name.Data()); 
 
-   }
+   
+
    
    /*
    data << "HMS Delta Resolution: " << h_sigma << " %" << endl;
@@ -753,6 +754,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
        data << miss_p*1000. << "     " << content << "     " << err << "    " <<  cut_content << "     " << cut_err << "    " << endl;
        
      }
+   
    data.close();
 
    outfile->Write();
