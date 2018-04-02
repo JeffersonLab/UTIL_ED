@@ -102,7 +102,7 @@ void charge_counter(string exp, int run_num, int evtNUM)
    T->Draw("P.gtr.dp:P.gtr.ph>>data_edelta_vs_eyptar", em_cut, "colz");
    
    c1->cd(6);
-   calc_cointime(1854, "e", -1);
+   calc_cointime(run_num, "e", -1);
  
 
    c1->Update();

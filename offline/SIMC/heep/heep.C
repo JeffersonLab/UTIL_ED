@@ -2,13 +2,14 @@
 #define heep_cxx
 #include "heep.h"
 #include "../../header_files/set_heep_histos.h"
-#include "../../header_files/useful_functions.h"
+//#include "../../header_files/useful_functions.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 //#include <fstream>
 //#include <iostream>
-void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) //Default parameter is 1
+void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge, 
+		Double_t etrkEff, Double_t htrkEff, Double_t cLT) //Default parameter is 1
 {
 //   In a ROOT session, you can do:
 //      root> .L heep.C
@@ -46,7 +47,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
    Double_t MN = 0.939566; //GeV
    Double_t me = 0.000510998;
    
-   TString ofile_name("./SIMC_ROOTfiles/weighted_");
+   TString ofile_name("./SIMC_ROOTfiles/weighted_Charge");
    ofile_name.Append(simc_file);
    
    //create output root file
@@ -268,6 +269,10 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
    //SIMC assumes it is #generated_events / 1mC
 
    Double_t charge_factor;
+   
+   Double_t e_trkEff;
+   Double_t h_trkEff;
+   Double_t c_LT;
 
    //If charge param is set to default, then use Ib and time input param 
    if(charge==1)
@@ -275,31 +280,35 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
        cout << "Using Ib and time as inputs . . " << endl;
        charge_factor = Ib * time * 3600. / 1000.;   //in units of mC
     
+       //Set eff/LT to unity
+       e_trkEff = 1.0;
+       h_trkEff = 1.0;
+       c_LT = 1.0;
      }
-
-   //run 1929
-   //Double_t Q_bcm1 = 161907.065;   //in uC
-   //Double_t Q_bcm2 = 164453.167;   //in uC
 
    //check if set to default values, take average charge as input
    if(time==1&&Ib==1)
      {
        cout << "Using total charge from data ... " << endl;
        charge_factor = charge / 1000.;   //in mC
+                                                                                                 
+       //Set Efficiencies/computer Live Time to user input
+       e_trkEff = etrkEff;
+       h_trkEff = htrkEff;
+       c_LT = cLT;
+
+       cout << "**************************************" << endl;   
+       cout << "Setting Efficiencies and CPU Live Time" << endl;                                    
+       cout << "**************************************" << endl; 
+       cout << "e- trkEff = " << e_trkEff << endl;
+       cout << "hadron trkEff = " << h_trkEff << endl;      
+       cout << "CPU LT = " << c_LT << endl;
+       cout << "**************************************" << endl;                                                                                             
      }
 
 
    //Tracking efficiencies and beamON time
-   Double_t cpu_dt;     //computer deadtime
-   Double_t e_trk_eff;  //electron tracking efficiencies
-   Double_t h_trk_eff;  //hadron tracking efficiencies
    Double_t beam_time;
-
- 
-   e_trk_eff = 1.0;
-   h_trk_eff = 1.0;     
-   cpu_dt = 1.0;   
-
    
    Double_t FullWeight;
    
@@ -395,7 +404,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
       
       //The events must be weighted properly, so that they represent true Yield, and
       //can be compare to actual data
-      FullWeight = (Normfac*Weight*charge_factor*e_trk_eff*h_trk_eff)/nentries;
+      FullWeight = (Normfac*Weight*charge_factor*e_trkEff*h_trkEff*c_LT)/nentries;
 
       //cout << "Normfac: " << Normfac << endl;
       //cout << "Weight: " << Weight << endl;

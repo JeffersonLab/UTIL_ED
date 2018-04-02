@@ -11,11 +11,11 @@
  --->  variable_name : value +- error 
 */
 
-Double_t getVal(string report_file, string variable="", string return_value="")
+Double_t getVal(TString report_file, string variable="", string return_value="")
 {
 
   ifstream myfile;
-  myfile.open(report_file.c_str());
+  myfile.open(report_file);
 
   string line;
   Int_t counter = 0;
