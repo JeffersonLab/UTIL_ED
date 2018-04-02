@@ -43,82 +43,32 @@ void analyze_simc()
   TString data_file;
   TString rep_file;
   
-  /*
-  //--Estimate Spectrometer Resolution
-  Ib = 40.;
-  time = 1.;
-  simc_file = "heep_simc_rad.root";
-  cout << "Analyzing: " << simc_file << endl;
-  chain.Add("../worksim/"+simc_file);
-  simc->Init(&chain);
-  simc->Loop(simc_file, Ib, time);
-  chain.Reset();
-  */
-  
-  /*
-  //E12-10-003 H(e,e'p) Check!
 
-  //------Get TRUE accumulated charge from actual data to use in SIMC--------
-  runNUM = 1854;
-  evtNUM = -1;
-  data_file = Form("../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
-  Q1 = getCharge("SHMS", "BCM4A", data_file);
-  Q2 = getCharge("SHMS", "BCM4B", data_file);
-  charge = (Q1 + Q2)/2.;
-  //-------------------------------------------------------------------------
-    
-  simc_file = Form("heep_simc_rad_%d_%d.root", runNUM, evtNUM);
-  cout << "Analyzing: " << simc_file << endl;
-  chain.Add("../worksim/"+simc_file);
-  simc->Init(&chain);
-  simc->Loop(simc_file, 1, 1, charge);
-  chain.Reset();
-  */ 
-
+ 
+  /*
   //----Practice HEEP check using coin run 1854---
   runNUM = 1854;
   evtNUM = -1;
-  data_file = Form("../../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
-  Q1 = getCharge("SHMS", "BCM4A", data_file);
-  Q2 = getCharge("SHMS", "BCM4B", data_file);
-  charge = (Q1 + Q2)/2.;
 
-  rep_file = "../../online/CHARGE_REPORTS/";
-  
-
-  //-------------------------------------------------------------------------
-    
   simc_file = Form("ep_coin_simc_%d.root", runNUM);
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
   simc->Loop(simc_file, 40, 1, 1);
   chain.Reset();
-  
-  /*
-  
-  //Coin Run 1929
-  //electron_arm = "HMS";
-  Ib = 40.;
-  time = 1.;
-  simc_file = "ep_coin_simc_1929.root";
-  cout << "Analyzing: " << simc_file << endl;
-  chain.Add("../worksim/"+simc_file);
-  simc->Init(&chain);
-  simc->Loop(simc_file, Ib, time);
-  chain.Reset();
-
-  
-  
-  //Coin Run 2279
-  electron_arm = "SHMS";
-  simc_file = "ep_coin_simc_1929.root";
-  cout << "Analyzing: " << simc_file << endl;
-  chain.Add("../worksim/"+simc_file);
-  simc->Init(&chain);
-  simc->Loop(simc_file, electron_arm);
-  chain.Reset();
+  //--------------------------------------------
   */
+
+
+  //E12-10-003 H(e,e'p) Check SIMC
+  Ib = 40;     //Assume 40 uA
+  time = 1.0;  //beam time 1hr
+  simc_file = "heep_simc_rad.root";
+  cout << "Analyzing: " << simc_file << endl;
+  chain.Add("./worksim_voli/"+simc_file);
+  simc->Init(&chain);
+  simc->Loop(simc_file, Ib, time, 1);
+  chain.Reset();
 
 }
 

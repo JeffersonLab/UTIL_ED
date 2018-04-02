@@ -101,7 +101,7 @@ void analyze_heepData(int runNUM, int evtNUM)
    TH2F *data_hxptar_vs_exptar = new TH2F("data_hxptar_vs_exptar", "HMS vs. SHMS, X'_{tar}", exptar_nbins, exptar_xmin, exptar_xmax, hxptar_nbins, hxptar_xmin, hxptar_xmax);
    TH2F *data_hyptar_vs_eyptar = new TH2F("data_hyptar_vs_eyptar", "HMS vs. SHMS, Y'_{tar}", eyptar_nbins, eyptar_xmin, eyptar_xmax, hyptar_nbins, hyptar_xmin, hyptar_xmax);
    TH2F *data_hdelta_vs_edelta = new TH2F("data_hdelta_vs_edelta", "HMS vs. SHMS, #delta", edelta_nbins, edelta_xmin, edelta_xmax, hdelta_nbins, hdelta_xmin, hdelta_xmax);
-  
+   
    
    /*********************************************/
    
@@ -129,19 +129,19 @@ void analyze_heepData(int runNUM, int evtNUM)
    T->Draw(Form("%s.kin.primary.W>>data_W_inv", primary.c_str()), em_cut);
    T->Draw(Form("(%s.kin.primary.scat_ang_rad*180./3.14)>>data_theta_elec", primary.c_str()), em_cut);
    T->Draw(Form("(%s.kin.secondary.xangle*180./3.14)>>data_theta_prot", secondary.c_str()), em_cut); 
-
+   
    //Additional Kinematic Variables
    T->Draw(Form("%s.kin.primary.W2>>data_W2", primary.c_str()), em_cut);
    T->Draw(Form("%s.kin.primary.x_bj>>data_xbj", primary.c_str()), em_cut);
    T->Draw(Form("%s.gtr.p>>data_Pf", primary.c_str()), em_cut);
    T->Draw(Form("%s.gtr.p>>(data_kf)", secondary.c_str()), em_cut);
-
+   
    //Target Reconstruction Variables ????? What are these in data????
-   //T->Draw(Form("");
-   //T->Draw(Form("");
-   //T->Draw(Form("%s.react.z>>data_z_tar", primary.c_str()), em_cut);
-
-   //Target Recon, 2d
+   T->Draw(Form("%s.react.x>>data_x_tar", primary.c_str()), em_cut);
+   T->Draw(Form("%s.react.y>>data_y_tar", primary.c_str()), em_cut);
+   T->Draw(Form("%s.react.z>>data_z_tar", primary.c_str()), em_cut);
+		   
+		   //Target Recon, 2d
    //T->Draw(Form("%s.react.z:%s.gtr.ph>>data_reactz_vs_yptar", primary.c_str(), primary.c_str()), em_cut);
    
    //Secondary arm Reconstructed Quantities ( xtar, ytar, xptar, yptar, delta), theta: xptar, phi:yptar

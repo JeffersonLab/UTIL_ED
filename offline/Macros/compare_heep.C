@@ -5,8 +5,10 @@ void compare_heep()
 {
   
 
-  TString simc_filename =  "weighted_ep_coin_simc_1854.root"; //"ep_coin_simc_1929.root";
-  TString data_filename =  "heep_data_1854_-1.root";  //"heep_data_1929.root";
+  //TString simc_filename =  "weighted_ep_coin_simc_1854.root"; //"ep_coin_simc_1929.root";
+  
+  TString simc_filename =  "weighted_heep_simc_rad.root";
+  TString data_filename =  "heep_data_1854_-1.root"; 
 
   TString simc_rootfile;
   TString data_rootfile;

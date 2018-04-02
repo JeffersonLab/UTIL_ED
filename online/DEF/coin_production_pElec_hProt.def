@@ -21,6 +21,7 @@ block P.cal.etracknorm
 block P.gtr.*
 block P.kin.*
 
+block P.react.*
 
 block P.cal.etottracknorm
 block P.cal.eprtracknorm

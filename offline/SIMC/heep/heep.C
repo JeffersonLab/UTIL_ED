@@ -107,8 +107,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
    */
    
    //********* Create 1D Histograms **************
-   Int_t bins =100;
-
+ 
    //Kinematics Quantities
    TH1F *Emiss = new TH1F("Emiss","missing energy", Em_nbins, Em_xmin, Em_xmax);       //min width = 21.6 (0.0216)MeV,  COUNTS/25 MeV
    TH1F *pm = new TH1F("pm","missing momentum", Pm_nbins, Pm_xmin, Pm_xmax);  //min width = 32 MeV (0.032)
@@ -122,7 +121,6 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
    TH1F *W_2 = new TH1F("W2", "Invariant Mass W2", W2_nbins, W2_xmin, W2_xmax);
    TH1F *xbj = new TH1F("xbj", "x-Bjorken", xbj_nbins, xbj_xmin, xbj_xmax);
    TH1F *P_f = new TH1F("P_f", "Final Proton Momentum", Pf_nbins, Pf_xmin, Pf_xmax);
-   TH1F *k_i = new TH1F("ki", "Initial e^{-} Momentum", bins, 8., 12.);
    TH1F *k_f = new TH1F("kf", "Final e^{-} Momentum", kf_nbins, kf_xmin, kf_xmax);
 
    
@@ -186,7 +184,6 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
    TH1F *cut_W_2 = new TH1F("cut_W2", "Invariant Mass W2", W2_nbins, W2_xmin, W2_xmax);
    TH1F *cut_xbj = new TH1F("cut_xbj", "x-Bjorken", xbj_nbins, xbj_xmin, xbj_xmax);
    TH1F *cut_P_f = new TH1F("cut_P_f", "Final Proton Momentum", Pf_nbins, Pf_xmin, Pf_xmax);
-   TH1F *cut_k_i = new TH1F("cut_ki", "Initial e^{-} Momentum", bins, 8., 12.);
    TH1F *cut_k_f = new TH1F("cut_kf", "Final e^{-} Momentum", kf_nbins, kf_xmin, kf_xmax);
 
    
@@ -426,7 +423,6 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
 	  cut_W_2->Fill(W2, FullWeight); 
 	  cut_xbj->Fill(X, FullWeight); 
 	  cut_P_f->Fill(Pf, FullWeight);
-	  cut_k_i->Fill(ki, FullWeight); 
 	  cut_k_f->Fill(kf, FullWeight);
 	  
 	  //Reconstructed Target Quantities (Lab Frame)
@@ -495,7 +491,6 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge) 
       W_2->Fill(W2, FullWeight); 
       xbj->Fill(X, FullWeight); 
       P_f->Fill(Pf, FullWeight);
-      k_i->Fill(ki, FullWeight); 
       k_f->Fill(kf, FullWeight);
    
       

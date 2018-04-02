@@ -30,7 +30,7 @@ Double_t Q2_xmax = 5.;
 
 //omega (E-E')
 Double_t om_nbins = nbins;
-Double_t om_xmin = 3.;
+Double_t om_xmin = 0.;
 Double_t om_xmax = 5.;
 
 //W_inv
@@ -45,7 +45,7 @@ Double_t the_xmax = 15.;
 
 //theta_prot
 Double_t thp_nbins = nbins;
-Double_t thp_xmin = 35.;
+Double_t thp_xmin = 30.;
 Double_t thp_xmax = 45.;
 
 //-------Additional Kinematic Variables----------
@@ -97,8 +97,8 @@ Double_t hyptar_xmin = -0.05;
 Double_t hyptar_xmax = 0.04;
 
 Double_t hdelta_nbins = nbins;
-Double_t hdelta_xmin = -12.;
-Double_t hdelta_xmax = 10.;
+Double_t hdelta_xmin = -15.;
+Double_t hdelta_xmax = 15.;
 
 //Hadron arm Focal Plane Quantities
 //X-focal plane
