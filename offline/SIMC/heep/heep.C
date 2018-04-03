@@ -9,7 +9,7 @@
 //#include <fstream>
 //#include <iostream>
 void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge, 
-		Double_t etrkEff, Double_t htrkEff, Double_t cLT) //Default parameter is 1
+		Double_t etrkEff, Double_t htrkEff, Double_t cLT, int runNUM) //Default parameter is 1
 {
 //   In a ROOT session, you can do:
 //      root> .L heep.C
@@ -47,7 +47,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    Double_t MN = 0.939566; //GeV
    Double_t me = 0.000510998;
    
-   TString ofile_name("./SIMC_ROOTfiles/weightedCharge_");
+   TString ofile_name = Form("./SIMC_ROOTfiles/weighted_run%d_", runNUM);
    ofile_name.Append(simc_file);
    
    //create output root file

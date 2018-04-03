@@ -98,7 +98,8 @@ void analyze_simc(int runNUM, int evtNUM)
 
   cout << "*****************************************" << endl;
   cout << "" << endl;
-  cout << "SIMC: Setting the following for simulation . . ." << endl;
+  cout << "SIMC: Setting the following to be used in " << endl;
+  cout << "the weight factor during simulation " << endl;
   cout << "Q1 (BCM4A) = " << Q1 << " uC" << endl;
   cout << "Q2 (BCM4A) = " << Q2 << " uC" << endl;
   cout << "Avg. Charge = " << charge << " uC" << endl;
@@ -110,11 +111,13 @@ void analyze_simc(int runNUM, int evtNUM)
 
   
   //E12-10-003 H(e,e'p) Check SIMC
-  simc_file = "heep_simc_rad.root";
+  simc_file = "heep_simc_rad.root";    //pre-defined simc rootfile
+
+
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, 1, 1, charge, e_trkEff, h_trkEff, c_LT);
+  simc->Loop(simc_file, 1, 1, charge, e_trkEff, h_trkEff, c_LT, runNUM);
   chain.Reset();
 
 

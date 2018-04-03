@@ -1,8 +1,8 @@
 //Analysis for HMS/SHMS coincidence D(e,e'p)n, High Missing Momentum Setting (580, 750) MeV
 #define deep_cxx
 #include "deep.h"
-//#include "../../header_files/set_lowdeep_histos.h"
-#include "../../header_files/set_highdeep_histos.h"
+#include "../../header_files/set_lowdeep_histos.h"
+//#include "../../header_files/set_highdeep_histos.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -45,7 +45,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    Double_t MN = 0.939566; //GeV
    Double_t me = 0.000510998; //GeV
    
-   TString ofile_name("./SIMC_ROOTfiles/weightedCharge_");
+   TString ofile_name("./SIMC_ROOTfiles/weighted_");
    ofile_name.Append(simc_file);
   
    //create output root file

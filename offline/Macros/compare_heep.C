@@ -1,24 +1,25 @@
 //Script to make comparison between SIMC and Commissioning Data from HallC Spring 2018
 //Compare Target Reconstruction/FOCAL PLANE/ Kinematics Variables
 
-void compare_heep()
+void compare_heep(int runNUM, int evtNUM)
 {
   
 
   //TString simc_filename =  "weighted_ep_coin_simc_1854.root"; //"ep_coin_simc_1929.root";
   
-  TString simc_filename =  "weighted_heep_simc_rad.root";
-  TString data_filename =  "heep_data_1854_-1.root"; 
+  //Pre-defined SIMC/data root file names containing histogram object to comapare
+  TString simc_filename =  Form("weighted_run%d_heep_simc_rad.root", runNUM);
+  TString data_filename =  Form("heep_data_%d_%d.root", runNUM, evtNUM); 
 
-  TString simc_rootfile;
-  TString data_rootfile;
+  TString simc_path;
+  TString data_path;
   
-  simc_rootfile = "../SIMC/heep/SIMC_ROOTfiles/"+simc_filename;
-  data_rootfile = "../DATA/DATA_ROOTfiles/"+data_filename;
+  simc_path = "../SIMC/heep/SIMC_ROOTfiles/"+simc_filename;
+  data_path = "../DATA/DATA_ROOTfiles/"+data_filename;
   
   //Open SIMC/data ROOT files;
-  TFile *simc_file = new TFile(simc_rootfile);
-  TFile *data_file = new TFile(data_rootfile);
+  TFile *simc_file = new TFile(simc_path);
+  TFile *data_file = new TFile(data_path);
 
   //---------------Target Reconstruction Variables----------------
   //Define SIMC histos ('h'-->hadron arm,  'e'-->electron arm)
@@ -304,57 +305,57 @@ void compare_heep()
 
    
    c1->cd(1);
-   data_hytar->DrawNormalized();
-   simc_hytar->DrawNormalized("same");
+   data_hytar->Draw();
+   simc_hytar->Draw("same");
    leg1->AddEntry(data_hytar,"Data","f");
    leg1->AddEntry(simc_hytar,"SIMC");
    leg1->Draw();
 
    c1->cd(2);
-   data_hxptar->DrawNormalized();
-   simc_hxptar->DrawNormalized("same");
+   data_hxptar->Draw();
+   simc_hxptar->Draw("same");
    leg2->AddEntry(data_hxptar,"Data", "f");
    leg2->AddEntry(simc_hxptar,"SIMC");
    leg2->Draw();
 
    c1->cd(3);
-   data_hyptar->DrawNormalized();
-   simc_hyptar->DrawNormalized("same");
+   data_hyptar->Draw();
+   simc_hyptar->Draw("same");
    leg3->AddEntry(data_hyptar,"Data", "f");
    leg3->AddEntry(simc_hyptar,"SIMC");
    leg3->Draw();
      
    c1->cd(4);
-   data_hdelta->DrawNormalized();
-   simc_hdelta->DrawNormalized("same");
+   data_hdelta->Draw();
+   simc_hdelta->Draw("same");
    leg4->AddEntry(data_hdelta,"Data", "f");
    leg4->AddEntry(simc_hdelta,"SIMC");
    leg4->Draw();
 
    c1->cd(5);
-   data_eytar->DrawNormalized();
-   simc_eytar->DrawNormalized("same");
+   data_eytar->Draw();
+   simc_eytar->Draw("same");
    leg5->AddEntry(data_eytar,"Data","f");
    leg5->AddEntry(simc_eytar,"SIMC");
    leg5->Draw();
 
    c1->cd(6);
-   data_exptar->DrawNormalized();
-   simc_exptar->DrawNormalized("same");
+   data_exptar->Draw();
+   simc_exptar->Draw("same");
    leg6->AddEntry(data_exptar,"Data", "f");
    leg6->AddEntry(simc_exptar,"SIMC");
    leg6->Draw();
 
    c1->cd(7);
-   data_eyptar->DrawNormalized();
-   simc_eyptar->DrawNormalized("same");
+   data_eyptar->Draw();
+   simc_eyptar->Draw("same");
    leg7->AddEntry(data_eyptar,"Data", "f");
    leg7->AddEntry(simc_eyptar,"SIMC");
    leg7->Draw();
      
    c1->cd(8);
-   data_edelta->DrawNormalized();
-   simc_edelta->DrawNormalized("same");
+   data_edelta->Draw();
+   simc_edelta->Draw("same");
    leg8->AddEntry(data_edelta,"Data", "f");
    leg8->AddEntry(simc_edelta,"SIMC");
    leg8->Draw();
@@ -380,57 +381,57 @@ void compare_heep()
    c2->Divide(4,2);
 
    c2->cd(1);
-   data_hxfp->DrawNormalized();
-   simc_hxfp->DrawNormalized("same");
+   data_hxfp->Draw();
+   simc_hxfp->Draw("same");
    leg9->AddEntry(data_hxfp,"Data","f");
    leg9->AddEntry(simc_hxfp,"SIMC");
    leg9->Draw();
 
    c2->cd(2);
-   data_hyfp->DrawNormalized();
-   simc_hyfp->DrawNormalized("same");
+   data_hyfp->Draw();
+   simc_hyfp->Draw("same");
    leg10->AddEntry(data_hyfp,"Data", "f");
    leg10->AddEntry(simc_hyfp,"SIMC");
    leg10->Draw();
 
    c2->cd(3);
-   data_hxpfp->DrawNormalized();
-   simc_hxpfp->DrawNormalized("same");
+   data_hxpfp->Draw();
+   simc_hxpfp->Draw("same");
    leg11->AddEntry(data_hxpfp,"Data", "f");
    leg11->AddEntry(simc_hxpfp,"SIMC");
    leg11->Draw();
      
    c2->cd(4);
-   data_hypfp->DrawNormalized();
-   simc_hypfp->DrawNormalized("same");
+   data_hypfp->Draw();
+   simc_hypfp->Draw("same");
    leg12->AddEntry(data_hypfp,"Data", "f");
    leg12->AddEntry(simc_hypfp,"SIMC");
    leg12->Draw();
 
    c2->cd(5);
-   data_exfp->DrawNormalized();
-   simc_exfp->DrawNormalized("same");
+   data_exfp->Draw();
+   simc_exfp->Draw("same");
    leg13->AddEntry(data_exfp,"Data","f");
    leg13->AddEntry(simc_exfp,"SIMC");
    leg13->Draw();
    
    c2->cd(6);
-   data_eyfp->DrawNormalized();
-   simc_eyfp->DrawNormalized("same");
+   data_eyfp->Draw();
+   simc_eyfp->Draw("same");
    leg14->AddEntry(data_eyfp,"Data", "f");
    leg14->AddEntry(simc_eyfp,"SIMC");
    leg14->Draw();
 
    c2->cd(7);
-   data_expfp->DrawNormalized();
-   simc_expfp->DrawNormalized("same");
+   data_expfp->Draw();
+   simc_expfp->Draw("same");
    leg15->AddEntry(data_expfp,"Data", "f");
    leg15->AddEntry(simc_expfp,"SIMC");
    leg15->Draw();
      
    c2->cd(8);
-   data_eypfp->DrawNormalized();
-   simc_eypfp->DrawNormalized("same");
+   data_eypfp->Draw();
+   simc_eypfp->Draw("same");
    leg16->AddEntry(data_eypfp,"Data", "f");
    leg16->AddEntry(simc_eypfp,"SIMC");
    leg16->Draw();
@@ -451,36 +452,36 @@ void compare_heep()
    c3->Divide(3,2);
    
    c3->cd(1);
-   data_emiss->DrawNormalized();
-   simc_emiss->DrawNormalized("same");
+   data_emiss->Draw();
+   simc_emiss->Draw("same");
    leg17->AddEntry(data_emiss,"Data","f");
    leg17->AddEntry(simc_emiss,"SIMC");
    leg17->Draw();
 
    c3->cd(2);
-   data_pmiss->DrawNormalized();
-   simc_pmiss->DrawNormalized("same");
+   data_pmiss->Draw();
+   simc_pmiss->Draw("same");
    leg18->AddEntry(data_pmiss,"Data", "f");
    leg18->AddEntry(simc_pmiss,"SIMC");
    leg18->Draw();
 
    c3->cd(3);
-   data_Q2->DrawNormalized();
-   simc_Q2->DrawNormalized("same");
+   data_Q2->Draw();
+   simc_Q2->Draw("same");
    leg19->AddEntry(data_Q2,"Data", "f");
    leg19->AddEntry(simc_Q2,"SIMC");
    leg19->Draw();
      
    c3->cd(4);
-   data_omega->DrawNormalized();
-   simc_omega->DrawNormalized("same");
+   data_omega->Draw();
+   simc_omega->Draw("same");
    leg20->AddEntry(data_omega,"Data", "f");
    leg20->AddEntry(simc_omega,"SIMC");
    leg20->Draw();
 
    c3->cd(5);
-   data_W->DrawNormalized();
-   simc_W->DrawNormalized("same");
+   data_W->Draw();
+   simc_W->Draw("same");
    leg21->AddEntry(data_W,"Data", "f");
    leg21->AddEntry(simc_W,"SIMC");
    leg21->Draw();
