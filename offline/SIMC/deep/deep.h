@@ -169,7 +169,7 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge);
+   virtual void     Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge, Double_t etrkEff, Double_t htrkEff, Double_t cLT);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 };

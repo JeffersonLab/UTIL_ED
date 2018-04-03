@@ -7,7 +7,7 @@
 // run an analysis based on SNT.C the analyysis script for the simc n-tuple
 // this script is setup for the proposed commissioning runs. the steps in pm are 0.15 GeV/c
 
-void analyze_simc()
+void analyze_simc(int runNUM, int evtNUM)
 {
 
   gROOT->Reset();
@@ -33,8 +33,6 @@ void analyze_simc()
   Double_t c_LT;    //computer Live Time
   Double_t elec_LT;   //electronic Live Time
   
-  Int_t runNUM;
-  Int_t evtNUM;
 
   
   
@@ -82,8 +80,6 @@ void analyze_simc()
 
 
   //------REALISTIC Estimation of Full Weight---------
-  runNUM = 1854;
-  evtNUM = -1;
 
   data_file = Form("../../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM );
   report_file = Form("../../../online/CHARGE_REPORTS/heep_report_%d.report", runNUM);
@@ -97,8 +93,22 @@ void analyze_simc()
   e_trkEff = getVal(report_file, "SHMS E SING FID TRACK EFFIC", "val");
   h_trkEff = getVal(report_file, "HMS HADRON SING FID TRACK EFFIC", "val");
   c_LT = getVal(report_file, "ROC2 Pre-Scaled Ps1 ROC2 Computer Live Time", "val");
+  
   c_LT = c_LT/100.;  //convert from percern to fraction
-  if (c_LT<=0 || c_LT >= 1) {c_LT = 1.0;}  //
+
+  cout << "*****************************************" << endl;
+  cout << "" << endl;
+  cout << "SIMC: Setting the following for simulation . . ." << endl;
+  cout << "Q1 (BCM4A) = " << Q1 << " uC" << endl;
+  cout << "Q2 (BCM4A) = " << Q2 << " uC" << endl;
+  cout << "Avg. Charge = " << charge << " uC" << endl;
+  cout << "e- trkEff = " << e_trkEff <<  endl;
+  cout << "hadron trkEff = " << h_trkEff <<  endl;
+  cout << "CPU Live Time = " << c_LT <<  endl;
+  cout << "*****************************************" << endl;
+
+
+  
   //E12-10-003 H(e,e'p) Check SIMC
   simc_file = "heep_simc_rad.root";
   cout << "Analyzing: " << simc_file << endl;

@@ -277,7 +277,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    //If charge param is set to default, then use Ib and time input param 
    if(charge==1)
      {
-       cout << "Using Ib and time as inputs . . " << endl;
+       cout << "Using beam and time as inputs . . " << endl;
        charge_factor = Ib * time * 3600. / 1000.;   //in units of mC
     
        //Set eff/LT to unity
@@ -307,9 +307,6 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
      }
 
 
-   //Tracking efficiencies and beamON time
-   Double_t beam_time;
-   
    Double_t FullWeight;
    
 

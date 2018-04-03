@@ -3,11 +3,11 @@
 #include "deep.h"
 //#include "../../header_files/set_lowdeep_histos.h"
 #include "../../header_files/set_highdeep_histos.h"
-#include "../../header_files/useful_functions.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
-void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
+void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
+		Double_t etrkEff, Double_t htrkEff, Double_t cLT) //Default parameter is 1)
 {
 //   In a ROOT session, you can do:
 //      root> .L deep.C
@@ -264,7 +264,6 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
    Double_t Kn;            //neutron kinetic energy
    Double_t th_nq;       //Angle betweenq-vector and neutron
    Double_t th_q;        //Angle between q-vector and beamline (+z axis --lab)
-   Double_t Em_v2;      //missing energy v.2
    
    //DEFINE KINEMATICS Limits
 
@@ -300,33 +299,44 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge)
    //Double_t time = 1.0;     //estimated time (in hours) a run takes (start - end) of run
    Double_t charge_factor;
 
+   Double_t e_trkEff;
+   Double_t h_trkEff;
+   Double_t c_LT;
+   
    if(charge==1)
      {
-       cout << "Using Ib and time as inputs . . " << endl;
+       cout << "Using beam current and time as inputs . . " << endl;
        charge_factor = Ib * time * 3600. / 1000.;   //in units of mC
-    
-     }
 
-   //run 1929
-   //Double_t Q_bcm1 = 161907.065;   //in uC
-   //Double_t Q_bcm2 = 164453.167;   //in uC
+       //Set eff/LT to unity
+       e_trkEff = 1.0;
+       h_trkEff = 1.0;
+       c_LT = 1.0;
+     }
 
    //check if set to default values, take average charge as input
    if(time==1&&Ib==1)
      {
        cout << "Using total charge from data ... " << endl;
        charge_factor = charge / 1000.;   //in mC
+
+       //Set Efficiencies/computer Live Time to user input
+       e_trkEff = etrkEff;
+       h_trkEff = htrkEff;
+       c_LT = cLT;
+
+       cout << "**************************************" << endl;   
+       cout << "Setting Efficiencies and CPU Live Time" << endl;                                    
+       cout << "**************************************" << endl; 
+       cout << "e- trkEff = " << e_trkEff << endl;
+       cout << "hadron trkEff = " << h_trkEff << endl;      
+       cout << "CPU LT = " << c_LT << endl;
+       cout << "**************************************" << endl; 
+
+ 
      }
    
-   //Tracking efficiencies and beamON time
-   Double_t e_trk_eff;
-   Double_t h_trk_eff;
-   Double_t beam_time;
 
-
-   //Set to 1 for SIMC
-   e_trk_eff = 1.0;
-   h_trk_eff = 1.0;
 
    Double_t FullWeight;
    
