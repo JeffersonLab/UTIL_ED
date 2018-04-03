@@ -47,7 +47,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    Double_t MN = 0.939566; //GeV
    Double_t me = 0.000510998;
    
-   TString ofile_name("./SIMC_ROOTfiles/weighted_Charge");
+   TString ofile_name("./SIMC_ROOTfiles/weightedCharge_");
    ofile_name.Append(simc_file);
    
    //create output root file

@@ -45,7 +45,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    Double_t MN = 0.939566; //GeV
    Double_t me = 0.000510998; //GeV
    
-   TString ofile_name("./SIMC_ROOTfiles/weighted_");
+   TString ofile_name("./SIMC_ROOTfiles/weightedCharge_");
    ofile_name.Append(simc_file);
   
    //create output root file
@@ -456,7 +456,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
       
       //The events must be weighted properly, so that they represent true Yield, and
       //can be compare to actual data
-      FullWeight = (Normfac*Weight*charge_factor*e_trk_eff*h_trk_eff)/nentries;
+      FullWeight = (Normfac*Weight*charge_factor*e_trkEff*h_trkEff*c_LT)/nentries;
 
       //-----------DEBUGGING------------------
       //cout << "Normfac: " << Normfac << endl;
