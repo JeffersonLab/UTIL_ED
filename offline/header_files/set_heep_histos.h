@@ -70,6 +70,13 @@ Double_t kf_nbins = nbins;
 Double_t kf_xmin = 7.;
 Double_t kf_xmax = 9.5;
 
+//th_q
+Double_t thq_nbins = nbins;
+Double_t thq_xmin = 0;
+Double_t thq_xmax = 70;
+
+
+
 //------Target Reconstruction Variables----------
 Double_t xtar_nbins = nbins;
 Double_t xtar_xmin = -0.25;

@@ -2,8 +2,8 @@ block T.coin.hTRIG*
 block T.coin.pTRIG*
 
 block H.cer.npe*
-block H.dc.x*
-block H.dc.y*
+block H.hod*
+block H.dc.*
 block H.cal.etracknorm
 block H.gtr.*
 block H.kin.*
@@ -15,6 +15,7 @@ block H.hod.starttime
 block H.hod.fpHitsTime
 
 block P.ngcer.npe*
+block P.hod*
 block P.dc.x*
 block P.dc.y*
 block P.cal.etracknorm

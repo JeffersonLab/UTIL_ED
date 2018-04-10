@@ -80,11 +80,21 @@ Double_t thnq_nbins = nbins;
 Double_t thnq_xmin = 0;
 Double_t thnq_xmax = 80;
 
+Double_t q_nbins = nbins;                                                                                                 
+Double_t q_xmin = 2.0;                                                                                                         
+Double_t q_xmax = 4.5; 
+
+//theta_pq                                                                                               
+Double_t thpq_nbins = nbins;                                                                                                                
+Double_t thpq_xmin = -0.5;                                                                                                    
+Double_t thpq_xmax = 30; 
 
 //th_q
 Double_t thq_nbins = nbins;
-Double_t thq_xmin = 40;
-Double_t thq_xmax = 100;
+Double_t thq_xmin = 0;
+Double_t thq_xmax = 80;
+
+
 
 //------Target Reconstruction Variables----------
 Double_t xtar_nbins = nbins;

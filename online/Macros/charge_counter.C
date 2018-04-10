@@ -2,6 +2,7 @@
 #include "../../offline/header_files/useful_functions.h"
 #include "calc_cointime.C"
 
+
 //------------------------------MAIN CODE--------------------------------------
 
 void charge_counter(string exp, int run_num, int evtNUM)
@@ -57,7 +58,9 @@ void charge_counter(string exp, int run_num, int evtNUM)
 
    //DEFINE KINEMATIC CUTS
    TCut W_cut = "P.kin.primary.W<1.05";   //select events below pion threshold
-   TCut em_cut = "H.kin.secondary.emiss>-0.060&&H.kin.secondary.emiss<0.08";    //Emiss (-60, 80) MeV
+   //if (run_num >=3264 && run_num <=3268)  TCut em_cut = "H.kin.secondary.emiss>-0.150&&H.kin.secondary.emiss<0.20";    //Emiss (-60, 80) MeV
+   //if (run_num >3268)                     TCut em_cut = "H.kin.secondary.emiss>-0.150&&H.kin.secondary.emiss<0.40";    //Emiss (-60, 80) MeV
+   TCut em_cut = "H.kin.secondary.emiss_nuc>=-0.20&&H.kin.secondary.emiss_nuc<0.20";    //Emiss (-60, 80) MeV
    TCut xbj_cut = "P.kin.primary.x_bj>0.7&&P.kin.primary.x_bj<1.3"; 
 
    TCanvas *c1 =  new TCanvas("c1", "", 800,1000);
@@ -72,8 +75,8 @@ void charge_counter(string exp, int run_num, int evtNUM)
    cut_data_Emiss->SetLineColor(kBlue);
    cut_data_Emiss->SetLineWidth(3);
  
-   T->Draw("H.kin.secondary.emiss>>data_Emiss");
-   T->Draw("H.kin.secondary.emiss>>cut_data_Emiss", em_cut, "sames");
+   T->Draw("H.kin.secondary.emiss_nuc>>data_Emiss");
+   T->Draw("H.kin.secondary.emiss_nuc>>cut_data_Emiss", em_cut, "sames");
 
 
 
@@ -97,7 +100,7 @@ void charge_counter(string exp, int run_num, int evtNUM)
 
    // Cross-Check correlations
    c1->cd(4);
-   T->Draw("H.kin.secondary.emiss:H.kin.secondary.pmiss>>data_emiss_vs_pmiss", em_cut, "colz");
+   T->Draw("H.kin.secondary.emiss_nuc:H.kin.secondary.pmiss>>data_emiss_vs_pmiss", em_cut, "colz");
    c1->cd(5);
    T->Draw("P.gtr.dp:P.gtr.ph>>data_edelta_vs_eyptar", em_cut, "colz");
    
@@ -129,7 +132,7 @@ void charge_counter(string exp, int run_num, int evtNUM)
    Q1 = getCharge("SHMS", "BCM4A", file_path);
    Q2 = getCharge("SHMS", "BCM4B", file_path);
 
-   charge = (Q1 + Q2)/2.;
+   charge = (Q1 + Q2)/2./1000.;
    //Get the total counts/charge
    Double_t Ratio;
    Double_t cut_Ratio;
@@ -145,7 +148,7 @@ void charge_counter(string exp, int run_num, int evtNUM)
    // outreport << "    " << endl;                                                
    //outreport << "****************" << endl;
    //outreport << "Yield / Charge :  " << Yield <<" / " << charge << " = " << Ratio << " Counts/uC" << endl;
-   outreport << "Yield / Charge (w/ Em cut) :  " << cut_Yield << " / "<< charge << " = "<< cut_Ratio << " Counts/uC" << endl;;
+   outreport << "Yield / Charge (w/ Em cut) :  " << cut_Yield << " / "<< charge << " = "<< cut_Ratio << " Counts/mC" << endl;;
    outreport << " " << endl;
    outreport << Form("***********************Doing %s***************************", exp.c_str()) << endl;
    

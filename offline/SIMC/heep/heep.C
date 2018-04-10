@@ -123,6 +123,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    TH1F *xbj = new TH1F("xbj", "x-Bjorken", xbj_nbins, xbj_xmin, xbj_xmax);
    TH1F *P_f = new TH1F("P_f", "Final Proton Momentum", Pf_nbins, Pf_xmin, Pf_xmax);
    TH1F *k_f = new TH1F("kf", "Final e^{-} Momentum", kf_nbins, kf_xmin, kf_xmax);
+   TH1F *theta_q = new TH1F("theta_q", "q-vector Angle, #theta_{q}", thq_nbins, thq_xmin, thq_xmax);
 
    
    //Target Reconstruction Variables
@@ -186,6 +187,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    TH1F *cut_xbj = new TH1F("cut_xbj", "x-Bjorken", xbj_nbins, xbj_xmin, xbj_xmax);
    TH1F *cut_P_f = new TH1F("cut_P_f", "Final Proton Momentum", Pf_nbins, Pf_xmin, Pf_xmax);
    TH1F *cut_k_f = new TH1F("cut_kf", "Final e^{-} Momentum", kf_nbins, kf_xmin, kf_xmax);
+   TH1F *cut_theta_q = new TH1F("cut_theta_q", "q-vector Angle, #theta_{q}", thq_nbins, thq_xmin, thq_xmax);
 
    
    //Target Reconstruction Variables
@@ -246,7 +248,8 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    Double_t kf;             //Final electron momentum
    Double_t Ep;             //proton final energy
    Double_t Ee;             //electron final energy
-   
+   Double_t th_q;        //Angle between q-vector and beamline (+z axis --lab)
+
    //Define Kinematic Limits
    Double_t W_min = 0.8;    //GeV
    Double_t W_max = 1.04;     //pion production threhsold?
@@ -261,7 +264,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
 
    //Missing Energy, Em = 0 MeV (-15 MeV, 15 MeV)
    Double_t Em_min = -60.e-3;
-   Double_t Em_max = 80.e-3;
+   Double_t Em_max = 200.e-3;
    
 
    //Determine the charge factor:
@@ -331,6 +334,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
       ki = sqrt(Ein*Ein - me*me);
       kf = Q2 / (4.*ki*pow(sin(theta_e/2.), 2));
       Ee = sqrt(me*me + kf*kf);
+      th_q = theta_pq + theta_p;
 
       /*
       //-------Spectrometer resolution variables-----------
@@ -430,7 +434,8 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
 	  cut_xbj->Fill(X, FullWeight); 
 	  cut_P_f->Fill(Pf, FullWeight);
 	  cut_k_f->Fill(kf, FullWeight);
-	  
+	  cut_theta_q->Fill(th_q/dtr, FullWeight);
+		  
 	  //Reconstructed Target Quantities (Lab Frame)
 	  cut_x_tar->Fill(tar_x, FullWeight);
 	  cut_y_tar->Fill(tar_y, FullWeight);
@@ -498,7 +503,8 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
       xbj->Fill(X, FullWeight); 
       P_f->Fill(Pf, FullWeight);
       k_f->Fill(kf, FullWeight);
-   
+      theta_q->Fill(th_q/dtr, FullWeight);
+
       
       //Reconstructed Target Quantities (Lab Frame)
       x_tar->Fill(tar_x, FullWeight);

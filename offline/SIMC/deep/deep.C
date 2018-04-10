@@ -117,10 +117,12 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    TH1F *xbj = new TH1F("xbj", "x-Bjorken", xbj_nbins, xbj_xmin, xbj_xmax);
    TH1F *P_f = new TH1F("P_f", "Final Proton Momentum", Pf_nbins, Pf_xmin, Pf_xmax);
    TH1F *k_f = new TH1F("kf", "Final e^{-} Momentum", kf_nbins, kf_xmin, kf_xmax);
-
+   TH1F *q_3vm = new TH1F("q_3vm", "|q|, 3-vector Magnitude", q_nbins, q_xmin, q_xmax); 
    TH1F *E_n = new TH1F("En", "Neutron Final Energy", En_nbins, En_xmin, En_xmax);
    TH1F *theta_nq = new TH1F("theta_nq", "Neutron Angle, #theta_{nq}", thnq_nbins, thnq_xmin, thnq_xmax);
+   //TH1F *theta_nq_v2 = new TH1F("theta_nq_v2", "Neutron Angle, #theta_{nq}", thnq_nbins, thnq_xmin, thnq_xmax);
    TH1F *theta_q = new TH1F("theta_q", "q-vector Angle, #theta_{q}", thq_nbins, thq_xmin, thq_xmax);
+   TH1F *thetapq = new TH1F("thetapq", "Proton Angle, #theta_{pq}", thpq_nbins, thpq_xmin, thpq_xmax);
 
   //Target Reconstruction Variables
    TH1F *x_tar = new TH1F("x_tar", "x_Target", xtar_nbins, xtar_xmin, xtar_xmax);
@@ -191,10 +193,13 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    TH1F *cut_xbj = new TH1F("cut_xbj", "x-Bjorken", xbj_nbins, xbj_xmin, xbj_xmax);
    TH1F *cut_P_f = new TH1F("cut_P_f", "Final Proton Momentum", Pf_nbins, Pf_xmin, Pf_xmax);
    TH1F *cut_k_f = new TH1F("cut_kf", "Final e^{-} Momentum", kf_nbins, kf_xmin, kf_xmax);
+   TH1F *cut_q_3vm = new TH1F("cut_q_3vm", "|q|, 3-vector Magnitude", q_nbins, q_xmin, q_xmax); 
    TH1F *cut_E_n = new TH1F("cut_En", "Neutron Final Energy", En_nbins, En_xmin, En_xmax);
    TH1F *cut_theta_nq = new TH1F("cut_theta_nq", "Neutron Angle, #theta_{nq}", thnq_nbins, thnq_xmin, thnq_xmax);
+   //TH1F *cut_theta_nq_v2 = new TH1F("cut_theta_nq_v2", "Neutron Angle, #theta_{nq}", thnq_nbins, thnq_xmin, thnq_xmax);
    TH1F *cut_theta_q = new TH1F("cut_theta_q", "q-vector Angle, #theta_{q}", thq_nbins, thq_xmin, thq_xmax);
-   
+   TH1F *cut_theta_pq = new TH1F("cut_theta_pq", "Proton Angle, #theta_{pq}", thpq_nbins, thpq_xmin, thpq_xmax);
+
       //Target Reconstruction Variables
    TH1F *cut_x_tar = new TH1F("cut_x_tar", "x_Target", xtar_nbins, xtar_xmin, xtar_xmax);
    TH1F *cut_y_tar = new TH1F("cut_y_tar", "y_Target", ytar_nbins, ytar_xmin, ytar_xmax);
@@ -246,7 +251,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    TH2F *cut_Em_vs_thnq = new TH2F("cut_Em_vs_thnq", "", thnq_nbins, thnq_xmin, thnq_xmax, Em_nbins, Em_xmin, Em_xmax);
    TH2F *cut_hdelta_vs_thnq = new TH2F("cut_hdelta_vs_thnq", "",  thnq_nbins, thnq_xmin, thnq_xmax, hdelta_nbins, hdelta_xmin, hdelta_xmax);
    TH2F *cut_edelta_vs_thnq = new TH2F("cut_edelta_vs_thnq", "",  thnq_nbins, thnq_xmin, thnq_xmax, edelta_nbins, edelta_xmin, edelta_xmax);
-   
+
    
    //---------------------------------------------------------
 
@@ -263,6 +268,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    Double_t Kp;             //proton kinetic energy
    Double_t Kn;            //neutron kinetic energy
    Double_t th_nq;       //Angle betweenq-vector and neutron
+   Double_t th_nq_v2;   
    Double_t th_q;        //Angle between q-vector and beamline (+z axis --lab)
    
    //DEFINE KINEMATICS Limits
@@ -282,8 +288,8 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    Double_t xbj_max = 1.70; //1.40;
 
    //Missing Energy, Em = 2.2 MeV (-10 MeV, 25 MeV)
-   Double_t Em_min = -0.06;
-   Double_t Em_max = 0.08;
+   Double_t Em_min = -0.04;
+   Double_t Em_max = 0.06;
    
 
 
@@ -328,6 +334,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
        cout << "**************************************" << endl;   
        cout << "Setting Efficiencies and CPU Live Time" << endl;                                    
        cout << "**************************************" << endl; 
+       cout << "totalCharge = " << charge_factor << " mC" << endl;
        cout << "e- trkEff = " << e_trkEff << endl;
        cout << "hadron trkEff = " << h_trkEff << endl;      
        cout << "CPU LT = " << c_LT << endl;
@@ -370,10 +377,13 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
       Kp = Ep - MP;
       Kn = En - MN;
        
-  
-      th_nq = acos( (q - Pf*cos(theta_pq))/Pm );
- 
-      th_q = theta_pq + theta_p;
+      th_q = acos( (ki - kf*cos(theta_e))/q ) ;//theta_pq + theta_p;
+
+      //th_nq = acos( (q - Pf*cos(theta_pq))/Pm );
+       
+      th_nq = acos( (q*q + Pm*Pm - Pf*Pf) / (2.*q*Pm) );
+
+      //T->Draw(" acos((pow(P.kin.primary.q3m,2) + pow(H.kin.secondary.pmiss,2) - pow(H.gtr.p,2) ) / (2.*P.kin.primary.q3m*H.kin.secondary.pmiss))   * 180./3.14   >>(180, 0, 100)", "H.kin.secondary.emiss>-0.4&&abs(H.gtr.dp)<5.0")
 
       
       /*
@@ -425,7 +435,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
       */
 
       //Define Kinematic Cuts
-      Bool_t c_Em = Em>Em_min&&Em<Em_max;
+      Bool_t c_Em = Em>=Em_min&&Em<=Em_max;
       Bool_t c_Xbj = X>xbj_min&&X<xbj_max;
       Bool_t c_Q2 = Q2>Q2_min&&Q2<Q2_max;
       
@@ -443,13 +453,12 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
       Bool_t c_p_solid = c_p_xptar * c_p_yptar;
       
       // momentum acceptance
-      Bool_t c_e_delta = (-8 <= e_delta) && ( e_delta <= 4);
-      Bool_t c_p_delta = (-8 <= h_delta) && ( h_delta <= 8);
+      Bool_t c_e_delta = (-5 <= e_delta) && ( e_delta <= 10);
+      Bool_t c_p_delta = (-10 <= h_delta) && ( h_delta <= 10);
       
 
       // acceptance
       Bool_t c_accept = c_e_solid * c_p_solid * c_e_delta * c_p_delta;
-      
       
       
       //cout << "Ein:" << Ein << endl;
@@ -491,10 +500,12 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
 	  cut_xbj->Fill(X, FullWeight); 
 	  cut_P_f->Fill(Pf, FullWeight); 
 	  cut_k_f->Fill(kf, FullWeight); 
+	  cut_q_3vm->Fill(q, FullWeight);
 	  cut_E_n->Fill(En, FullWeight); 
 	  cut_theta_nq->Fill(th_nq/dtr, FullWeight);
+	  // cut_theta_nq_v2->Fill(th_nq_v2/dtr, FullWeight);
 	  cut_theta_q->Fill(th_q/dtr, FullWeight);
-
+	  cut_theta_pq->Fill(theta_pq/dtr, FullWeight);
 
 	  //Reconstructed Target Quantities (Lab Frame)
 	  cut_x_tar->Fill(tar_x, FullWeight);
@@ -579,20 +590,18 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
       xbj->Fill(X, FullWeight);
       P_f->Fill(Pf, FullWeight);
       k_f->Fill(kf, FullWeight);
+      q_3vm->Fill(q, FullWeight);
       E_n->Fill(En, FullWeight);
       theta_nq->Fill(th_nq/dtr, FullWeight);
+      //theta_nq_v2->Fill(th_nq_v2/dtr, FullWeight);
       theta_q->Fill(th_q/dtr, FullWeight);
-   
+      thetapq->Fill(theta_pq/dtr, FullWeight);
    
 
       //Reconstructed Target Quantities (Lab Frame)
-      
-   x_tar->Fill(tar_x, FullWeight);
-      
-   y_tar->Fill(tar_y, FullWeight);
-   
-   
-   z_tar->Fill(tar_z, FullWeight);   
+      x_tar->Fill(tar_x, FullWeight);     
+      y_tar->Fill(tar_y, FullWeight);
+      z_tar->Fill(tar_z, FullWeight);   
    
       //Hadron-Arm Target Reconstruction 
       hytar->Fill(h_ytar, FullWeight);
