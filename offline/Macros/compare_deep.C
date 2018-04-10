@@ -1,20 +1,24 @@
 //Script to make comparison between SIMC and Commissioning Data from HallC Spring 2018
 //Compare Target Reconstruction/FOCAL PLANE/ Kinematics Variables
 
-void compare_heep(int runNUM, int evtNUM)
+void compare_deep(string Pm, string model, int runNUM, int evtNUM)
 {
-  
+  //Pm: "80", "580", "750"
+  //model: "pwia", "laget"
 
-  //TString simc_filename =  "weighted_ep_coin_simc_1854.root"; //"ep_coin_simc_1929.root";
   
   //Pre-defined SIMC/data root file names containing histogram object to comapare
-  TString simc_filename =  Form("weighted_run%d_heep_simc_rad.root", runNUM);
-  TString data_filename =  Form("heep_data_%d_%d.root", runNUM, evtNUM); 
+  TString simc_filename =  Form("weighted_d2_pm%s_laget%s_rad.root", Pm.c_str(), model.c_str());
+ 
 
+  TString data_filename ;
+  if (Pm=="750") data_filename = "Pm750full_hist_data.root";
+  if (Pm=="580") data_filename = "Pm580round2_hist_data.root";
+  if (Pm=="80") data_filename = "Pm80_run3289.root";
   TString simc_path;
   TString data_path;
   
-  simc_path = "../SIMC/heep/SIMC_ROOTfiles/"+simc_filename;
+  simc_path = "../SIMC/deep/SIMC_ROOTfiles/"+simc_filename;
   data_path = "../DATA/DATA_ROOTfiles/"+data_filename;
   
   //Open SIMC/data ROOT files;
@@ -76,21 +80,31 @@ void compare_heep(int runNUM, int evtNUM)
   //-------------------------KINEMATICS---------------------------
 
   TH1F *simc_emiss =  0;
-  TH1F *simc_pmiss =  0;
+  TH1F *simc_pmiss =  0;   
   TH1F *simc_Q2 =  0;
   TH1F *simc_omega =  0;
   TH1F *simc_W =  0;
+  TH1F *simc_xbj = 0;
   TH1F *simc_thq = 0;
-
-
+  TH1F *simc_thpq = 0;
+  TH1F *simc_thnq = 0;
+  TH1F *simc_q3vm = 0;
+  TH1F *simc_Pf = 0;
+  TH1F *simc_kf = 0;
+  
   //Define data histos
   TH1F *data_emiss = 0;
   TH1F *data_pmiss =  0;
   TH1F *data_Q2 =  0;
   TH1F *data_omega =  0;
   TH1F *data_W =  0;
+  TH1F *data_xbj = 0;
   TH1F *data_thq = 0;
-
+  TH1F *data_thpq = 0;
+  TH1F *data_thnq = 0;
+  TH1F *data_q3vm = 0;
+  TH1F *data_Pf = 0;
+  TH1F *data_kf = 0;
   //---------------------------------------------------------------
 
  //change to simc_file
@@ -240,12 +254,20 @@ void compare_heep(int runNUM, int evtNUM)
   simc_file->cd();
 
   //Get Histogram objects from SIMC rootfile
-  simc_file->GetObject("cut_Emiss", simc_emiss);
+  simc_file->GetObject("Emiss", simc_emiss);
   simc_file->GetObject("cut_pm", simc_pmiss);
   simc_file->GetObject("cut_Q_2", simc_Q2);
   simc_file->GetObject("cut_omega", simc_omega);
   simc_file->GetObject("cut_W_inv", simc_W);
+  simc_file->GetObject("cut_theta_nq", simc_thnq);
+
+  simc_file->GetObject("cut_kf", simc_kf);
+  simc_file->GetObject("cut_xbj", simc_xbj);
+
+  simc_file->GetObject("cut_P_f", simc_Pf);
+  simc_file->GetObject("cut_q_3vm", simc_q3vm);
   simc_file->GetObject("cut_theta_q", simc_thq);
+  simc_file->GetObject("cut_theta_pq", simc_thpq);
 
 
   //Set SIMC Histo Aesthetics
@@ -259,8 +281,22 @@ void compare_heep(int runNUM, int evtNUM)
   simc_omega->SetLineWidth(3);
   simc_W->SetLineColor(kRed);
   simc_W->SetLineWidth(3);
+  simc_thnq->SetLineColor(kRed);
+  simc_thnq->SetLineWidth(3);
+
+  simc_kf->SetLineColor(kRed);
+  simc_kf->SetLineWidth(3);
+  simc_xbj->SetLineColor(kRed);
+  simc_xbj->SetLineWidth(3);
+
+  simc_Pf->SetLineColor(kRed);
+  simc_Pf->SetLineWidth(3);
+  simc_q3vm->SetLineColor(kRed);
+  simc_q3vm->SetLineWidth(3);
   simc_thq->SetLineColor(kRed);
   simc_thq->SetLineWidth(3);
+  simc_thpq->SetLineColor(kRed);
+  simc_thpq->SetLineWidth(3);
 
   //change to data_file
   data_file->cd();
@@ -271,7 +307,15 @@ void compare_heep(int runNUM, int evtNUM)
   data_file->GetObject("data_Q2", data_Q2);
   data_file->GetObject("data_omega", data_omega);
   data_file->GetObject("data_W_inv", data_W);
+  data_file->GetObject("data_theta_nq", data_thnq);
+
+  data_file->GetObject("data_xbj", data_xbj);
+  data_file->GetObject("data_kf", data_kf);
+
+  data_file->GetObject("data_Pf", data_Pf);
+  data_file->GetObject("data_q", data_q3vm);
   data_file->GetObject("data_theta_q", data_thq);
+  data_file->GetObject("data_theta_pq", data_thpq);
 
   //Set data Histo Aesthetics
   data_emiss->SetFillColorAlpha(kBlue, 0.35);
@@ -284,10 +328,22 @@ void compare_heep(int runNUM, int evtNUM)
   data_omega->SetFillStyle(3004);
   data_W->SetFillColorAlpha(kBlue, 0.35);
   data_W->SetFillStyle(3004);
+  data_thnq->SetFillColorAlpha(kBlue, 0.35);
+  data_thnq->SetFillStyle(3004);
+
+  data_xbj->SetFillColorAlpha(kBlue, 0.35);
+  data_xbj->SetFillStyle(3004);
+  data_kf->SetFillColorAlpha(kBlue, 0.35);
+  data_kf->SetFillStyle(3004);
+  
+  data_Pf->SetFillColorAlpha(kBlue, 0.35);
+  data_Pf->SetFillStyle(3004);
+  data_q3vm->SetFillColorAlpha(kBlue, 0.35);
+  data_q3vm->SetFillStyle(3004);
   data_thq->SetFillColorAlpha(kBlue, 0.35);
   data_thq->SetFillStyle(3004);
-
-
+  data_thpq->SetFillColorAlpha(kBlue, 0.35);
+  data_thpq->SetFillStyle(3004);
 
   //Overlay SIMC/data plots (*** VERY IMPORTANT ***: Range and #bins must be same)
 
@@ -302,7 +358,7 @@ void compare_heep(int runNUM, int evtNUM)
    auto leg6 = new TLegend(0.1,0.8,0.28,0.9);
    auto leg7 = new TLegend(0.1,0.8,0.28,0.9);
    auto leg8 = new TLegend(0.1,0.8,0.28,0.9);
-
+   
 
    //-----------------PLOT Target Reconstructed Variables SIMC/Data comparison-----------------------
 
@@ -310,7 +366,7 @@ void compare_heep(int runNUM, int evtNUM)
    
    TCanvas *c1 = new TCanvas("c1", "Hadron/Electron Arm: Target Reconstruction", 2000, 1000);
    c1->Divide(4,2);
-
+ 
    
    c1->cd(1);
    data_hytar->DrawNormalized();
@@ -318,6 +374,8 @@ void compare_heep(int runNUM, int evtNUM)
    leg1->AddEntry(data_hytar,"Data","f");
    leg1->AddEntry(simc_hytar,"SIMC");
    leg1->Draw();
+
+   
 
    c1->cd(2);
    data_hxptar->DrawNormalized();
@@ -368,6 +426,7 @@ void compare_heep(int runNUM, int evtNUM)
    leg8->AddEntry(simc_edelta,"SIMC");
    leg8->Draw();
 
+   c1->Print("h1.pdf(");
    //------------------------------------------------------------------------------
 
 
@@ -443,63 +502,151 @@ void compare_heep(int runNUM, int evtNUM)
    leg16->AddEntry(data_eypfp,"Data", "f");
    leg16->AddEntry(simc_eypfp,"SIMC");
    leg16->Draw();
-
+   c2->Print("h1.pdf");
    //----------------------------------------------------------- 
  
    //-----------------PLOT KINEMATICS SIMC/Data comparison---------------
 
 //Set Legend
-   auto leg17 = new TLegend(0.1,0.8,0.28,0.9);
-   auto leg18 = new TLegend(0.1,0.8,0.28,0.9);
-   auto leg19 = new TLegend(0.1,0.8,0.28,0.9);
-   auto leg20 = new TLegend(0.1,0.8,0.28,0.9);
-   auto leg21 = new TLegend(0.1,0.8,0.28,0.9);
-   auto leg22 = new TLegend(0.1,0.8,0.28,0.9);
-   
+   auto legc317 = new TLegend(0.1,0.8,0.28,0.9);
+   auto legc318 = new TLegend(0.1,0.8,0.28,0.9);
+   auto legc319 = new TLegend(0.1,0.8,0.28,0.9);
+   auto legc320 = new TLegend(0.1,0.8,0.28,0.9);
+   auto legc321 = new TLegend(0.1,0.8,0.28,0.9);
+   auto legc322 = new TLegend(0.1,0.8,0.28,0.9);
+   auto legc323 = new TLegend(0.1,0.8,0.28,0.9);
+   auto legc324 = new TLegend(0.1,0.8,0.28,0.9);
+
    //Create A Canvas to store kinematic variable comparisons
    TCanvas *c3 = new TCanvas("c3", "Kinematics", 2000, 1000);
-   c3->Divide(3,2);
+   c3->Divide(4,2);
    
    c3->cd(1);
    data_emiss->DrawNormalized();
    simc_emiss->DrawNormalized("same");
-   leg17->AddEntry(data_emiss,"Data","f");
-   leg17->AddEntry(simc_emiss,"SIMC");
-   leg17->Draw();
+   legc317->AddEntry(data_emiss,"Data","f");
+   legc317->AddEntry(simc_emiss,"SIMC");
+   legc317->Draw();
 
    c3->cd(2);
    data_pmiss->DrawNormalized();
    simc_pmiss->DrawNormalized("same");
-   leg18->AddEntry(data_pmiss,"Data", "f");
-   leg18->AddEntry(simc_pmiss,"SIMC");
-   leg18->Draw();
+   legc318->AddEntry(data_pmiss,"Data", "f");
+   legc318->AddEntry(simc_pmiss,"SIMC");
+   legc318->Draw();
 
    c3->cd(3);
    data_Q2->DrawNormalized();
    simc_Q2->DrawNormalized("same");
-   leg19->AddEntry(data_Q2,"Data", "f");
-   leg19->AddEntry(simc_Q2,"SIMC");
-   leg19->Draw();
+   legc319->AddEntry(data_Q2,"Data", "f");
+   legc319->AddEntry(simc_Q2,"SIMC");
+   legc319->Draw();
      
    c3->cd(4);
    data_omega->DrawNormalized();
    simc_omega->DrawNormalized("same");
-   leg20->AddEntry(data_omega,"Data", "f");
-   leg20->AddEntry(simc_omega,"SIMC");
-   leg20->Draw();
+   legc320->AddEntry(data_omega,"Data", "f");
+   legc320->AddEntry(simc_omega,"SIMC");
+   legc320->Draw();
 
    c3->cd(5);
    data_W->DrawNormalized();
    simc_W->DrawNormalized("same");
-   leg21->AddEntry(data_W,"Data", "f");
-   leg21->AddEntry(simc_W,"SIMC");
-   leg21->Draw();
+   legc321->AddEntry(data_W,"Data", "f");
+   legc321->AddEntry(simc_W,"SIMC");
+   legc321->Draw();
 
    c3->cd(6);
+   data_xbj->DrawNormalized();
+   simc_xbj->DrawNormalized("same");
+   legc322->AddEntry(data_xbj,"Data", "f");
+   legc322->AddEntry(simc_xbj,"SIMC");
+   legc322->Draw();
+   
+   c3->cd(7);
+   data_Pf->DrawNormalized();
+   simc_Pf->DrawNormalized("same");
+   legc323->AddEntry(data_Pf,"Data", "f");
+   legc323->AddEntry(simc_Pf,"SIMC");
+   legc323->Draw();
+
+   c3->cd(8);
+   data_kf->DrawNormalized();
+   simc_kf->DrawNormalized("same");
+   legc324->AddEntry(data_kf,"Data", "f");
+   legc324->AddEntry(simc_kf,"SIMC");
+   legc324->Draw();
+   
+
+   c3->Print("h1.pdf");
+
+   
+
+
+   //-----------------------Check theta_nq components-----------------------------
+
+//Set Legend
+   auto leg23 = new TLegend(0.1,0.8,0.28,0.9);
+   auto leg24 = new TLegend(0.1,0.8,0.28,0.9);
+   auto leg25 = new TLegend(0.1,0.8,0.28,0.9);
+   auto leg26 = new TLegend(0.1,0.8,0.28,0.9);
+   auto leg27 = new TLegend(0.1,0.8,0.28,0.9);
+   auto leg28 = new TLegend(0.1,0.8,0.28,0.9);
+
+   //Create A Canvas to store kinematic variable comparisons
+   TCanvas *c4 = new TCanvas("c4", "theta_nq_Kinematics", 2000, 1000);
+   c4->Divide(3,2);
+   
+   c4->cd(1);
+   data_pmiss->DrawNormalized();
+   simc_pmiss->DrawNormalized("same");
+   leg23->AddEntry(data_pmiss,"Data", "f");
+   leg23->AddEntry(simc_pmiss,"SIMC");
+   leg23->Draw();
+   
+   c4->cd(2);
+   data_Pf->DrawNormalized();
+   simc_Pf->DrawNormalized("same");
+   leg24->AddEntry(data_Pf,"Data","f");
+   leg24->AddEntry(simc_Pf,"SIMC");
+   leg24->Draw();
+
+   c4->cd(3);
+   data_q3vm->DrawNormalized();
+   simc_q3vm->DrawNormalized("same");
+   leg25->AddEntry(data_q3vm,"Data", "f");
+   leg25->AddEntry(simc_q3vm,"SIMC");
+   leg25->Draw();
+     
+   c4->cd(4);
    data_thq->DrawNormalized();
    simc_thq->DrawNormalized("same");
-   leg22->AddEntry(data_thq,"Data", "f");
-   leg22->AddEntry(simc_thq,"SIMC");
-   leg22->Draw();
+   leg26->AddEntry(data_thq,"Data", "f");
+   leg26->AddEntry(simc_thq,"SIMC");
+   leg26->Draw();
+
+   c4->cd(5);
+   data_thpq->DrawNormalized();
+   simc_thpq->DrawNormalized("same");
+   leg27->AddEntry(data_thpq,"Data", "f");
+   leg27->AddEntry(simc_thpq,"SIMC");
+   leg27->Draw();
+
+   c4->cd(6);
+   data_thnq->DrawNormalized();
+   simc_thnq->DrawNormalized("same");
+   leg28->AddEntry(data_thnq,"Data", "f");
+   leg28->AddEntry(simc_thnq,"SIMC");
+   leg28->Draw();
+
+   c4->Print("h1.pdf)");
+
+   //c1->Print("h1.pdf");
+   //c2->SaveAs("h1.pdf]");
+   //gPad->Update();
+  //c3->Print(“h1.pdf”);
+	     //c4->Print(“h1.pdf”);
+	     //c1->Print(“h1.pdf]”);
+   
 
 }

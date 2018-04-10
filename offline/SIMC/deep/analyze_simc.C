@@ -8,7 +8,7 @@
 // run an analysis based on SNT.C the analyysis script for the simc n-tuple
 // this script is setup for the proposed commissioning runs. the steps in pm are 0.15 GeV/c
 
-void analyze_highPmsimc(int evtNUM, TString Pmiss)
+void analyze_simc(TString Pmiss, int runNUM=1, int evtNUM=-1)
 {
 
   gROOT->Reset();
@@ -47,27 +47,38 @@ void analyze_highPmsimc(int evtNUM, TString Pmiss)
   Double_t c_LT_AVG;
   Double_t h_trkEff_AVG;
   Double_t e_trkEff_AVG;
-  
-
-  
+    
   
   //Chain each file
   TString simc_file;
   TString data_file;
   TString report_file;
   
-  int runNUM;
-  int runMAX = 1;
-  int run_list[runMAX] = {1851};
+  int run_min;
+  int run_max;
+  int runTOT;
+
+    if(Pmiss=="80")
+      {
+	run_min = runNUM;
+	run_max = runNUM;
+	runTOT = run_max - run_min + 1;
+
+      }
+
+    else if (Pmiss=="580")
+      {
+	run_min = 3306;
+	run_max = 3341;
+
+      }
  
     //-------------------REALISTIC Estimation of Full Weight-----------------------
 
   //Loop over all runs
 
-  for (int i = 0; i < runMAX; i++)
+  for (int run = run_min; run <=run_max; run++)
     {
-
-      runNUM = run_list[i];
 
       data_file = Form("../../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM );
       report_file = Form("../../../online/CHARGE_REPORTS/deep_report_%d.report", runNUM);
@@ -93,19 +104,17 @@ void analyze_highPmsimc(int evtNUM, TString Pmiss)
 
     }
   
-  h_trkEff_AVG = h_trkEff_SUM / runMAX;
-  e_trkEff_AVG = e_trkEff_SUM / runMAX;
-  c_LT_AVG = c_LT_SUM / runMAX;
+  h_trkEff_AVG = h_trkEff_SUM / runTOT;
+  e_trkEff_AVG = e_trkEff_SUM / runTOT;
+  c_LT_AVG = c_LT_SUM / runTOT;
 
   cout << "*****************************************" << endl;
   cout << "" << endl;
   cout << "SIMC: Setting the following for simulation . . ." << endl;
-  cout << "Q1 (BCM4A) = " << Q1 << " uC" << endl;
-  cout << "Q2 (BCM4B) = " << Q2 << " uC" << endl;
-  cout << "Avg. Charge = " << charge << " uC" << endl;
-  cout << "e- trkEff = " << e_trkEff <<  endl;
-  cout << "hadron trkEff = " << h_trkEff <<  endl;
-  cout << "CPU Live Time = " << c_LT <<  endl;
+  cout << "Avg. TOTAL Charge = " << chargeTOTAL << " uC" << endl;
+  cout << "Avg. e- trkEff = " << e_trkEff_AVG <<  endl;
+  cout << "Avg hadron trkEff = " << h_trkEff_AVG <<  endl;
+  cout << "Avg CPU Live Time = " << c_LT_AVG <<  endl;
   cout << "*****************************************" << endl;
 
 
@@ -113,15 +122,18 @@ void analyze_highPmsimc(int evtNUM, TString Pmiss)
 
   if (Pmiss=="80")
     {
-  
+
+      cout << "Doing 80 MeV setting " << endl;	
+
   //--------D(e,e'p)n---PWIA---Pmiss = 80 MeV-----------------
   
   simc_file = "d2_pm80_lagetpwia_rad.root";
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, 1, 1, chargeTOTAL, e_trkEff_AVG, h_trkEff_AVG, c_LT_AVG);
+  simc->Loop(simc_file, 1, 1, chargeTOTAL, 1, 1, 1);
   chain.Reset();
+  
   
   //--------D(e,e'p)n---FSI---Pmiss = 80 MeV-----------------
 
@@ -129,9 +141,9 @@ void analyze_highPmsimc(int evtNUM, TString Pmiss)
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, 1, 1, chargeTOTAL, e_trkEff_AVG, h_trkEff_AVG, c_LT_AVG);
+  simc->Loop(simc_file, 1, 1, chargeTOTAL, 1, 1, 1);
   chain.Reset();
-
+  
   //-----------------------------------------------------------
 
     }
@@ -144,7 +156,7 @@ void analyze_highPmsimc(int evtNUM, TString Pmiss)
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, 1, 1, chargeTOTAL, e_trkEff_AVG, h_trkEff_AVG, c_LT_AVG);
+  simc->Loop(simc_file, 1, 1, chargeTOTAL, 1, 1, 1);
   chain.Reset();
 
   //--------D(e,e'p)n---FSI---Pmiss = 580 MeV-----------------
@@ -153,7 +165,7 @@ void analyze_highPmsimc(int evtNUM, TString Pmiss)
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, 1, 1, chargeTOTAL, e_trkEff_AVG, h_trkEff_AVG, c_LT_AVG);
+  simc->Loop(simc_file, 1, 1, chargeTOTAL, 1, 1, 1);
   chain.Reset();
 
   //-----------------------------------------------------------
@@ -162,26 +174,28 @@ void analyze_highPmsimc(int evtNUM, TString Pmiss)
   if(Pmiss=="750")
     {
 
+      
     //--------D(e,e'p)n---PWIA---Pmiss = 750 MeV-----------------
   
   simc_file = "d2_pm750_lagetpwia_rad.root";
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, 1, 1, chargeTOTAL, e_trkEff_AVG, h_trkEff_AVG, c_LT_AVG);
+  simc->Loop(simc_file, 1, 1, chargeTOTAL, 1, 1, 1);
   chain.Reset();
-
+     
+  
   //--------D(e,e'p)n---FSI---Pmiss = 750 MeV-----------------
   
   simc_file = "d2_pm750_lagetfsi_rad.root";
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, 1, 1, chargeTOTAL, e_trkEff_AVG, h_trkEff_AVG, c_LT_AVG);
+  simc->Loop(simc_file, 1, 1, chargeTOTAL, 1, 1, 1);
   chain.Reset();
 
   //-----------------------------------------------------------
-
+  
     }
 
 

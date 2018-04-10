@@ -50,6 +50,7 @@ void analyze_heepData(int runNUM, int evtNUM)
    TH1F *data_xbj = new TH1F("data_xbj", "x-Bjorken", xbj_nbins, xbj_xmin, xbj_xmax);
    TH1F *data_Pf = new TH1F("data_Pf", "Final Proton Momentum", Pf_nbins, Pf_xmin, Pf_xmax);
    TH1F *data_kf = new TH1F("data_kf", "Final e^{-} Momentum", kf_nbins, kf_xmin, kf_xmax);
+   TH1F *data_theta_q = new TH1F("data_theta_q", "q-vector Angle, #theta_{q}", thq_nbins, thq_xmin, thq_xmax);
 
    
    //Target Reconstruction Variables
@@ -114,7 +115,7 @@ void analyze_heepData(int runNUM, int evtNUM)
 
    //DEFINE KINEMATIC CUTS
    TCut W_cut = Form("%s.kin.primary.W<1.05", primary.c_str());   //select events below pion thresshold
-   TCut em_cut = Form("%s.kin.secondary.emiss>-0.060&&%s.kin.secondary.emiss<0.08", secondary.c_str(), secondary.c_str());  
+   TCut em_cut = Form("%s.kin.secondary.emiss>-0.20&&%s.kin.secondary.emiss<0.2", secondary.c_str(), secondary.c_str());  
    TCut Q2_cut = Form("%s.kin.primary.Q2>3&&%s.kin.primary.Q2<5.0", primary.c_str(), primary.c_str());
    TCut xbj_cut = Form("%s.kin.primary.x_bj>0.7&&%s.kin.primary.x_bj<1.3", primary.c_str(), primary.c_str()); 
 
@@ -122,7 +123,7 @@ void analyze_heepData(int runNUM, int evtNUM)
    //Draw the Histograms from the TTree
 
    //Kinematics Quantities, P.* ->SHMS,  H.* -->HMS
-   T->Draw(Form("%s.kin.secondary.emiss>>data_Emiss", secondary.c_str()), em_cut);
+   T->Draw(Form("%s.kin.secondary.emiss>>data_Emiss", secondary.c_str()));
    T->Draw(Form("%s.kin.secondary.pmiss>>data_pm", secondary.c_str()), em_cut);
    T->Draw(Form("%s.kin.primary.Q2>>data_Q2", primary.c_str()), em_cut);
    T->Draw(Form("%s.kin.primary.nu>>data_omega", primary.c_str()), em_cut);
@@ -135,7 +136,8 @@ void analyze_heepData(int runNUM, int evtNUM)
    T->Draw(Form("%s.kin.primary.x_bj>>data_xbj", primary.c_str()), em_cut);
    T->Draw(Form("%s.gtr.p>>data_Pf", primary.c_str()), em_cut);
    T->Draw(Form("%s.gtr.p>>(data_kf)", secondary.c_str()), em_cut);
-   
+   T->Draw(Form("%s.kin.primary.th_q*(180./3.14)>>data_theta_q", primary.c_str()), em_cut ); //theta_q
+
    //Target Reconstruction Variables ????? What are these in data????
    T->Draw(Form("%s.react.x>>data_x_tar", primary.c_str()), em_cut);
    T->Draw(Form("%s.react.y>>data_y_tar", primary.c_str()), em_cut);

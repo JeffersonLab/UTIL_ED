@@ -96,6 +96,7 @@ void analyze_simc(int runNUM, int evtNUM)
   
   c_LT = c_LT/100.;  //convert from percern to fraction
 
+
   cout << "*****************************************" << endl;
   cout << "" << endl;
   cout << "SIMC: Setting the following to be used in " << endl;
@@ -117,7 +118,9 @@ void analyze_simc(int runNUM, int evtNUM)
   cout << "Analyzing: " << simc_file << endl;
   chain.Add("./worksim_voli/"+simc_file);
   simc->Init(&chain);
-  simc->Loop(simc_file, 1, 1, charge, e_trkEff, h_trkEff, c_LT, runNUM);
+  //simc->Loop(simc_file, 1, 1, charge, e_trkEff, h_trkEff, 0.986750, runNUM);
+  simc->Loop(simc_file, 1, 1, charge, 1, 1, 1, runNUM);
+
   chain.Reset();
 
 
