@@ -9,7 +9,7 @@ evenNo = sys.argv[2]
 out_filename = './UTIL_ED/online/CHARGE_REPORTS/deep_report_%s.report'% (runNo)
 
 #Read REPORT File Name
-report_filename = './REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_%s_%s.report'% (runNo, evenNo)
+report_filename = './UTIL_ED/online/REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_%s_%s.report'% (runNo, evenNo)
 
 #initiate line counter
 line_no = 0

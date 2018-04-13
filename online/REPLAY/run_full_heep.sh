@@ -24,7 +24,7 @@ if [ -z "$runNum" ]; then
 fi
 
 # How many events to analyze.
-numEvents=-1
+numEvents=50000
 
 # Which scripts to run.
 script="./UTIL_ED/online/REPLAY/replay_production_coin_pElec_hProt.C"
@@ -97,7 +97,7 @@ summaryFile="REPORT_OUTPUT/${SPEC}/PRODUCTION/summary_production_${runNum}_${num
   sleep 2
   eval ${runReportMon}   #execute ./get_heep_report.py
   eval ${runCharge}      #execute charge_counter.C script
-  eval "evince ./UTIL_ED/temp.pdf &"     #open pdf containing monitoring histograms 
+  #eval "evince ./UTIL_ED/temp.pdf &"     #open pdf containing monitoring histograms 
   eval ${openReport}     #open report file
 
 

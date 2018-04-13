@@ -1,0 +1,3 @@
+0-99999
+g_ctp_parm_filename       = "UTIL_ED/online/DBASE/COIN/general.param"
+g_ctp_kinematics_filename = "UTIL_ED/online/DBASE/COIN/standard.kinematics"

@@ -1,0 +1,48 @@
+#block T.coin.hTRIG*
+#block T.coin.pTRIG*
+block T.coin.*
+
+#block H.cer.npe*
+#block H.hod*
+#block H.dc.*
+#block H.cal.etracknorm
+#block H.gtr.*
+#block H.kin.*
+
+#block H.cal.etottracknorm
+#block H.cal.eprtracknorm
+#block H.hod.goodstarttime
+#block H.hod.starttime
+#block H.hod.fpHitsTime
+
+#block P.ngcer.npe*
+#block P.hod*
+#block P.dc.x*
+#block P.dc.y*
+#block P.cal.etracknorm
+#block P.gtr.*
+#block P.kin.*
+
+#block P.react.*
+
+#block P.cal.etottracknorm
+#block P.cal.eprtracknorm
+#block P.hod.goodstarttime
+#block P.hod.starttime
+#block P.hod.fpHitsTime
+
+
+
+begin epics
+IBC3H00CRCUR4
+hac_bcm_average
+ibcm1
+ibcm2
+iunser
+itov3out
+itov4out
+end epics
+
+#include "UTIL_ED/online/DEF-files/COIN/PRODUCTION/GTR/coin_gtr_histos.def"
+#include "UTIL_ED/online/DEF-files/COIN/PRODUCTION/KIN/coin_pElec_hProt_kin_histos.def"
+#include "UTIL_ED/online/DEF-files/COIN/PRODUCTION/TRIG/coin_trig_histos.def"
