@@ -28,7 +28,7 @@ void replay_production_coin_pElec_hProt (Int_t RunNumber = 0, Int_t MaxEvent = 0
   
   // Load global parameters
   gHcParms->Define("gen_run_number", "Run Number", RunNumber);
-  gHcParms->AddString("g_ctp_database_filename", "UTIL_ED/online/DBASE/COIN/standard.database");
+  gHcParms->AddString("g_ctp_database_filename", "UTIL_ED/offline/DBASE/COIN/standard.database");
   gHcParms->Load(gHcParms->GetString("g_ctp_database_filename"), RunNumber);
   gHcParms->Load(gHcParms->GetString("g_ctp_parm_filename"));
   gHcParms->Load(gHcParms->GetString("g_ctp_kinematics_filename"), RunNumber);
@@ -231,15 +231,15 @@ void replay_production_coin_pElec_hProt (Int_t RunNumber = 0, Int_t MaxEvent = 0
   // Define output ROOT file
   analyzer->SetOutFile(ROOTFileName.Data());
   // Define DEF-file+
-  analyzer->SetOdefFile("UTIL_ED/online/DEF-files/COIN/PRODUCTION/coin_production_pElec_hProt.def");
+  analyzer->SetOdefFile("UTIL_ED/offline/DEF-files/COIN/PRODUCTION/coin_production_pElec_hProt.def");
   // Define cuts file
-  analyzer->SetCutFile("UTIL_ED/online/DEF-files/COIN/PRODUCTION/CUTS/coin_production_cuts.def");  // optional
+  analyzer->SetCutFile("UTIL_ED/offline/DEF-files/COIN/PRODUCTION/CUTS/coin_production_cuts.def");  // optional
   // File to record accounting information for cuts
-  analyzer->SetSummaryFile(Form("UTIL_ED/online/REPORT_OUTPUT/COIN/PRODUCTION/summary_production_%d_%d.report", RunNumber, MaxEvent));  // optional
+  analyzer->SetSummaryFile(Form("REPORT_OUTPUT/COIN/PRODUCTION/summary_production_%d_%d.report", RunNumber, MaxEvent));  // optional
   // Start the actual analysis.
   analyzer->Process(run);
   // Create report file from template
-  analyzer->PrintReport("UTIL_ED/online/TEMPLATES/COIN/PRODUCTION/coin_production.template",
-  			Form("UTIL_ED/online/REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_%d_%d.report", RunNumber, MaxEvent));  // optional
+  analyzer->PrintReport("UTIL_ED/offline/TEMPLATES/COIN/PRODUCTION/coin_production.template",
+  			Form("REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_%d_%d.report", RunNumber, MaxEvent));  // optional
 
 }

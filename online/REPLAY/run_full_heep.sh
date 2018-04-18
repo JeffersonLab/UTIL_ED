@@ -24,7 +24,7 @@ if [ -z "$runNum" ]; then
 fi
 
 # How many events to analyze.
-numEvents=50000
+numEvents=10
 
 # Which scripts to run.
 script="./UTIL_ED/online/REPLAY/replay_production_coin_pElec_hProt.C"
