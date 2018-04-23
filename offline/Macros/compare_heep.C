@@ -9,7 +9,7 @@ void compare_heep(int runNUM, int evtNUM)
   
   //Pre-defined SIMC/data root file names containing histogram object to comapare
   TString simc_filename =  Form("weighted_run%d_heep_simc_rad.root", runNUM);
-  TString data_filename =  Form("heep_data_%d_%d.root", runNUM, evtNUM); 
+  TString data_filename =  Form("heep_data_%d_%dnewdelta.root", runNUM, evtNUM); 
 
   TString simc_path;
   TString data_path;
@@ -20,6 +20,7 @@ void compare_heep(int runNUM, int evtNUM)
   //Open SIMC/data ROOT files;
   TFile *simc_file = new TFile(simc_path);
   TFile *data_file = new TFile(data_path);
+
 
   //---------------Target Reconstruction Variables----------------
   //Define SIMC histos ('h'-->hadron arm,  'e'-->electron arm)
@@ -82,6 +83,11 @@ void compare_heep(int runNUM, int evtNUM)
   TH1F *simc_W =  0;
   TH1F *simc_thq = 0;
 
+  TH1F *simc_xbj = 0;
+  TH1F *simc_th_elec = 0;                                  
+  TH1F *simc_th_prot = 0;                                              
+  TH1F *simc_Pf = 0;                                                   
+  TH1F *simc_kf = 0;  
 
   //Define data histos
   TH1F *data_emiss = 0;
@@ -90,6 +96,13 @@ void compare_heep(int runNUM, int evtNUM)
   TH1F *data_omega =  0;
   TH1F *data_W =  0;
   TH1F *data_thq = 0;
+
+  TH1F *data_xbj = 0;
+  TH1F *data_th_elec = 0;
+  TH1F *data_th_prot = 0;
+  TH1F *data_Pf = 0;
+  TH1F *data_kf = 0;
+  
 
   //---------------------------------------------------------------
 
@@ -240,13 +253,20 @@ void compare_heep(int runNUM, int evtNUM)
   simc_file->cd();
 
   //Get Histogram objects from SIMC rootfile
-  simc_file->GetObject("cut_Emiss", simc_emiss);
+  simc_file->GetObject("Emiss", simc_emiss);
   simc_file->GetObject("cut_pm", simc_pmiss);
   simc_file->GetObject("cut_Q_2", simc_Q2);
   simc_file->GetObject("cut_omega", simc_omega);
   simc_file->GetObject("cut_W_inv", simc_W);
   simc_file->GetObject("cut_theta_q", simc_thq);
 
+  simc_file->GetObject("cut_xbj", simc_xbj);
+  simc_file->GetObject("cut_theta_elec", simc_th_elec);
+  simc_file->GetObject("cut_theta_prot", simc_th_prot);
+  simc_file->GetObject("cut_P_f", simc_Pf);
+  simc_file->GetObject("cut_kf", simc_kf);
+
+  
 
   //Set SIMC Histo Aesthetics
   simc_emiss->SetLineColor(kRed);
@@ -262,6 +282,16 @@ void compare_heep(int runNUM, int evtNUM)
   simc_thq->SetLineColor(kRed);
   simc_thq->SetLineWidth(3);
 
+  simc_xbj->SetLineColor(kRed);
+  simc_xbj->SetLineWidth(3);
+  simc_th_elec->SetLineColor(kRed);
+  simc_th_elec->SetLineWidth(3);
+  simc_th_prot->SetLineColor(kRed);
+  simc_th_prot->SetLineWidth(3);
+  simc_Pf->SetLineColor(kRed);
+  simc_Pf->SetLineWidth(3);
+  simc_kf->SetLineColor(kRed);
+  simc_kf->SetLineWidth(3);
   //change to data_file
   data_file->cd();
   
@@ -272,6 +302,13 @@ void compare_heep(int runNUM, int evtNUM)
   data_file->GetObject("data_omega", data_omega);
   data_file->GetObject("data_W_inv", data_W);
   data_file->GetObject("data_theta_q", data_thq);
+
+
+  data_file->GetObject("data_xbj", data_xbj);
+  data_file->GetObject("data_theta_elec", data_th_elec);
+  data_file->GetObject("data_theta_prot", data_th_prot);
+  data_file->GetObject("data_Pf", data_Pf);
+  data_file->GetObject("data_kf", data_kf);
 
   //Set data Histo Aesthetics
   data_emiss->SetFillColorAlpha(kBlue, 0.35);
@@ -287,6 +324,16 @@ void compare_heep(int runNUM, int evtNUM)
   data_thq->SetFillColorAlpha(kBlue, 0.35);
   data_thq->SetFillStyle(3004);
 
+  data_xbj->SetFillColorAlpha(kBlue, 0.35);
+  data_xbj->SetFillStyle(3004);
+  data_th_elec->SetFillColorAlpha(kBlue, 0.35);
+  data_th_elec->SetFillStyle(3004);
+  data_th_prot->SetFillColorAlpha(kBlue, 0.35);
+  data_th_prot->SetFillStyle(3004);
+  data_Pf->SetFillColorAlpha(kBlue, 0.35);
+  data_Pf->SetFillStyle(3004);
+  data_kf->SetFillColorAlpha(kBlue, 0.35);
+  data_kf->SetFillStyle(3004);
 
 
   //Overlay SIMC/data plots (*** VERY IMPORTANT ***: Range and #bins must be same)
@@ -461,6 +508,9 @@ void compare_heep(int runNUM, int evtNUM)
    c3->Divide(3,2);
    
    c3->cd(1);
+   data_emiss->GetXaxis()->SetTitle("Missing Energy [GeV]");
+   data_emiss->GetXaxis()->CenterTitle();
+
    data_emiss->DrawNormalized();
    simc_emiss->DrawNormalized("same");
    leg17->AddEntry(data_emiss,"Data","f");
@@ -468,6 +518,9 @@ void compare_heep(int runNUM, int evtNUM)
    leg17->Draw();
 
    c3->cd(2);
+   data_pmiss->GetXaxis()->SetTitle("Missing Momentum [GeV/c]");
+   data_pmiss->GetXaxis()->CenterTitle();
+
    data_pmiss->DrawNormalized();
    simc_pmiss->DrawNormalized("same");
    leg18->AddEntry(data_pmiss,"Data", "f");
@@ -475,6 +528,9 @@ void compare_heep(int runNUM, int evtNUM)
    leg18->Draw();
 
    c3->cd(3);
+   data_Q2->GetXaxis()->SetTitle("Q^{2} [GeV^{2}]");
+   data_Q2->GetXaxis()->CenterTitle();
+
    data_Q2->DrawNormalized();
    simc_Q2->DrawNormalized("same");
    leg19->AddEntry(data_Q2,"Data", "f");
@@ -482,6 +538,9 @@ void compare_heep(int runNUM, int evtNUM)
    leg19->Draw();
      
    c3->cd(4);
+   data_omega->GetXaxis()->SetTitle("Energy Transfer, #omega [GeV]");
+   data_omega->GetXaxis()->CenterTitle();
+   
    data_omega->DrawNormalized();
    simc_omega->DrawNormalized("same");
    leg20->AddEntry(data_omega,"Data", "f");
@@ -489,6 +548,9 @@ void compare_heep(int runNUM, int evtNUM)
    leg20->Draw();
 
    c3->cd(5);
+   data_W->GetXaxis()->SetTitle("Invariant Mass, W [GeV]");
+   data_W->GetXaxis()->CenterTitle();
+  
    data_W->DrawNormalized();
    simc_W->DrawNormalized("same");
    leg21->AddEntry(data_W,"Data", "f");
@@ -496,10 +558,76 @@ void compare_heep(int runNUM, int evtNUM)
    leg21->Draw();
 
    c3->cd(6);
+   data_thq->GetXaxis()->SetTitle("q-vector Angle, #theta_{q} [deg]");
+   data_thq->GetXaxis()->CenterTitle();
+
    data_thq->DrawNormalized();
    simc_thq->DrawNormalized("same");
    leg22->AddEntry(data_thq,"Data", "f");
    leg22->AddEntry(simc_thq,"SIMC");
    leg22->Draw();
+
+
+
+   //Second set of KINEMATIC VARIABLES
+
+   //Set Legend
+   auto leg23 = new TLegend(0.1,0.8,0.28,0.9);
+   auto leg24 = new TLegend(0.1,0.8,0.28,0.9);
+   auto leg25 = new TLegend(0.1,0.8,0.28,0.9);
+   auto leg26 = new TLegend(0.1,0.8,0.28,0.9);
+   auto leg27 = new TLegend(0.1,0.8,0.28,0.9);
+   
+   //Create A Canvas to store kinematic variable comparisons
+   TCanvas *c4 = new TCanvas("c4", "Kinematics", 2000, 1000);
+   c4->Divide(3,2);
+
+   c4->cd(1);
+   simc_xbj->DrawNormalized();
+   data_xbj->DrawNormalized("same");
+   leg23->AddEntry(data_xbj,"Data","f");
+   leg23->AddEntry(simc_xbj,"SIMC");
+   leg23->Draw();
+
+   c4->cd(2);
+   data_th_elec->GetXaxis()->SetTitle("Electron Scatt. Angle, #theta_{e} [deg]");
+   data_th_elec->GetXaxis()->CenterTitle();
+
+   data_th_elec->DrawNormalized();
+   simc_th_elec->DrawNormalized("same");
+   leg24->AddEntry(data_th_elec,"Data","f");
+   leg24->AddEntry(simc_th_elec,"SIMC");
+   leg24->Draw();
+
+   c4->cd(3);
+   data_th_prot->GetXaxis()->SetTitle("Proton Scatt. Angle, #theta_{p} [deg]");
+   data_th_prot->GetXaxis()->CenterTitle();
+
+   data_th_prot->DrawNormalized();
+   simc_th_prot->DrawNormalized("same");
+   leg25->AddEntry(data_th_prot,"Data","f");
+   leg25->AddEntry(simc_th_prot,"SIMC");
+   leg25->Draw();
+
+   c4->cd(4);
+   data_Pf->GetXaxis()->SetTitle("Proton Final Momentum, P_{f} [GeV/c] ");
+   data_Pf->GetXaxis()->CenterTitle();
+
+   data_Pf->DrawNormalized();
+   simc_Pf->DrawNormalized("same");
+   leg26->AddEntry(data_Pf,"Data","f");
+   leg26->AddEntry(simc_Pf,"SIMC");
+   leg26->Draw();
+
+   c4->cd(5);
+   data_kf->GetXaxis()->SetTitle("Electron Final Momentum, k_{f} [GeV/c] ");
+   data_kf->GetXaxis()->CenterTitle();
+   
+   data_kf->DrawNormalized();
+   simc_kf->DrawNormalized("same");
+   leg27->AddEntry(data_kf,"Data","f");
+   leg27->AddEntry(simc_kf,"SIMC");
+   leg27->Draw();
+
 
 }

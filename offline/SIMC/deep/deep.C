@@ -1,8 +1,8 @@
 //Analysis for HMS/SHMS coincidence D(e,e'p)n, High Missing Momentum Setting (580, 750) MeV
 #define deep_cxx
 #include "deep.h"
-#include "../../header_files/set_lowdeep_histos.h"
-//#include "../../header_files/set_highdeep_histos.h"
+//#include "../../header_files/set_lowdeep_histos.h"
+#include "../../header_files/set_highdeep_histos.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -288,8 +288,8 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
    Double_t xbj_max = 1.70; //1.40;
 
    //Missing Energy, Em = 2.2 MeV (-10 MeV, 25 MeV)
-   Double_t Em_min = -0.04;
-   Double_t Em_max = 0.06;
+   Double_t Em_min = -0.08;
+   Double_t Em_max = 0.05;
    
 
 

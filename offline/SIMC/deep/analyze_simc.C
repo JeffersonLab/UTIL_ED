@@ -68,10 +68,20 @@ void analyze_simc(TString Pmiss, int runNUM=1, int evtNUM=-1)
 
     else if (Pmiss=="580")
       {
-	run_min = 3306;
-	run_max = 3341;
-
+	run_min = 3290;
+	run_max = 3305;
+	runTOT = 1;
       }
+
+
+    else if (Pmiss=="750")
+      {
+       	run_min = 3306;
+        run_max = 3340;
+        runTOT = 1;
+      }
+
+	cout << "Everything OK before loop . . . " << endl;
  
     //-------------------REALISTIC Estimation of Full Weight-----------------------
 
@@ -79,9 +89,13 @@ void analyze_simc(TString Pmiss, int runNUM=1, int evtNUM=-1)
 
   for (int run = run_min; run <=run_max; run++)
     {
+	cout << "InLOOP: run " << run << endl;
+      if (run==3290 || run==3303 || run==3304 || run==3326) {continue;}
+      runTOT = runTOT+1;
+      data_file =Form("../../../../ROOTfiles/coin_replay_production_%d_%d.root", run, evtNUM);
+      // coin_replay_production_3267_-1olddelta.root
 
-      data_file = Form("../../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM );
-      report_file = Form("../../../online/CHARGE_REPORTS/deep_report_%d.report", runNUM);
+      report_file = Form("../../../online/CHARGE_REPORTS/deep_report_%d.report", run);
       
       //Get the accumulated charge from data_file
       Q1 = getCharge("SHMS", "BCM4A", data_file); 

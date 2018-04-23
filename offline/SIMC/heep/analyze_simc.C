@@ -81,7 +81,7 @@ void analyze_simc(int runNUM, int evtNUM)
 
   //------REALISTIC Estimation of Full Weight---------
 
-  data_file = Form("../../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM );
+  data_file = Form("../../../../ROOTfiles/coin_replay_production_%d_%dolddelta.root", runNUM, evtNUM );
   report_file = Form("../../../online/CHARGE_REPORTS/heep_report_%d.report", runNUM);
 
   //Get the accumulated charge from data_file

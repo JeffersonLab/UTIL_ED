@@ -3,7 +3,7 @@
 #include "../header_files/set_heep_histos.h"
 #include "../header_files/useful_functions.h"
 
-//HMS Momentum correction: P0 = P0*0.9968
+//HMS Momentum correction: P0 = P0*0.9968`
 //SHMS Momentum correction: P0 = P0*0.985
 
 void analyze_heepData(int runNUM, int evtNUM)
@@ -24,14 +24,14 @@ void analyze_heepData(int runNUM, int evtNUM)
   
   //Open data ROOTfile and call TTree
   TString file_path;
-  file_path = Form("../../../ROOTfiles/coin_replay_production_%d_%d.root", runNUM, evtNUM);
+  file_path = Form("../../../ROOTfiles/coin_replay_production_%d_%dnewdelta.root", runNUM, evtNUM);
   
   TFile *data_file = new TFile(file_path, "READ");
 
   TTree *T = (TTree*)data_file->Get("T");
 
   //Open root file where new histograms will be stored
-  TFile *outfile = new TFile(Form("./DATA_ROOTfiles/heep_data_%d_%d.root", runNUM, evtNUM), "recreate");
+  TFile *outfile = new TFile(Form("./DATA_ROOTfiles/heep_data_%d_%dnewdelta.root", runNUM, evtNUM), "recreate");
 
 
   //These histograms binning MUST be exactly the same as those used in SIMC heep.C analysis
@@ -115,7 +115,7 @@ void analyze_heepData(int runNUM, int evtNUM)
 
    //DEFINE KINEMATIC CUTS
    TCut W_cut = Form("%s.kin.primary.W<1.05", primary.c_str());   //select events below pion thresshold
-   TCut em_cut = Form("%s.kin.secondary.emiss>-0.20&&%s.kin.secondary.emiss<0.2", secondary.c_str(), secondary.c_str());  
+   TCut em_cut = Form("%s.kin.secondary.emiss>-0.06&&%s.kin.secondary.emiss<0.08", secondary.c_str(), secondary.c_str());  
    TCut Q2_cut = Form("%s.kin.primary.Q2>3&&%s.kin.primary.Q2<5.0", primary.c_str(), primary.c_str());
    TCut xbj_cut = Form("%s.kin.primary.x_bj>0.7&&%s.kin.primary.x_bj<1.3", primary.c_str(), primary.c_str()); 
 
@@ -129,13 +129,13 @@ void analyze_heepData(int runNUM, int evtNUM)
    T->Draw(Form("%s.kin.primary.nu>>data_omega", primary.c_str()), em_cut);
    T->Draw(Form("%s.kin.primary.W>>data_W_inv", primary.c_str()), em_cut);
    T->Draw(Form("(%s.kin.primary.scat_ang_rad*180./3.14)>>data_theta_elec", primary.c_str()), em_cut);
-   T->Draw(Form("(%s.kin.secondary.xangle*180./3.14)>>data_theta_prot", secondary.c_str()), em_cut); 
+   T->Draw(Form("(%s.kin.secondary.xangle - %s.kin.primary.scat_ang_rad)*180./3.14>>data_theta_prot", secondary.c_str(), primary.c_str()), em_cut); 
    
    //Additional Kinematic Variables
    T->Draw(Form("%s.kin.primary.W2>>data_W2", primary.c_str()), em_cut);
    T->Draw(Form("%s.kin.primary.x_bj>>data_xbj", primary.c_str()), em_cut);
-   T->Draw(Form("%s.gtr.p>>data_Pf", primary.c_str()), em_cut);
-   T->Draw(Form("%s.gtr.p>>(data_kf)", secondary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.p>>data_Pf", secondary.c_str()), em_cut);
+   T->Draw(Form("%s.gtr.p>>data_kf", primary.c_str()), em_cut);
    T->Draw(Form("%s.kin.primary.th_q*(180./3.14)>>data_theta_q", primary.c_str()), em_cut ); //theta_q
 
    //Target Reconstruction Variables ????? What are these in data????

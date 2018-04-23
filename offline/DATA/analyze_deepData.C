@@ -1,7 +1,7 @@
 //Macro to analyze D(e,e'p)n E12-10-003 data from Hall C: HMS (Hadron arm), SHMS (electron arm)
 
-#include "../header_files/set_lowdeep_histos.h"
-//#include "../header_files/set_highdeep_histos.h"
+//#include "../header_files/set_lowdeep_histos.h"
+#include "../header_files/set_highdeep_histos.h"
 #include "../header_files/useful_functions.h"
 
 //HMS Momentum correction: P0 = P0*0.9968
@@ -32,8 +32,8 @@ void analyze_deepData(/*int runNUM, int evtNUM*/)
   //file_path = "~/cyero/hallc_replay/ROOTfiles/Pm580_comb.root";    
   //  file_path = "~/cyero/hallc_replay/ROOTfiles/Pm750.root";    
   //  file_path = "../../../ROOTfiles/coin_replay_production_3267nopcorr_-1.root";   
-  file_path = "../../../ROOTfiles/coin_replay_production_3267_-1.root";   
-  
+//  file_path = "../../../ROOTfiles/coin_replay_production_3289_-1newdelta.root";   
+ file_path = "../../../ROOTfiles/Pm750set2.root";
 
   TFile *data_file = new TFile(file_path, "READ");                                                                        
   
@@ -44,7 +44,7 @@ void analyze_deepData(/*int runNUM, int evtNUM*/)
 
   //Open root file where new histograms will be stored                                                                 
   // outfile = new TFile("./DATA_ROOTfiles/deep_Pm750.root", "recreate");                        
-  outfile = new TFile("./DATA_ROOTfiles/deep_data_midpcorr_3267_-1.root", "recreate");  
+  outfile = new TFile("./DATA_ROOTfiles/deep_data_750set2.root", "recreate");  
 
   //These histograms binning MUST be exactly the same as those used in SIMC heep.C analysis
 
@@ -66,6 +66,11 @@ void analyze_deepData(/*int runNUM, int evtNUM*/)
    TH1F *data_theta_nq = new TH1F("data_theta_nq", "Neutron Angle, #theta_{nq}", thnq_nbins, thnq_xmin, thnq_xmax);
    TH1F *data_theta_q = new TH1F("data_theta_q", "q-vector Angle, #theta_{q}", thq_nbins, thq_xmin, thq_xmax);
    TH1F *data_theta_pq = new TH1F("data_theta_pq", "Proton Angle, #theta_{pq}", thpq_nbins, thpq_xmin, thpq_xmax);
+
+   //theta_nq debug
+   TH1F *data_pm2 = new TH1F("data_pm2","missing momentum2", Pm_nbins, Pm_xmin, Pm_xmax); 
+   TH1F *data_Pf2 = new TH1F("data_Pf2", "Final Proton Momentum2", Pf_nbins, Pf_xmin, Pf_xmax);
+   TH1F *data_q2 = new TH1F("data_q2", "|q|, 3-vector Magnitude2 ", q_nbins, q_xmin, q_xmax);
 
    
    //Target Reconstruction Variables
@@ -132,7 +137,7 @@ void analyze_deepData(/*int runNUM, int evtNUM*/)
 
    //DEFINE KINEMATIC CUTS
    TCut W_cut = Form("%s.kin.primary.W<1.05", primary.c_str());   //select events below pion thresshold
-   TCut em_cut = Form("%s.kin.secondary.emiss_nuc>=-0.2&&%s.kin.secondary.emiss_nuc<=0.20", secondary.c_str(), secondary.c_str());  
+   TCut em_cut = Form("%s.kin.secondary.emiss_nuc>=-0.08&&%s.kin.secondary.emiss_nuc<=0.05", secondary.c_str(), secondary.c_str());  
    TCut Q2_cut = Form("%s.kin.primary.Q2>3&&%s.kin.primary.Q2<5.0", primary.c_str(), primary.c_str());
    TCut xbj_cut = Form("%s.kin.primary.x_bj>0.7&&%s.kin.primary.x_bj<1.3", primary.c_str(), primary.c_str()); 
 
@@ -140,8 +145,8 @@ void analyze_deepData(/*int runNUM, int evtNUM*/)
    //Draw the Histograms from the TTree
 
    //Kinematics Quantities, P.* ->SHMS,  H.* -->HMS
-   //   T->Draw(Form("%s.kin.secondary.emiss_nuc>>data_Emiss", secondary.c_str()));
-   T->Draw("(P.kin.primary.nu - H.kin.secondary.tx - H.kin.secondary.tb)>>data_Emiss");
+   T->Draw(Form("%s.kin.secondary.emiss_nuc>>data_Emiss", secondary.c_str()), pid);
+   //T->Draw("(P.kin.primary.nu - H.kin.secondary.tx - H.kin.secondary.tb)>>data_Emiss");
 
 
    T->Draw(Form("%s.kin.secondary.pmiss>>data_pm", secondary.c_str()), em_cut&&pid);
@@ -149,7 +154,7 @@ void analyze_deepData(/*int runNUM, int evtNUM*/)
    T->Draw(Form("%s.kin.primary.nu>>data_omega", primary.c_str()), em_cut&&pid);
    T->Draw(Form("%s.kin.primary.W>>data_W_inv", primary.c_str()), em_cut&&pid);
    T->Draw(Form("(%s.kin.primary.scat_ang_deg)>>data_theta_elec", primary.c_str()), em_cut&&pid);
-   // T->Draw(Form("(%s.kin.secondary.xangle-%s.kin.primary.scat_ang_rad)*(180./3.14)>>data_theta_prot", secondary.c_str()), primary.c_str(), em_cut&&pid); 
+   T->Draw(Form("(%s.kin.secondary.xangle-%s.kin.primary.scat_ang_rad)*180./3.14>>data_theta_prot", secondary.c_str(), primary.c_str()),  em_cut&&pid); 
    
    //Additional Kinematic Variables
    T->Draw(Form("%s.kin.primary.W2>>data_W2", primary.c_str()), em_cut&&pid);

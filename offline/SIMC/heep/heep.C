@@ -264,7 +264,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
 
    //Missing Energy, Em = 0 MeV (-15 MeV, 15 MeV)
    Double_t Em_min = -60.e-3;
-   Double_t Em_max = 200.e-3;
+   Double_t Em_max = 80.e-3;
    
 
    //Determine the charge factor:
@@ -334,7 +334,7 @@ void heep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
       ki = sqrt(Ein*Ein - me*me);
       kf = Q2 / (4.*ki*pow(sin(theta_e/2.), 2));
       Ee = sqrt(me*me + kf*kf);
-      th_q = theta_pq + theta_p;
+      th_q = acos( (ki - kf*cos(theta_e))/q ); //th_q = theta_pq + theta_p;
 
       /*
       //-------Spectrometer resolution variables-----------

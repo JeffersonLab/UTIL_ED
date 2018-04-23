@@ -62,13 +62,13 @@ Double_t xbj_xmax = 1.3;
 
 //Pf
 Double_t Pf_nbins = nbins;
-Double_t Pf_xmin = 2.5;
-Double_t Pf_xmax = 3.5;
+Double_t Pf_xmin = 0.;
+Double_t Pf_xmax = 5.;
 
 //kf
 Double_t kf_nbins = nbins;
-Double_t kf_xmin = 7.;
-Double_t kf_xmax = 9.5;
+Double_t kf_xmin = 6.;
+Double_t kf_xmax = 10;
 
 //th_q
 Double_t thq_nbins = nbins;

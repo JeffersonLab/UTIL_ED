@@ -12,9 +12,9 @@ void compare_deep(string Pm, string model, int runNUM, int evtNUM)
  
 
   TString data_filename ;
-  if (Pm=="750") data_filename = "Pm750full_hist_data.root";
-  if (Pm=="580") data_filename = "Pm580round2_hist_data.root";
-  if (Pm=="80") data_filename = "Pm80_run3289.root";
+  if (Pm=="750") data_filename = "deep_data_750set2.root";
+  if (Pm=="580") data_filename = "deep_data_580set2.root";
+  if (Pm=="80") data_filename = "deep_data_3289_-1newdelta.root";
   TString simc_path;
   TString data_path;
   

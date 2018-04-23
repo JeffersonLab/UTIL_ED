@@ -14,9 +14,9 @@ Int_t nbins = 100;
 
 //----------Kinematic Quantities---------
 //Emiss
-Double_t Em_nbins = 80;
+Double_t Em_nbins = 70;
 Double_t Em_xmin = -0.3;
-Double_t Em_xmax = 0.5;
+Double_t Em_xmax = 1.0;
 
 //Pmiss
 Double_t Pm_nbins = 60;

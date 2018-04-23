@@ -43,9 +43,11 @@ void make_hist_data (TString Pmiss){
 
   if (Pmiss=="80")
     {
-      basename="coin_replay_production_3289_-1";
+      //  basename="coin_replay_production_3267_-1";
+      basename="coin_replay_production_3267_-1olddelta";
+
       pmiss_set=80.;
-      alias = "Pm80_run3289";
+      alias = "Pm80_run3267_oldpdelta";
       inputroot="../../../ROOTfiles/"+basename+".root";
 	    
     }
@@ -318,7 +320,7 @@ void make_hist_data (TString Pmiss){
 		Bool_t shms_pid_cut = shms_etracknorm > .85 && shms_ngcer_npesum > 1.;
 		Bool_t shms_delta_cut = shms_delta > -5. && shms_delta < 10.;
 		Bool_t hms_delta_cut = hms_delta > -10. && hms_delta < 10.;
-		Bool_t em_cut = hms_emiss >=-0.2 && hms_emiss <=0.2;
+		Bool_t em_cut = hms_emiss >=-0.15 && hms_emiss <=0.2;
 		SHMScorrCoinTimeROC1=-1000;
 		SHMScorrCoinTimeROC2=-1000;
 		//
