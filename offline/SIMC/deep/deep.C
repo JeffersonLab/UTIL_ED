@@ -289,7 +289,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
 
    //Missing Energy, Em = 2.2 MeV (-10 MeV, 25 MeV)
    Double_t Em_min = -0.08;
-   Double_t Em_max = 0.05;
+   Double_t Em_max = 0.1;
    
 
 
@@ -478,7 +478,7 @@ void deep::Loop(TString simc_file, Double_t Ib, Double_t time, Double_t charge,
       //ANALYSIS OF EVENT-BY-EVENT GOES HERE!!!!!!
    
       //APPLY CUTS: BEGIN CUTS LOOP
-      if (c_Em)
+      if (c_Em&&c_Xbj&&c_Q2)
 	{
 	  //Kinematics
 	  cut_Emiss->Fill(Em, FullWeight);
